@@ -1,8 +1,8 @@
 # Checklist para a implementação do Minishell
 
 ### 1. **Comportamento básico do shell**
-- [ ] Exibir um prompt ao aguardar um novo comando.
-- [ ] Implementar histórico de comandos.
+- [x] Exibir um prompt ao aguardar um novo comando.
+- [x] Implementar histórico de comandos.
 - [ ] Buscar e lançar o executável correto com base na variável PATH ou usando caminho relativo ou absoluto.
 - [ ] Evitar o uso de mais de uma variável global para indicar um sinal recebido.
   - [ ] Certificar-se de que a variável global usada só armazene o número do sinal recebido.
