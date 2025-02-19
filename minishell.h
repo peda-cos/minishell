@@ -6,13 +6,15 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/19 19:28:54 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:06:23 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# include "./libft/libft.h"
 
 # include <readline/readline.h>    // readline, add_history
 # include <readline/history.h>     // rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay
