@@ -6,7 +6,7 @@
 #    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 13:27:12 by peda-cos          #+#    #+#              #
-#    Updated: 2025/02/19 20:18:58 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/02/19 21:29:23 by peda-cos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@ar rcs $(NAME) $@
+	@ar rcs $@ $^
 
 %.o: %.c libft.h
 	@$(CC) $(CFLAGS) -c $< -o $@
