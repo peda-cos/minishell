@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 00:49:55 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/20 00:51:25 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/20 00:54:26 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,23 @@ t_token	*new_token(char *value, t_token_type type)
 	token->type = type;
 	token->next = NULL;
 	return (token);
+}
+
+void	add_token(t_token **tokens, char *value, t_token_type type)
+{
+	t_token	*new;
+	t_token	*tmp;
+
+	new = new_token(value, type);
+	if (!new)
+		return ;
+	if (!*tokens)
+	{
+		*tokens = new;
+		return ;
+	}
+	tmp = *tokens;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
 }
