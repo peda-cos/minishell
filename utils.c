@@ -6,11 +6,26 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 16:22:18 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:05:10 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_env(char **env)
+{
+	int	i;
+
+	i = 0;
+	if (!env)
+		return ;
+	while (env[i])
+	{
+		free(env[i]);
+		i++;
+	}
+	free(env);
+}
 
 void	free_tokens(t_token *tokens)
 {
@@ -27,33 +42,71 @@ void	free_tokens(t_token *tokens)
 
 void	free_commands(t_command *cmd)
 {
-	int	i;
+	int			i;
+	t_command	*tmp;
 
 	if (!cmd)
 		return ;
-	i = 0;
-	if (cmd->args)
+	while (cmd)
 	{
-		while (cmd->args[i])
+		if (cmd->args)
 		{
-			free(cmd->args[i]);
-			i++;
+			i = 0;
+			while (cmd->args[i])
+			{
+				free(cmd->args[i]);
+				i++;
+			}
+			free(cmd->args);
 		}
-		free(cmd->args);
+		if (cmd->input_file)
+			free(cmd->input_file);
+		if (cmd->output_file)
+			free(cmd->output_file);
+		if (cmd->heredoc_delim)
+			free(cmd->heredoc_delim);
+		tmp = cmd;
+		cmd = cmd->next;
+		free(tmp);
 	}
-	free(cmd);
 }
 
-void	free_env(char **env)
+char	*expand_variables(char *str, char **env, int last_exit)
 {
-	int	i = 0;
+	char	*result;
+	char	*var;
+	char	*value;
+	int		i;
+	int		j;
+	int		k;
 
-	if (!env)
-		return;
-	while (env[i])
-	{
-		free(env[i]);
+	i = 0;
+	j = 0;
+	if (!str || str[0] != '$')
+		return (ft_strdup(str));
+	if (ft_strcmp(str, "$?") == 0)
+		return (ft_itoa(last_exit));
+	/* Skip the '$' */
+	i = 1;
+	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;
+	var = ft_substr(str, 1, i - 1);
+	k = 0;
+	value = NULL;
+	while (env && env[k])
+	{
+		if (ft_strncmp(env[k], var, ft_strlen(var)) == 0
+			&& env[k][ft_strlen(var)] == '=')
+		{
+			value = env[k] + ft_strlen(var) + 1;
+			break ;
+		}
+		k++;
 	}
-	free(env);
+	free(var);
+	if (value)
+		result = ft_strdup(value);
+	else
+		result = ft_strdup("");
+	return (result);
 }
