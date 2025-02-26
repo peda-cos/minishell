@@ -36,11 +36,11 @@
   - [ ] `ctrl-\` não deve fazer nada.
 
 ### 7. **Builtins**
-- [ ] Implementar os seguintes comandos internos (builtins):
+- [x] Implementar os seguintes comandos internos (builtins):
   - [x] **echo** com a opção `-n`.
-  - [ ] **cd** com caminho relativo ou absoluto.
-  - [ ] **pwd** sem opções.
-  - [ ] **export** sem opções.
-  - [ ] **unset** sem opções.
-  - [ ] **env** sem opções ou argumentos.
-  - [ ] **exit** sem opções.
+  - [x] **cd** com caminho relativo ou absoluto.
+  - [x] **pwd** sem opções.
+  - [x] **export** sem opções.
+  - [x] **unset** sem opções.
+  - [x] **env** sem opções ou argumentos.
+  - [x] **exit** sem opções.
