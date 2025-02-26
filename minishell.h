@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 16:06:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:22:35 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int						builtin_echo(char **args);
 char					*find_executable(char *cmd, char **envp);
 void					free_tokens(t_token *tokens);
 void					free_commands(t_command *cmd);
+void					free_env(char **env);
 
 #endif
