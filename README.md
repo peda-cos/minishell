@@ -3,7 +3,7 @@
 ### 1. **Comportamento básico do shell**
 - [x] Exibir um prompt ao aguardar um novo comando.
 - [x] Implementar histórico de comandos.
-- [ ] Buscar e lançar o executável correto com base na variável PATH ou usando caminho relativo ou absoluto.
+- [x] Buscar e lançar o executável correto com base na variável PATH ou usando caminho relativo ou absoluto.
 - [ ] Evitar o uso de mais de uma variável global para indicar um sinal recebido.
   - [ ] Certificar-se de que a variável global usada só armazene o número do sinal recebido.
   - [ ] Garantir que a variável global não contenha acessos a outras estruturas de dados.
