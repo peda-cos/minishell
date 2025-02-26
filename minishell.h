@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 16:22:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:49:03 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <sys/stat.h>
-# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
@@ -50,16 +48,28 @@ typedef struct s_command
 	struct s_command	*next;
 }						t_command;
 
+/* Environment utilities */
+char					**copy_env(char **envp);
+void					free_env(char **env);
+
+/* Tokenizer and Parser */
 t_token					*tokenize_input(char *input);
 t_command				*parse_tokens(t_token *tokens);
-void					execute_command(t_command *cmd, char **envp);
 
-char					**copy_env(char **envp);
+/* Executor */
+void					execute_command(t_command *cmd, char **env);
+
+/* Built-in commands */
 int						builtin_echo(char **args);
+int						builtin_cd(char **args);
+int						builtin_pwd(void);
+int						builtin_export(char **args, char ***env);
+int						builtin_unset(char **args, char ***env);
+int						builtin_env(char **env);
+int						builtin_exit(char **args);
 
-char					*find_executable(char *cmd, char **envp);
+/* Memory cleanup */
 void					free_tokens(t_token *tokens);
 void					free_commands(t_command *cmd);
-void					free_env(char **env);
 
 #endif
