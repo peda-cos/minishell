@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
+#include "minishell.h"
 
-t_token	*new_token(char *value, t_token_type type)
+static t_token	*new_token(char *value, t_token_type type)
 {
 	t_token	*token;
 
@@ -25,14 +25,10 @@ t_token	*new_token(char *value, t_token_type type)
 	return (token);
 }
 
-void	add_token(t_token **tokens, char *value, t_token_type type)
+static void	add_token(t_token **tokens, t_token *new)
 {
-	t_token	*new;
 	t_token	*tmp;
 
-	new = new_token(value, type);
-	if (!new)
-		return ;
 	if (!*tokens)
 	{
 		*tokens = new;
@@ -42,4 +38,24 @@ void	add_token(t_token **tokens, char *value, t_token_type type)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new;
+}
+
+t_token	*tokenize_input(char *input)
+{
+	t_token	*tokens;
+	char	**parts;
+	int		i;
+
+	tokens = NULL;
+	parts = ft_split(input, ' ');
+	if (!parts)
+		return (NULL);
+	i = 0;
+	while (parts[i])
+	{
+		add_token(&tokens, new_token(parts[i], WORD));
+		i++;
+	}
+	free(parts);
+	return (tokens);
 }
