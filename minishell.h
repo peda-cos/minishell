@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 14:59:15 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 15:14:09 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_command
 
 t_token					*tokenize_input(char *input);
 t_command				*parse_tokens(t_token *tokens);
+void					execute_command(t_command *cmd, char **envp);
 
 char					*find_executable(char *cmd, char **envp);
 void					free_tokens(t_token *tokens);
