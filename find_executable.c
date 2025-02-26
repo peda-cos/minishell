@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:57:42 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 14:58:15 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:19:06 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*join_path(char *dir, char *cmd)
 	return (full);
 }
 
-char	*find_executable(char *cmd, char **envp)
+char	*find_executable(char *cmd, char **env)
 {
 	char	*path_env;
 	char	**paths;
@@ -52,11 +52,11 @@ char	*find_executable(char *cmd, char **envp)
 		return (NULL);
 	}
 	i = 0;
-	while (envp[i])
+	while (env[i])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
-			path_env = envp[i] + 5;
+			path_env = env[i] + 5;
 			paths = ft_split(path_env, ':');
 			if (!paths)
 				return (NULL);

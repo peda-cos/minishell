@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 15:14:04 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:18:35 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,34 @@
 
 static int	is_builtin(char *cmd)
 {
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
-			"pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"))
+	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
+		!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") ||
+		!ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") ||
+		!ft_strcmp(cmd, "exit"))
 		return (1);
 	return (0);
 }
 
-static int	exec_builtin(t_command *cmd, char **envp)
+static int	exec_builtin(t_command *cmd, char **env)
 {
-	int	i;
-
-	(void)envp;
 	if (!ft_strcmp(cmd->args[0], "echo"))
-	{
-		i = 1;
-		while (cmd->args[i])
-		{
-			printf("%s", cmd->args[i]);
-			if (cmd->args[i + 1])
-				printf(" ");
-			i++;
-		}
-		printf("\n");
-		return (0);
-	}
-	if (!ft_strcmp(cmd->args[0], "exit"))
-		exit(0);
+		return (builtin_echo(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "cd"))
+		return (builtin_cd(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "pwd"))
+		return (builtin_pwd());
+	else if (!ft_strcmp(cmd->args[0], "export"))
+		return (builtin_export(cmd->args, &env));
+	else if (!ft_strcmp(cmd->args[0], "unset"))
+		return (builtin_unset(cmd->args, &env));
+	else if (!ft_strcmp(cmd->args[0], "env"))
+		return (builtin_env(env));
+	else if (!ft_strcmp(cmd->args[0], "exit"))
+		return (builtin_exit(cmd->args));
 	return (0);
 }
 
-void	execute_command(t_command *cmd, char **envp)
+void	execute_command(t_command *cmd, char **env)
 {
 	pid_t	pid;
 	int		status;
@@ -54,10 +51,10 @@ void	execute_command(t_command *cmd, char **envp)
 		return ;
 	if (is_builtin(cmd->args[0]))
 	{
-		exec_builtin(cmd, envp);
+		exec_builtin(cmd, env);
 		return ;
 	}
-	cmd_path = find_executable(cmd->args[0], envp);
+	cmd_path = find_executable(cmd->args[0], env);
 	if (!cmd_path)
 	{
 		fprintf(stderr, "minishell: %s: command not found\n", cmd->args[0]);
@@ -72,7 +69,7 @@ void	execute_command(t_command *cmd, char **envp)
 	}
 	if (pid == 0)
 	{
-		if (execve(cmd_path, cmd->args, envp) < 0)
+		if (execve(cmd_path, cmd->args, env) < 0)
 		{
 			perror("execve");
 			exit(1);
