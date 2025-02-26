@@ -6,7 +6,7 @@
 #    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/19 19:01:24 by peda-cos          #+#    #+#              #
-#    Updated: 2025/02/26 16:04:54 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/02/26 17:53:05 by peda-cos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline
-SRCS = main.c utils.c tokenizer.c parser.c find_executable.c executor.c builtins.c
+SRCS = main.c tokenizer.c parser.c executor.c builtins.c signal_handler.c utils.c
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -29,7 +29,7 @@ $(LIBFT):
 	@make -C $(LIBFT_DIR) all
 	@echo "Libft build complete."
 
-%.o: %.c minishell.h $(LIBFT_DIR)/libft.h
+%.o: %.c minishell.h
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiling $<..."
 
