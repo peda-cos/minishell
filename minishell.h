@@ -14,21 +14,42 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
-# include <curses.h>
-# include <dirent.h>
 # include <fcntl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
-# include <sys/ioctl.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <term.h>
-# include <termios.h>
 # include <unistd.h>
+
+typedef enum e_token_type
+{
+	WORD,
+	PIPE,
+	REDIRECT_IN,
+	REDIRECT_OUT,
+	HEREDOC,
+	APPEND,
+	END
+}						t_token_type;
+
+typedef struct s_token
+{
+	char				*value;
+	t_token_type		type;
+	struct s_token		*next;
+}						t_token;
+
+typedef struct s_command
+{
+	char				**args;
+	int					argc;
+	struct s_command	*next;
+}						t_command;
+
+t_token					*tokenize_input(char *input);
 
 #endif
