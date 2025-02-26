@@ -37,7 +37,7 @@
 
 ### 7. **Builtins**
 - [ ] Implementar os seguintes comandos internos (builtins):
-  - [ ] **echo** com a opção `-n`.
+  - [x] **echo** com a opção `-n`.
   - [ ] **cd** com caminho relativo ou absoluto.
   - [ ] **pwd** sem opções.
   - [ ] **export** sem opções.
