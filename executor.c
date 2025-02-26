@@ -6,75 +6,183 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 16:18:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:01:03 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_builtin(char *cmd)
+static void	free_split(char **split)
 {
-	if (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") ||
-		!ft_strcmp(cmd, "pwd") || !ft_strcmp(cmd, "export") ||
-		!ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "env") ||
-		!ft_strcmp(cmd, "exit"))
-		return (1);
-	return (0);
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
-static int	exec_builtin(t_command *cmd, char **env)
+static char	*join_path(char *dir, char *cmd)
 {
-	if (!ft_strcmp(cmd->args[0], "echo"))
-		return (builtin_echo(cmd->args));
-	else if (!ft_strcmp(cmd->args[0], "cd"))
-		return (builtin_cd(cmd->args));
-	else if (!ft_strcmp(cmd->args[0], "pwd"))
-		return (builtin_pwd());
-	else if (!ft_strcmp(cmd->args[0], "export"))
-		return (builtin_export(cmd->args, &env));
-	else if (!ft_strcmp(cmd->args[0], "unset"))
-		return (builtin_unset(cmd->args, &env));
-	else if (!ft_strcmp(cmd->args[0], "env"))
-		return (builtin_env(env));
-	else if (!ft_strcmp(cmd->args[0], "exit"))
-		return (builtin_exit(cmd->args));
-	return (0);
+	char	*temp;
+	char	*full;
+
+	temp = ft_strjoin(dir, "/");
+	if (!temp)
+		return (NULL);
+	full = ft_strjoin(temp, cmd);
+	free(temp);
+	return (full);
 }
 
-void	execute_command(t_command *cmd, char **env)
+char	*find_executable(char *cmd, char **env)
 {
-	pid_t	pid;
-	int		status;
-	char	*cmd_path;
+	char	*path_env;
+	char	**paths;
+	char	*full_path;
+	int		i;
 
-	if (!cmd || !cmd->args || !cmd->args[0])
-		return ;
-	if (is_builtin(cmd->args[0]))
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
-		exec_builtin(cmd, env);
-		return ;
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
 	}
-	cmd_path = find_executable(cmd->args[0], env);
-	if (!cmd_path)
+	i = 0;
+	while (env[i])
 	{
-		fprintf(stderr, "minishell: %s: command not found\n", cmd->args[0]);
-		return ;
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		free(cmd_path);
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (execve(cmd_path, cmd->args, env) < 0)
+		if (ft_strncmp(env[i], "PATH=", 5) == 0)
 		{
-			perror("execve");
-			exit(1);
+			path_env = env[i] + 5;
+			paths = ft_split(path_env, ':');
+			if (!paths)
+				return (NULL);
+			i = 0;
+			while (paths[i])
+			{
+				full_path = join_path(paths[i], cmd);
+				if (full_path && access(full_path, X_OK) == 0)
+				{
+					free_split(paths);
+					return (full_path);
+				}
+				if (full_path)
+					free(full_path);
+				i++;
+			}
+			free_split(paths);
+			break ;
 		}
+		i++;
 	}
-	waitpid(pid, &status, 0);
-	free(cmd_path);
+	return (NULL);
+}
+
+void	execute_command(t_command *cmd, char **env, int *last_exit)
+{
+	t_command	*cur;
+	int			pipefd[2];
+	pid_t		pid;
+	int			status;
+	int			in_fd;
+	int			fd;
+				int fd;
+	char		*cmd_path;
+
+	cur = cmd;
+	in_fd = 0;
+	while (cur)
+	{
+		if (cur->next)
+		{
+			if (pipe(pipefd) < 0)
+			{
+				perror("pipe");
+				return ;
+			}
+		}
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork");
+			return ;
+		}
+		if (pid == 0)
+		{
+			if (cur->input_file)
+			{
+				fd = open(cur->input_file, O_RDONLY);
+				if (fd < 0)
+				{
+					perror(cur->input_file);
+					exit(1);
+				}
+				dup2(fd, STDIN_FILENO);
+				close(fd);
+			}
+			if (cur->output_file)
+			{
+				if (cur->append)
+					fd = open(cur->output_file, O_WRONLY | O_CREAT | O_APPEND,
+							0644);
+				else
+					fd = open(cur->output_file, O_WRONLY | O_CREAT | O_TRUNC,
+							0644);
+				if (fd < 0)
+				{
+					perror(cur->output_file);
+					exit(1);
+				}
+				dup2(fd, STDOUT_FILENO);
+				close(fd);
+			}
+			if (cur->next)
+			{
+				dup2(pipefd[1], STDOUT_FILENO);
+				close(pipefd[0]);
+				close(pipefd[1]);
+			}
+			if (cur->argc > 0)
+			{
+				if (!ft_strcmp(cur->args[0], "echo"))
+					exit(builtin_echo(cur->args, last_exit));
+				else if (!ft_strcmp(cur->args[0], "cd"))
+					exit(builtin_cd(cur->args));
+				else if (!ft_strcmp(cur->args[0], "pwd"))
+					exit(builtin_pwd());
+				else if (!ft_strcmp(cur->args[0], "export"))
+					exit(builtin_export(cur->args, &env));
+				else if (!ft_strcmp(cur->args[0], "unset"))
+					exit(builtin_unset(cur->args, &env));
+				else if (!ft_strcmp(cur->args[0], "env"))
+					exit(builtin_env(env));
+				else if (!ft_strcmp(cur->args[0], "exit"))
+					exit(builtin_exit(cur->args));
+				cmd_path = find_executable(cur->args[0], env);
+				if (!cmd_path)
+				{
+					fprintf(stderr, "minishell: %s: command not found\n",
+						cur->args[0]);
+					exit(127);
+				}
+				execve(cmd_path, cur->args, env);
+				perror("execve");
+				free(cmd_path);
+				exit(1);
+			}
+		}
+		if (cur->next)
+		{
+			close(pipefd[1]);
+			in_fd = pipefd[0];
+			dup2(in_fd, STDIN_FILENO);
+		}
+		waitpid(pid, &status, 0);
+		*last_exit = WEXITSTATUS(status);
+		cur = cur->next;
+	}
+	dup2(0, STDIN_FILENO);
 }
