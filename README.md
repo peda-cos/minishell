@@ -17,16 +17,16 @@
 - [x] Implementar o redirecionamento `<` para redirecionamento de entrada.
 - [x] Implementar o redirecionamento `>` para redirecionamento de saída.
 - [ ] Implementar o redirecionamento `<<` que:
-  - [ ] Recebe um delimitador.
-  - [ ] Lê a entrada até encontrar uma linha contendo o delimitador.
+  - [x] Recebe um delimitador.
+  - [x] Lê a entrada até encontrar uma linha contendo o delimitador.
   - [ ] Não atualiza o histórico de comandos.
 - [x] Implementar o redirecionamento `>>` para redirecionamento de saída em modo de anexação (append).
 
 ### 4. **Pipes**
-- [ ] Implementar o uso de pipes `|` para conectar a saída de um comando ao input do próximo comando.
+- [x] Implementar o uso de pipes `|` para conectar a saída de um comando ao input do próximo comando.
 
 ### 5. **Variáveis de ambiente**
-- [ ] Implementar a expansão de variáveis de ambiente, quando o caractere `$` for seguido por uma sequência de caracteres.
+- [x] Implementar a expansão de variáveis de ambiente, quando o caractere `$` for seguido por uma sequência de caracteres.
 - [ ] Implementar a expansão do ` $? ` que deve se expandir para o status de saída do pipeline em primeiro plano mais recentemente executado.
 
 ### 6. **Comportamento de sinais**
@@ -38,9 +38,9 @@
 ### 7. **Builtins**
 - [x] Implementar os seguintes comandos internos (builtins):
   - [x] **echo** com a opção `-n`.
-  - [ ] **cd** com caminho relativo ou absoluto.
+  - [x] **cd** com caminho relativo ou absoluto.
   - [x] **pwd** sem opções.
   - [x] **export** sem opções.
   - [x] **unset** sem opções.
   - [x] **env** sem opções ou argumentos.
-  - [ ] **exit** sem opções.
+  - [x] **exit** sem opções.
