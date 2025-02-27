@@ -9,18 +9,18 @@
   - [x] Garantir que a variável global não contenha acessos a outras estruturas de dados.
 
 ### 2. **Interpretação de caracteres especiais**
-- [ ] Não interpretar aspas não fechadas ou caracteres especiais não exigidos pelo enunciado, como `\` (barra invertida) ou `;` (ponto e vírgula).
-- [ ] Interpretar corretamente o caractere `'` (aspas simples) para evitar interpretação de metacaracteres dentro da sequência.
-- [ ] Interpretar corretamente o caractere `"` (aspas duplas) para evitar interpretação de metacaracteres, exceto o `$` (sinal de cifrão).
+- [x] Não interpretar aspas não fechadas ou caracteres especiais não exigidos pelo enunciado, como `\` (barra invertida) ou `;` (ponto e vírgula).
+- [x] Interpretar corretamente o caractere `'` (aspas simples) para evitar interpretação de metacaracteres dentro da sequência.
+- [x] Interpretar corretamente o caractere `"` (aspas duplas) para evitar interpretação de metacaracteres, exceto o `$` (sinal de cifrão).
 
 ### 3. **Redirecionamentos**
-- [ ] Implementar o redirecionamento `<` para redirecionamento de entrada.
-- [ ] Implementar o redirecionamento `>` para redirecionamento de saída.
+- [x] Implementar o redirecionamento `<` para redirecionamento de entrada.
+- [x] Implementar o redirecionamento `>` para redirecionamento de saída.
 - [ ] Implementar o redirecionamento `<<` que:
   - [ ] Recebe um delimitador.
   - [ ] Lê a entrada até encontrar uma linha contendo o delimitador.
   - [ ] Não atualiza o histórico de comandos.
-- [ ] Implementar o redirecionamento `>>` para redirecionamento de saída em modo de anexação (append).
+- [x] Implementar o redirecionamento `>>` para redirecionamento de saída em modo de anexação (append).
 
 ### 4. **Pipes**
 - [x] Implementar o uso de pipes `|` para conectar a saída de um comando ao input do próximo comando.
@@ -30,9 +30,9 @@
 - [x] Implementar a expansão do ` $? ` que deve se expandir para o status de saída do pipeline em primeiro plano mais recentemente executado.
 
 ### 6. **Comportamento de sinais**
-- [ ] Implementar o comportamento dos sinais `ctrl-C`, `ctrl-D` e `ctrl-\` conforme o comportamento do bash.
+- [x] Implementar o comportamento dos sinais `ctrl-C`, `ctrl-D` e `ctrl-\` conforme o comportamento do bash.
   - [x] `ctrl-C` deve exibir um novo prompt em uma nova linha.
-  - [ ] `ctrl-D` deve sair do shell.
+  - [x] `ctrl-D` deve sair do shell.
   - [x] `ctrl-\` não deve fazer nada.
 
 ### 7. **Builtins**
