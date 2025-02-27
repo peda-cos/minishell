@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:41:53 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:44:07 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,39 @@ int	builtin_echo(char **args, int *last_exit)
 {
 	int	i;
 	int	newline;
+	int	j;
+	int	valid;
 
+	(void)last_exit;
 	i = 1;
 	newline = 1;
-	(void)last_exit;
-	if (args[1] && !ft_strcmp(args[1], "-n"))
+	while (args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
+		j = 1;
+		valid = 1;
+		while (args[i][j])
+		{
+			if (args[i][j] != 'n')
+			{
+				valid = 0;
+				break ;
+			}
+			j++;
+		}
+		if (!valid)
+			break ;
 		newline = 0;
 		i++;
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
-			printf(" ");
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		ft_putendl_fd("", STDOUT_FILENO);
 	return (0);
 }
 
@@ -213,4 +228,10 @@ int	builtin_exit(char **args)
 		exit_code = ft_atoi(args[1]);
 	exit(exit_code);
 	return (0);
+}
+
+int	is_parent_builtin(char *cmd)
+{
+	return (!ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "exit"));
 }

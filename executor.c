@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:29:53 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:33:51 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,44 @@ static char	*join_path(char *dir, char *cmd)
 	full = ft_strjoin(temp, cmd);
 	free(temp);
 	return (full);
+}
+
+static int	handle_heredoc(char *delim)
+{
+	int		pipefd[2];
+	char	*line;
+	char	*buffer;
+	char	*temp;
+
+	buffer = ft_strdup("");
+	if (pipe(pipefd) < 0)
+	{
+		perror("pipe");
+		free(buffer);
+		return (-1);
+	}
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !ft_strcmp(line, delim))
+		{
+			free(line);
+			break ;
+		}
+		{
+			temp = buffer;
+			buffer = ft_strjoin(buffer, line);
+			free(temp);
+			temp = buffer;
+			buffer = ft_strjoin(buffer, "\n");
+			free(temp);
+		}
+		free(line);
+	}
+	write(pipefd[1], buffer, ft_strlen(buffer));
+	close(pipefd[1]);
+	free(buffer);
+	return (pipefd[0]);
 }
 
 char	*find_executable(char *cmd, char **env)
@@ -90,6 +128,7 @@ void	execute_command(t_command *cmd, char **env, int *last_exit)
 	int			in_fd;
 	int			fd;
 	char		*cmd_path;
+	int			hd_fd;
 
 	cur = cmd;
 	in_fd = 0;
@@ -111,6 +150,14 @@ void	execute_command(t_command *cmd, char **env, int *last_exit)
 		}
 		if (pid == 0)
 		{
+			if (cur->heredoc_delim)
+			{
+				hd_fd = handle_heredoc(cur->heredoc_delim);
+				if (hd_fd < 0)
+					exit(1);
+				dup2(hd_fd, STDIN_FILENO);
+				close(hd_fd);
+			}
 			if (cur->input_file)
 			{
 				fd = open(cur->input_file, O_RDONLY);

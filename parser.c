@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:29:00 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:42:40 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static t_command	*new_command(void)
 	return (cmd);
 }
 
-t_command	*parse_tokens(t_token *tokens)
+t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 {
 	t_command	*head;
 	t_command	*current;
@@ -64,8 +64,13 @@ t_command	*parse_tokens(t_token *tokens)
 		if (tokens->type == REDIRECT_IN)
 		{
 			tokens = tokens->next;
-			if (tokens && tokens->type == WORD)
-				current->input_file = ft_strdup(tokens->value);
+			if (!tokens || tokens->type != WORD)
+			{
+				fprintf(stderr,
+					"minishell: syntax error near unexpected token\n");
+				return (NULL);
+			}
+			current->input_file = ft_strdup(tokens->value);
 		}
 		else if (tokens->type == REDIRECT_OUT)
 		{
@@ -108,7 +113,8 @@ t_command	*parse_tokens(t_token *tokens)
 			i = 0;
 			while (i < count && tokens && tokens->type == WORD)
 			{
-				current->args[i] = expand_variables(tokens->value, NULL, 0);
+				current->args[i] = expand_variables(tokens->value, env,
+						last_exit);
 				i++;
 				tokens = tokens->next;
 			}

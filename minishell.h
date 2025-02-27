@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:28:38 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 13:42:28 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,15 @@ void					free_env(char **env);
 t_token					*tokenize_input(char *input);
 
 /* Parser: builds a linked list of commands from tokens */
-t_command				*parse_tokens(t_token *tokens);
+t_command				*parse_tokens(t_token *tokens, char **env,
+							int last_exit);
 
 /* Executor: executes a command chain (with redirections/pipes) */
 void					execute_command(t_command *cmd, char **env,
 							int *last_exit);
 
 /* Builtin commands */
+int						is_parent_builtin(char *cmd);
 int						builtin_echo(char **args, int *last_exit);
 int						builtin_cd(char **args);
 int						builtin_pwd(void);
