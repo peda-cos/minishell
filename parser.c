@@ -6,25 +6,11 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 17:58:36 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:29:00 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	count_tokens(t_token *tokens)
-{
-	int	count;
-
-	count = 0;
-	while (tokens)
-	{
-		if (tokens->type == WORD)
-			count++;
-		tokens = tokens->next;
-	}
-	return (count);
-}
 
 static t_command	*new_command(void)
 {

@@ -6,11 +6,33 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 18:03:05 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:41:53 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**copy_env(char **envp)
+{
+	char	**env;
+	int		i;
+	int		count;
+
+	count = 0;
+	while (envp[count])
+		count++;
+	env = malloc(sizeof(char *) * (count + 1));
+	if (!env)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
 
 int	builtin_echo(char **args, int *last_exit)
 {

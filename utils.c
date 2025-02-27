@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 18:05:10 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:34:24 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,13 @@ char	*expand_variables(char *str, char **env, int last_exit)
 	char	*var;
 	char	*value;
 	int		i;
-	int		j;
 	int		k;
 
 	i = 0;
-	j = 0;
 	if (!str || str[0] != '$')
 		return (ft_strdup(str));
 	if (ft_strcmp(str, "$?") == 0)
 		return (ft_itoa(last_exit));
-	/* Skip the '$' */
 	i = 1;
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;

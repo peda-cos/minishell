@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 18:01:03 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/02/27 08:29:53 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	execute_command(t_command *cmd, char **env, int *last_exit)
 	int			status;
 	int			in_fd;
 	int			fd;
-				int fd;
 	char		*cmd_path;
 
 	cur = cmd;
