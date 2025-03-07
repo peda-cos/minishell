@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 00:49:55 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/26 16:41:57 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/08 19:29:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,78 +40,80 @@ static void	add_token(t_token **tokens, t_token *new)
 	tmp->next = new;
 }
 
+static void	add_token_type(char *input, int *index, t_token **tokens)
+{
+	if (input[*index] == PIPE_CHR)
+		add_token(tokens, new_token(ft_strdup(PIPE_STR), PIPE));
+	else if (input[*index] == REDIRECT_IN_CHR)
+	{
+		if (input[*index + 1] == REDIRECT_IN_CHR)
+		{
+			add_token(tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
+			(*index)++;
+		}
+		else
+			add_token(tokens,
+				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+	}
+	else if (input[*index] == REDIRECT_OUT_CHR)
+	{
+		if (input[*index + 1] == REDIRECT_OUT_CHR)
+		{
+			add_token(tokens, new_token(ft_strdup(APPEND_STR), APPEND));
+			(*index)++;
+		}
+		else
+			add_token(tokens,
+				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+	}
+	(*index)++;
+}
+
+static char	*add_token_word(
+	t_token **tokens, char *str, int *index)
+{
+	int		start;
+	char	*word;
+	char	*skippers;
+
+	if (str[*index] == SINGLE_QUOTE_CHR)
+		skippers = SINGLE_QUOTE_STR;
+	else if (str[*index] == DOUBLE_QUOTE_CHR)
+		skippers = DOUBLE_QUOTE_STR;
+	else
+		skippers = SPACES_AND_TOKENS_TYPE;
+	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
+		(*index)++;
+	start = *index;
+	while (str[*index] && !ft_strchr(skippers, str[*index]))
+		(*index)++;
+	word = ft_substr(str, start, *index - start);
+	add_token(tokens, new_token(word, WORD));
+	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
+		(*index)++;
+	return (word);
+}
+
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
 	int		i;
-	int		start;
-	char	*word;
 
 	tokens = NULL;
 	i = 0;
 	while (input[i])
 	{
-		while (input[i] && (input[i] == ' ' || input[i] == '\t'))
-			i++;
-		if (!input[i])
-			break ;
-		if (input[i] == '|' || input[i] == '<' || input[i] == '>')
-		{
-			if (input[i] == '|')
-				add_token(&tokens, new_token(ft_strdup("|"), PIPE));
-			else if (input[i] == '<')
-			{
-				if (input[i + 1] == '<')
-				{
-					add_token(&tokens, new_token(ft_strdup("<<"), HEREDOC));
-					i++;
-				}
-				else
-					add_token(&tokens, new_token(ft_strdup("<"), REDIRECT_IN));
-			}
-			else if (input[i] == '>')
-			{
-				if (input[i + 1] == '>')
-				{
-					add_token(&tokens, new_token(ft_strdup(">>"), APPEND));
-					i++;
-				}
-				else
-					add_token(&tokens, new_token(ft_strdup(">"), REDIRECT_OUT));
-			}
-			i++;
-		}
-		else if (input[i] == '\'')
+		if (input[i] && ft_isspace(input[i]))
 		{
 			i++;
-			start = i;
-			while (input[i] && input[i] != '\'')
-				i++;
-			word = ft_substr(input, start, i - start);
-			add_token(&tokens, new_token(word, WORD));
-			if (input[i] == '\'')
-				i++;
+			continue ;
 		}
-		else if (input[i] == '\"')
-		{
-			i++;
-			start = i;
-			while (input[i] && input[i] != '\"')
-				i++;
-			word = ft_substr(input, start, i - start);
-			add_token(&tokens, new_token(word, WORD));
-			if (input[i] == '\"')
-				i++;
-		}
+		if (input[i] == PIPE_CHR
+			|| input[i] == REDIRECT_IN_CHR
+			|| input[i] == REDIRECT_OUT_CHR)
+			add_token_type(input, &i, &tokens);
 		else
-		{
-			start = i;
-			while (input[i] && input[i] != ' ' && input[i] != '\t'
-				&& input[i] != '|' && input[i] != '<' && input[i] != '>')
-				i++;
-			word = ft_substr(input, start, i - start);
-			add_token(&tokens, new_token(word, WORD));
-		}
+			add_token_word(&tokens, input, &i);
 	}
 	return (tokens);
 }
