@@ -38,3 +38,4 @@
 	- Pipe com sleep com comportamento diferente da execução original
 - `cd` com mais de um argumento com comportamento diferente do shell original (o original retorna mensagem de error)
 - `echo` com caracteres especiais diferente do shell original
+- `expand variable`	com comportamento diferente do shell original
