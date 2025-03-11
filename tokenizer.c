@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 00:49:55 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/08 19:29:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/10 23:09:12 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,80 +40,110 @@ static void	add_token(t_token **tokens, t_token *new)
 	tmp->next = new;
 }
 
-static void	add_token_type(char *input, int *index, t_token **tokens)
+// static void	add_token_type(char *input, int *index, t_token **tokens)
+// {
+// 	if (input[*index] == PIPE_CHR)
+// 		add_token(tokens, new_token(ft_strdup(PIPE_STR), PIPE));
+// 	else if (input[*index] == REDIRECT_IN_CHR)
+// 	{
+// 		if (input[*index + 1] == REDIRECT_IN_CHR)
+// 		{
+// 			add_token(tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
+// 			(*index)++;
+// 		}
+// 		else
+// 			add_token(tokens,
+// 				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+// 	}
+// 	else if (input[*index] == REDIRECT_OUT_CHR)
+// 	{
+// 		if (input[*index + 1] == REDIRECT_OUT_CHR)
+// 		{
+// 			add_token(tokens, new_token(ft_strdup(APPEND_STR), APPEND));
+// 			(*index)++;
+// 		}
+// 		else
+// 			add_token(tokens,
+// 				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+// 	}
+// 	(*index)++;
+// }
+
+static char	*formats_token_word(char *str)
 {
-	if (input[*index] == PIPE_CHR)
-		add_token(tokens, new_token(ft_strdup(PIPE_STR), PIPE));
-	else if (input[*index] == REDIRECT_IN_CHR)
+	int		i;
+	int		len;
+	char	*formatted_str;
+
+	len = ft_strlen(str);
+	formatted_str = (char *)malloc(sizeof(char) + (len + 1));
+	if (!formatted_str)
+		return (NULL);
+	i = 0;
+	if (str[0] == SINGLE_QUOTE_CHR || str[0] == DOUBLE_QUOTE_CHR)
 	{
-		if (input[*index + 1] == REDIRECT_IN_CHR)
+		i++;
+		while (str[i] && str[i] != str[0])
 		{
-			add_token(tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
-			(*index)++;
+			formatted_str[i] = str[i];
+			i++;
 		}
-		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+		formatted_str[i] = '\0';
+		return (formatted_str);
 	}
-	else if (input[*index] == REDIRECT_OUT_CHR)
-	{
-		if (input[*index + 1] == REDIRECT_OUT_CHR)
-		{
-			add_token(tokens, new_token(ft_strdup(APPEND_STR), APPEND));
-			(*index)++;
-		}
-		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
-	}
-	(*index)++;
+	return (str);
 }
-
-static char	*add_token_word(
-	t_token **tokens, char *str, int *index)
-{
-	int		start;
-	char	*word;
-	char	*skippers;
-
-	if (str[*index] == SINGLE_QUOTE_CHR)
-		skippers = SINGLE_QUOTE_STR;
-	else if (str[*index] == DOUBLE_QUOTE_CHR)
-		skippers = DOUBLE_QUOTE_STR;
-	else
-		skippers = SPACES_AND_TOKENS_TYPE;
-	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
-		(*index)++;
-	start = *index;
-	while (str[*index] && !ft_strchr(skippers, str[*index]))
-		(*index)++;
-	word = ft_substr(str, start, *index - start);
-	add_token(tokens, new_token(word, WORD));
-	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
-		(*index)++;
-	return (word);
-}
-
+#include <stdio.h>
 t_token	*tokenize_input(char *input)
 {
 	t_token	*tokens;
+	char	*token;
 	int		i;
 
-	tokens = NULL;
+	// tokens = NULL;
+	// i = 0;
+	// while (input[i])
+	// {
+	// 	if (input[i] && ft_isspace(input[i]))
+	// 	{
+	// 		i++;
+	// 		continue ;
+	// 	}
+	// 	if (input[i] == PIPE_CHR
+	// 		|| input[i] == REDIRECT_IN_CHR
+	// 		|| input[i] == REDIRECT_OUT_CHR)
+	// 		add_token_type(input, &i, &tokens);
+	// 	else
+	// 		add_token_word(&tokens, input, &i);
+	// }
+
 	i = 0;
-	while (input[i])
+	tokens = NULL;
+	token = ft_strtok(input, " \t\n");
+	printf("Token STR: %s\n", token);
+
+	while (token != NULL)
 	{
-		if (input[i] && ft_isspace(input[i]))
-		{
-			i++;
-			continue ;
-		}
-		if (input[i] == PIPE_CHR
-			|| input[i] == REDIRECT_IN_CHR
-			|| input[i] == REDIRECT_OUT_CHR)
-			add_token_type(input, &i, &tokens);
+		if (ft_strcmp(token, PIPE_STR) == 0)
+			add_token(&tokens, new_token(ft_strdup(PIPE_STR), PIPE));
+		else if (ft_strcmp(token, REDIRECT_IN_STR) == 0)
+			add_token(&tokens,
+				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+		else if (ft_strcmp(token, REDIRECT_OUT_STR) == 0)
+			add_token(&tokens,
+				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+		else if (ft_strcmp(token, APPEND_STR) == 0)
+			add_token(&tokens, new_token(ft_strdup(APPEND_STR), APPEND));
+		else if (ft_strcmp(token, HEREDOC_STR) == 0)
+			add_token(&tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
 		else
-			add_token_word(&tokens, input, &i);
+			add_token(&tokens, new_token(formats_token_word(token), WORD));
+		token = ft_strtok(NULL, " \t\n");
+	}
+	while (tokens)
+	{
+		printf("Token: %s\n", tokens->value);
+		tokens = tokens->next;
 	}
 	return (tokens);
 }
