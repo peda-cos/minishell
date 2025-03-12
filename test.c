@@ -47,13 +47,46 @@ int main(int argc, char **argv)
 	}
 	str = strdup(argv[1]);
 	delimiter = strdup(argv[2]);
-	token = strtok(str, delimiter);
-	while (token != NULL)
+	token	= ft_strtok(str, delimiter);
+	printf("Token: %s\n", token);
+	int i = strlen(token);
+	int is_quote	= 0;
+	while (token && argv[1][i])
 	{
-		printf("%s\n", token);
-		token = strtok(NULL, delimiter);
+		// printf("I: %d\n", i);
+		if (strchr(" \t\n", argv[1][i]))
+		{
+			i++;
+			continue ;
+		}
+		if (argv[1][i] == '\''	|| argv[1][i] == '\"')
+		{
+			if (!is_quote)
+			{
+				is_quote = 1;
+				delimiter = strdup(argv[1][i]	== '\'' ? "'" : "\"");
+			}
+			else
+			{
+				is_quote = 0;
+				delimiter = strdup(argv[2]);
+				i++;
+				continue;
+			}
+			i++;
+		}
+		else 
+			delimiter = strdup(argv[2]);
+		// printf("Current char: %c\n", argv[1][i]);
+		token	= ft_strtok(NULL, delimiter);
+		if (token == NULL)
+			break ;
+		printf("Token: %s\n", token);
+		i += strlen(token);
 	}
 	free(str);
 	free(delimiter);
 	return 0;
 }
+
+// set args "echo 123 \"'    '\" | echo '_  joao   _'" " " | cat -e
