@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 00:49:55 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/08 19:29:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/15 21:28:21 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,73 @@ static void	add_token_type(char *input, int *index, t_token **tokens)
 	(*index)++;
 }
 
-static char	*add_token_word(
-	t_token **tokens, char *str, int *index)
+static char	count_word_length(char *str, char *delimiters)
+{
+	int		len;
+	bool	in_quotes;
+
+	len = 0;
+	in_quotes = false;
+	if (ft_strcmp(delimiters, SPACES_AND_TOKENS_TYPE) == 0)
+	{
+		while (str[len] && (!ft_strchr(delimiters, str[len]) || in_quotes))
+		{
+			if (str[len] == SINGLE_QUOTE_CHR || str[len] == DOUBLE_QUOTE_CHR)
+				in_quotes = !in_quotes;
+			len++;
+		}
+		return (len);
+	}
+	while (str[len] && !ft_strchr(delimiters, str[len]))
+		len++;
+	return (len);
+}
+
+static char	*remove_quotes(char *str)
+{
+	char	*new;
+	int		i;
+	int		j;
+	bool	in_single_quotes;
+	bool	in_double_quotes;
+
+	if (!str)
+		return (NULL);
+	in_single_quotes = false;
+	in_double_quotes = false;
+	new = malloc(ft_strlen(str));
+	if (!new)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == SINGLE_QUOTE_CHR && !in_double_quotes)
+		{
+			in_single_quotes = !in_single_quotes;
+			i++;
+			continue ;
+		}
+		if (str[i] == DOUBLE_QUOTE_CHR && !in_single_quotes)
+		{
+			in_double_quotes = !in_double_quotes;
+			i++;
+			continue ;
+		}
+		new[j] = str[i];
+		i++;
+		j++;
+	}
+	new[j] = '\0';
+	return (new);
+}
+
+static char	*add_token_word(t_token **tokens, char *str, int *index)
 {
 	int		start;
 	char	*word;
 	char	*skippers;
+	char	*temp;
 
 	if (str[*index] == SINGLE_QUOTE_CHR)
 		skippers = SINGLE_QUOTE_STR;
@@ -85,14 +146,23 @@ static char	*add_token_word(
 	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
 		(*index)++;
 	start = *index;
-	while (str[*index] && !ft_strchr(skippers, str[*index]))
-		(*index)++;
+	*index += count_word_length(str + start, skippers);
 	word = ft_substr(str, start, *index - start);
+	if (ft_strcmp(skippers, SPACES_AND_TOKENS_TYPE) == 0)
+	{
+		temp = word;
+		word = remove_quotes(temp);
+		free(temp);
+	}
 	add_token(tokens, new_token(word, WORD));
 	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
 		(*index)++;
 	return (word);
 }
+
+// Com problemas
+// cenário 1 (está adicionando espaço entre ""'')
+//  -> echo jo"ao"-e-'mar'ia "''"-sem-espaco-'""'
 
 t_token	*tokenize_input(char *input)
 {
