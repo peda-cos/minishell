@@ -68,26 +68,40 @@ static void	add_token_type(char *input, int *index, t_token **tokens)
 	}
 	(*index)++;
 }
-
+// echo "1"-"2"
 static char	count_word_length(char *str, char *delimiters)
 {
 	int		len;
 	bool	in_quotes;
-
 	len = 0;
 	in_quotes = false;
 	if (ft_strcmp(delimiters, SPACES_AND_TOKENS_TYPE) == 0)
 	{
-		while (str[len] && (!ft_strchr(delimiters, str[len]) || in_quotes))
+		while (str[len])
 		{
+			bool is_delimiter = ft_strchr(delimiters, str[len]);
+			if (is_delimiter && !in_quotes)
+			{
+				break ;
+			}
 			if (str[len] == SINGLE_QUOTE_CHR || str[len] == DOUBLE_QUOTE_CHR)
 				in_quotes = !in_quotes;
 			len++;
 		}
 		return (len);
 	}
-	while (str[len] && !ft_strchr(delimiters, str[len]))
+	in_quotes = true;
+	while (str[len])
+	{
+		bool is_delimiter = ft_strchr(delimiters, str[len]);
+		if (is_delimiter && ft_isspace(str[len + 1]) && !in_quotes)
+		{
+			break ;
+		}
+		if (str[len] == SINGLE_QUOTE_CHR || str[len] == DOUBLE_QUOTE_CHR)
+				in_quotes = !in_quotes;
 		len++;
+	}
 	return (len);
 }
 
@@ -129,7 +143,8 @@ static char	*remove_quotes(char *str)
 	new[j] = '\0';
 	return (new);
 }
-
+// echo	"1"-"2"|wc -c
+// cat Makefile|>a.txt grep ".c"
 static char	*add_token_word(t_token **tokens, char *str, int *index)
 {
 	int		start;
@@ -173,7 +188,7 @@ t_token	*tokenize_input(char *input)
 	i = 0;
 	while (input[i])
 	{
-		if (input[i] && ft_isspace(input[i]))
+		if (ft_isspace(input[i]))
 		{
 			i++;
 			continue ;

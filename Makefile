@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/19 19:01:24 by peda-cos          #+#    #+#              #
-#    Updated: 2025/02/27 08:40:11 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/03/18 00:33:45 by jlacerda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -lreadline
 SRCS = main.c tokenizer.c parser.c executor.c builtins.c signal_handler.c utils.c
 OBJS = $(SRCS:.c=.o)
