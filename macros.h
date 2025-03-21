@@ -6,12 +6,15 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/08 18:25:22 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/20 22:48:48 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MACROS_H
 # define MACROS_H
+
+# define TRUE	1
+# define FALSE	0
 
 // Tokenizer Defines
 # define PIPE_CHR	'|'

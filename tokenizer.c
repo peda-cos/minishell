@@ -68,116 +68,147 @@ static void	add_token_type(char *input, int *index, t_token **tokens)
 	}
 	(*index)++;
 }
-// echo "1"-"2"
-static char	count_word_length(char *str, char *delimiters)
+
+static int	ft_is_metachar(char c)
 {
-	int		len;
-	bool	in_quotes;
-	len = 0;
-	in_quotes = false;
-	if (ft_strcmp(delimiters, SPACES_AND_TOKENS_TYPE) == 0)
-	{
-		while (str[len])
-		{
-			bool is_delimiter = ft_strchr(delimiters, str[len]);
-			if (is_delimiter && !in_quotes)
-			{
-				break ;
-			}
-			if (str[len] == SINGLE_QUOTE_CHR || str[len] == DOUBLE_QUOTE_CHR)
-				in_quotes = !in_quotes;
-			len++;
-		}
-		return (len);
-	}
-	in_quotes = true;
-	while (str[len])
-	{
-		bool is_delimiter = ft_strchr(delimiters, str[len]);
-		if (is_delimiter && ft_isspace(str[len + 1]) && !in_quotes)
-		{
-			break ;
-		}
-		if (str[len] == SINGLE_QUOTE_CHR || str[len] == DOUBLE_QUOTE_CHR)
-				in_quotes = !in_quotes;
-		len++;
-	}
-	return (len);
+	return (c == PIPE_CHR || c == REDIRECT_IN_CHR || c == REDIRECT_OUT_CHR);
 }
 
-static char	*remove_quotes(char *str)
+static int ft_is_quote_delimiter(char *str, int *index, char delimiter)
 {
-	char	*new;
-	int		i;
-	int		j;
-	bool	in_single_quotes;
-	bool	in_double_quotes;
+	char	chr;
+	int		is_quote;
 
-	if (!str)
-		return (NULL);
-	in_single_quotes = false;
-	in_double_quotes = false;
-	new = malloc(ft_strlen(str));
-	if (!new)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == SINGLE_QUOTE_CHR && !in_double_quotes)
-		{
-			in_single_quotes = !in_single_quotes;
-			i++;
-			continue ;
-		}
-		if (str[i] == DOUBLE_QUOTE_CHR && !in_single_quotes)
-		{
-			in_double_quotes = !in_double_quotes;
-			i++;
-			continue ;
-		}
-		new[j] = str[i];
-		i++;
-		j++;
-	}
-	new[j] = '\0';
-	return (new);
+	chr = str[*index];
+	is_quote = (chr == delimiter);
+	if (*index == 0 && is_quote)
+		return (TRUE);
+	else if (is_quote && str[*index - 1] != BACKSLASH_CHR)
+		return (TRUE);
+	return (FALSE);
 }
-// echo	"1"-"2"|wc -c
-// cat Makefile|>a.txt grep ".c"
-static char	*add_token_word(t_token **tokens, char *str, int *index)
+
+static void add_word_in_quotes(t_token **tokens, char *str, int *index)
 {
-	int		start;
 	char	*word;
-	char	*skippers;
-	char	*temp;
+	char	delimiter;
+	int		i;
 
-	if (str[*index] == SINGLE_QUOTE_CHR)
-		skippers = SINGLE_QUOTE_STR;
-	else if (str[*index] == DOUBLE_QUOTE_CHR)
-		skippers = DOUBLE_QUOTE_STR;
-	else
-		skippers = SPACES_AND_TOKENS_TYPE;
-	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
-		(*index)++;
-	start = *index;
-	*index += count_word_length(str + start, skippers);
-	word = ft_substr(str, start, *index - start);
-	if (ft_strcmp(skippers, SPACES_AND_TOKENS_TYPE) == 0)
+	i = 0;
+	delimiter = str[*index];
+	(*index)++;
+	word = (char *)malloc(sizeof(char) * (ft_strlen(str + *index) + 1));
+	while (str[*index] && (!ft_is_quote_delimiter(str, index, delimiter)
+		|| (!ft_isspace(str[*index + 1]) && !ft_is_metachar(str[*index + 1]))))
 	{
-		temp = word;
-		word = remove_quotes(temp);
-		free(temp);
+		if (str[*index] != delimiter)
+		{
+			word[i] = str[*index];
+			i++;
+		}
+		(*index)++;
+	}
+	word[i] = '\0';
+	if (i == 0)
+		return (free(word));
+	if (str[*index] == delimiter)
+		(*index)++;
+	add_token(tokens, new_token(word, WORD));
+}
+
+
+static void add_word_without_quotes(t_token **tokens, char *str, int *index)
+{
+	char	*word;
+	int		i;
+
+	i = 0;
+	word = (char *)malloc(sizeof(char) * (ft_strlen(str + *index) + 1));
+	while (str[*index] && !ft_isspace(str[*index])
+		&& !ft_is_metachar(str[*index]))
+	{
+		if (str[*index] == BACKSLASH_CHR && str[*index + 1] == BACKSLASH_CHR)
+		{
+			word[i] = str[*index + 1];
+			i++;
+			(*index) += 2;
+			continue ;
+		}
+		word[i] = str[*index];
+		i++;
+		(*index)++;
+	}
+	if (i == 0)
+		return (free(word));
+	word[i] = '\0';
+	add_token(tokens, new_token(word, WORD));
+}
+
+static void	add_word_with_quotes(t_token **tokens, char *str, int *index)
+{
+	char	*word;
+	int		word_index;
+	char	delimiter;
+
+	delimiter = 0;
+	word_index = 0;
+	word = (char *)malloc(sizeof(char) * (ft_strlen(str + *index) + 1));
+	while (str[*index]
+		&& !ft_isspace(str[*index]) && !ft_is_metachar(str[*index]))
+	{
+		if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
+		{
+			delimiter = str[*index];
+			(*index)++;
+			while (str[*index] && !ft_is_quote_delimiter(str, index, delimiter))
+			{
+				if (str[*index] != BACKSLASH_CHR)
+				{
+					word[word_index] = str[*index];
+					word_index++;
+				}
+				(*index)++;
+			}
+			if (str[*index] == delimiter)
+				(*index)++;
+			continue ;
+		}
+		word[word_index] = str[*index];
+		word_index++;
+		(*index)++;
+	}
+	word[word_index] = '\0';
+	if (word_index == 0)
+	{
+		free(word);
+		return ;
 	}
 	add_token(tokens, new_token(word, WORD));
-	if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
-		(*index)++;
-	return (word);
 }
+static void	add_token_word(t_token **tokens, char *str, int *index)
+{
+	int	has_quote;
+	int	i;
 
-// Com problemas
-// cenário 1 (está adicionando espaço entre ""'')
-//  -> echo jo"ao"-e-'mar'ia "''"-sem-espaco-'""'
+	i = *index;
+	has_quote = FALSE;
+	if (str[i] == SINGLE_QUOTE_CHR || str[i] == DOUBLE_QUOTE_CHR)
+		add_word_in_quotes(tokens, str, index);
+	else
+	{
+		i = *index;
+		while (str[i] && !ft_isspace(str[i]) && !has_quote)
+		{
+			has_quote = str[i] == SINGLE_QUOTE_CHR
+				|| str[i] == DOUBLE_QUOTE_CHR;
+			i++;
+		}
+		if (has_quote)
+			add_word_with_quotes(tokens, str, index);
+		else
+			add_word_without_quotes(tokens, str, index);
+	}
+}
 
 t_token	*tokenize_input(char *input)
 {

@@ -23,7 +23,6 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include "macros.h"
-# include "stdbool.h"
 
 /* Token types */
 typedef enum e_token_type

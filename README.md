@@ -10,8 +10,8 @@
 
 ### 2. **Interpretação de caracteres especiais**
 - [ ] Não interpretar aspas não fechadas ou caracteres especiais não exigidos pelo enunciado, como `\` (barra invertida) ou `;` (ponto e vírgula).
-- [ ] Interpretar corretamente o caractere `'` (aspas simples) para evitar interpretação de metacaracteres dentro da sequência.
-- [ ] Interpretar corretamente o caractere `"` (aspas duplas) para evitar interpretação de metacaracteres, exceto o `$` (sinal de cifrão).
+- [x] Interpretar corretamente o caractere `'` (aspas simples) para evitar interpretação de metacaracteres dentro da sequência.
+- [x] Interpretar corretamente o caractere `"` (aspas duplas) para evitar interpretação de metacaracteres, exceto o `$` (sinal de cifrão).
 
 ### 3. **Redirecionamentos**
 - [x] Implementar o redirecionamento `<` para redirecionamento de entrada.
