@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 13:42:28 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/15 17:48:13 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,37 +22,9 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "macros.h"
+#	include "structs.h"
 
-/* Token types */
-typedef enum e_token_type
-{
-	WORD,
-	PIPE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	HEREDOC,
-	APPEND
-}						t_token_type;
-
-/* Token linked list */
-typedef struct s_token
-{
-	char				*value;
-	t_token_type		type;
-	struct s_token		*next;
-}						t_token;
-
-/* Command structure: a command is one segment (separated by pipes) */
-typedef struct s_command
-{
-	char				**args;
-	int					argc;
-	char				*input_file;
-	char				*output_file;
-	int					append;
-	char				*heredoc_delim;
-	struct s_command	*next;
-}						t_command;
 
 /* Environment management (passed locally) */
 char					**copy_env(char **envp);
@@ -88,5 +60,20 @@ void					free_commands(t_command *cmd);
 
 /* Utility for variable expansion */
 char					*expand_variables(char *str, char **env, int last_exit);
+
+
+
+/* Tokenizer */
+// Index
+t_token	*tokenize_input(char *input);
+// Utils
+int						is_metachar(char c);
+void					add_token(t_token **tokens, t_token *new);
+t_token		*new_token(char *value, t_token_type type);
+int						is_quote_delimiter(char *str, int *index, char delimiter);
+// Word
+void	add_word_in_quotes(t_token **tokens, char *str, int *index);
+void	add_word_with_quotes(t_token **tokens, char *str, int *index);
+void	add_word_without_quotes(t_token **tokens, char *str, int *index);
 
 #endif
