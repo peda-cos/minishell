@@ -14,7 +14,8 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -lreadline
-SRCS = main.c tokenizer.c parser.c executor.c builtins.c signal_handler.c utils.c
+SRCS = main.c parser.c executor.c builtins.c signal_handler.c utils.c \
+	tokenizer/index.c tokenizer/utils.c tokenizer/word.c
 OBJS = $(SRCS:.c=.o)
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
