@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 15:47:40 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:02:31 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,34 +53,6 @@ void	add_word_with_quotes(t_token **tokens, char *str, int *index)
 	word[word_index] = '\0';
 	if (word_index == 0)
 		return (free(word));
-	add_token(tokens, new_token(word, WORD));
-}
-
-void	add_word_in_quotes(t_token **tokens, char *str, int *index)
-{
-	int		i;
-	char	*word;
-	char	next_char;
-	char	quote_delimiter;
-
-	i = 0;
-	quote_delimiter = str[*index];
-	(*index)++;
-	word = (char *)malloc(sizeof(char) * (ft_strlen(str + *index) + 1));
-	while (str[*index] && (
-			!is_quote_delimiter(str, index, quote_delimiter)
-			|| (!ft_isspace(next_char) || !is_metachar(next_char))))
-	{
-		if (str[*index] != quote_delimiter)
-			word[i++] = str[*index];
-		(*index)++;
-		next_char = str[*index + 1];
-	}
-	word[i] = '\0';
-	if (i == 0)
-		return (free(word));
-	if (str[*index] == quote_delimiter)
-		(*index)++;
 	add_token(tokens, new_token(word, WORD));
 }
 

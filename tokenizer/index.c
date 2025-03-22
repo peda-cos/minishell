@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 15:49:30 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:02:12 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,17 @@ static void	add_token_word(char *str, int *index, t_token **tokens)
 
 	i = *index;
 	has_quote = FALSE;
-	if (str[i] == SINGLE_QUOTE_CHR || str[i] == DOUBLE_QUOTE_CHR)
-		add_word_in_quotes(tokens, str, index);
-	else
+	while (str[i] && !ft_isspace(str[i]) && !has_quote)
 	{
-		i = *index;
-		while (str[i] && !ft_isspace(str[i]) && !has_quote)
-		{
-			is_single_quote = str[i] == SINGLE_QUOTE_CHR;
-			is_double_quote = str[i] == DOUBLE_QUOTE_CHR;
-			has_quote = (is_single_quote || is_double_quote);
-			i++;
-		}
-		if (has_quote)
-			add_word_with_quotes(tokens, str, index);
-		else
-			add_word_without_quotes(tokens, str, index);
+		is_single_quote = str[i] == SINGLE_QUOTE_CHR;
+		is_double_quote = str[i] == DOUBLE_QUOTE_CHR;
+		has_quote = (is_single_quote || is_double_quote);
+		i++;
 	}
+	if (has_quote)
+		add_word_with_quotes(tokens, str, index);
+	else
+		add_word_without_quotes(tokens, str, index);
 }
 
 t_token	*tokenize_input(char *input)
