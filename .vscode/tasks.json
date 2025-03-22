@@ -1,26 +1,28 @@
 {
- "version": "2.0.0",
- "tasks": [
-     {
-         "label": "Build Minishell",
-         "type": "shell",
-         "command": "make",
-         "group": {
-             "kind": "build",
-             "isDefault": true
-         },
-         "problemMatcher": ["$gcc"],
-         "detail": "Compila o projeto Minishell usando o Makefile."
-     },
-     {
-         "label": "Clean Minishell",
-         "type": "shell",
-         "command": "make clean",
-         "group": {
-             "kind": "build",
-             "isDefault": false
-         },
-         "problemMatcher": []
-     }
- ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Minishell",
+			"type": "shell",
+			"command": "make",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"detail": "Compila o projeto Minishell usando o Makefile."
+		},
+		{
+			"label": "Clean Minishell",
+			"type": "shell",
+			"command": "make clean",
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"problemMatcher": []
+		}
+	]
 }

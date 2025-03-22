@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 15:50:50 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/22 16:12:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ typedef struct s_command
 	char				*input_file;
 	char				*output_file;
 	char				*heredoc_delim;
-}						t_command;
+}	t_command;
 
 #endif
