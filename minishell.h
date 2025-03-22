@@ -23,8 +23,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include "macros.h"
-#	include "structs.h"
-
+# include "structs.h"
 
 /* Environment management (passed locally) */
 char					**copy_env(char **envp);
@@ -61,19 +60,14 @@ void					free_commands(t_command *cmd);
 /* Utility for variable expansion */
 char					*expand_variables(char *str, char **env, int last_exit);
 
-
-
-/* Tokenizer */
-// Index
-t_token	*tokenize_input(char *input);
-// Utils
+/* Tokenizer functions */
 int						is_metachar(char c);
+t_token					*tokenize_input(char *input);
 void					add_token(t_token **tokens, t_token *new);
-t_token		*new_token(char *value, t_token_type type);
+t_token					*new_token(char *value, t_token_type type);
 int						is_quote_delimiter(char *str, int *index, char delimiter);
-// Word
-void	add_word_in_quotes(t_token **tokens, char *str, int *index);
-void	add_word_with_quotes(t_token **tokens, char *str, int *index);
-void	add_word_without_quotes(t_token **tokens, char *str, int *index);
+void					add_word_in_quotes(t_token **tokens, char *str, int *index);
+void					add_word_with_quotes(t_token **tokens, char *str, int *index);
+void					add_word_without_quotes(t_token **tokens, char *str, int *index);
 
 #endif
