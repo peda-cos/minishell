@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/22 16:13:24 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/22 20:25:59 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 // Tokenizer Defines
 # define PIPE_CHR	'|'
 # define BACKSLASH_CHR	'\\'
+# define DOT_AND_COMA_CHR	';'
 # define REDIRECT_IN_CHR	'<'
 # define REDIRECT_OUT_CHR	'>'
 # define SINGLE_QUOTE_CHR	'\''

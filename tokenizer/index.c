@@ -6,11 +6,58 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 20:02:12 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/22 22:05:24 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	process_quoted_word(
+	char *str, char *word, int *index, char delimiter)
+{
+	int	word_index;
+
+	word_index = 0;
+	(*index)++;
+	while (str[*index] && !is_quote_delimiter(str, index, delimiter))
+	{
+		if (str[*index] != BACKSLASH_CHR)
+			word[word_index++] = str[*index];
+		(*index)++;
+	}
+	if (str[*index] == delimiter)
+		(*index)++;
+	return (word_index);
+}
+
+void	add_token_word(char *str, int *index, t_token **tokens)
+{
+	char	*word;
+	int		word_index;
+	char	delimiter;
+
+	word_index = 0;
+	word = (char *)malloc(sizeof(char) * (ft_strlen(str + *index) + 1));
+	while (str[*index] && !ft_isspace(str[*index]) && !is_metachar(str[*index]))
+	{
+		if (str[*index] == DOT_AND_COMA_CHR)
+			break ;
+		if (str[*index] == SINGLE_QUOTE_CHR || str[*index] == DOUBLE_QUOTE_CHR)
+		{
+			delimiter = str[*index];
+			word_index += process_quoted_word(
+					str, word + word_index, index, delimiter);
+			continue ;
+		}
+		if (str[*index] != BACKSLASH_CHR)
+			word[word_index++] = str[*index];
+		(*index)++;
+	}
+	word[word_index] = '\0';
+	if (word_index == 0)
+		return (free(word));
+	add_token(tokens, new_token(word, WORD));
+}
 
 static void	add_token_meta(char *input, int *index, t_token **tokens)
 {
@@ -41,28 +88,6 @@ static void	add_token_meta(char *input, int *index, t_token **tokens)
 	(*index)++;
 }
 
-static void	add_token_word(char *str, int *index, t_token **tokens)
-{
-	int	i;
-	int	has_quote;
-	int	is_single_quote;
-	int	is_double_quote;
-
-	i = *index;
-	has_quote = FALSE;
-	while (str[i] && !ft_isspace(str[i]) && !has_quote)
-	{
-		is_single_quote = str[i] == SINGLE_QUOTE_CHR;
-		is_double_quote = str[i] == DOUBLE_QUOTE_CHR;
-		has_quote = (is_single_quote || is_double_quote);
-		i++;
-	}
-	if (has_quote)
-		add_word_with_quotes(tokens, str, index);
-	else
-		add_word_without_quotes(tokens, str, index);
-}
-
 t_token	*tokenize_input(char *input)
 {
 	int		index;
@@ -73,6 +98,8 @@ t_token	*tokenize_input(char *input)
 	tokens = NULL;
 	while (input[index])
 	{
+		if (input[index] == DOT_AND_COMA_CHR)
+			break ;
 		if (ft_isspace(input[index]))
 		{
 			index++;
