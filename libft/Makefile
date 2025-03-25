@@ -3,14 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
+#    By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/04 13:27:12 by peda-cos          #+#    #+#              #
-#    Updated: 2025/02/27 08:33:43 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/03/22 18:59:08 by jlacerda         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
+
+OBJS_DIR = ./objects
 
 SRCS = \
 	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
@@ -24,7 +26,7 @@ SRCS = \
 	ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 	ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -34,11 +36,12 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	@ar rcs $@ $^
 
-%.o: %.c libft.h
+$(OBJS_DIR)/%.o: %.c libft.h 
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@rm -f $(OBJS)
+	@rm -rf $(OBJS_DIR)
 
 fclean: clean
 	@rm -f $(NAME)
