@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+         #
+#    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/19 19:01:24 by peda-cos          #+#    #+#              #
-#    Updated: 2025/03/18 00:33:45 by jlacerda         ###   ########.fr        #
+#    Updated: 2025/03/25 08:29:15 by peda-cos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,9 @@ INCS_DIR = ./includes
 PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
 HANDLER_SRCS = sources/handler/main.c
 BUILTIN_SRCS = sources/builtin/main.c
-EXECUTOR_SRCS = sources/executor/main.c
+EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
+				sources/executor/heredoc.c sources/executor/redirection.c \
+				sources/executor/command_utils.c sources/executor/process.c
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c 
 
 SRCS = \
