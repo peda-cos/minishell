@@ -19,7 +19,9 @@ INCS_DIR = ./includes
 
 PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
 HANDLER_SRCS = sources/handler/main.c
-BUILTIN_SRCS = sources/builtin/main.c
+BUILTIN_SRCS = sources/builtin/main.c sources/builtin/cd_pwd.c \
+				sources/builtin/echo.c sources/builtin/exit.c \
+				sources/builtin/export.c sources/builtin/unset.c
 EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 				sources/executor/heredoc.c sources/executor/redirection.c \
 				sources/executor/command_utils.c sources/executor/process.c
