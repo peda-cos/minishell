@@ -17,7 +17,7 @@ LIBFT_DIR = ./libft
 OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
-PARSER_SRCS = sources/parser/main.c
+PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
 HANDLER_SRCS = sources/handler/main.c
 BUILTIN_SRCS = sources/builtin/main.c
 EXECUTOR_SRCS = sources/executor/main.c
