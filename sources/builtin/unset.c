@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:25:40 by peda-cos         ###   ########.fr       */
+/*   Created: 2025/03/25 14:18:12 by peda-cos          #+#    #+#             */
+/*   Updated: 2025/03/25 14:28:30 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "builtin.h"
 
-void	execute_command(t_command *cmd, char **env, int *last_exit)
+static void	remove_env_entry(char ***env, int idx)
 {
-	int	stdin_backup;
-	int	result;
+	free((*env)[idx]);
+	while ((*env)[idx])
+	{
+		(*env)[idx] = (*env)[idx + 1];
+		idx++;
+	}
+}
 
-	if (!cmd || !env || !last_exit)
-		return ;
-	stdin_backup = dup(STDIN_FILENO);
-	if (stdin_backup < 0)
+int	builtin_unset(char **args, char ***env)
+{
+	int	idx;
+	int	i;
+
+	if (!args[1])
+		return (0);
+	i = 1;
+	while (args[i])
 	{
-		perror("dup");
-		return ;
+		idx = find_env_index(args[i], *env);
+		if (idx >= 0)
+			remove_env_entry(env, idx);
+		i++;
 	}
-	while (cmd)
-	{
-		result = process_command(cmd, env, last_exit);
-		if (result < 0)
-			break ;
-		cmd = cmd->next;
-	}
-	dup2(stdin_backup, STDIN_FILENO);
-	close(stdin_backup);
+	return (0);
 }
