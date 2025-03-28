@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:32:18 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/28 00:57:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+// TODO: Faz sentido ficar aqui se apenas é utilizado ein sources/main.c?
 char	**copy_env(char **envp)
 {
 	char	**env;
 	int		i;
 	int		count;
 
+	if (!envp ||	!*envp)
+		return (NULL);
 	count = 0;
 	while (envp[count])
 		count++;
@@ -27,9 +30,11 @@ char	**copy_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
+		printf("Copying env[%d]\n", i);
 		env[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	printf("Copied env\n");
 	env[i] = NULL;
 	return (env);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:01 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:27:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/27 23:57:57 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	builtin_echo(char **args, int *last_exit)
 	int	newline;
 
 	(void)last_exit;
+	if (!args)
+		return (1);
 	i = 1;
 	newline = 1;
 	while (args[i] && is_valid_n_option(args[i]))
@@ -62,3 +64,11 @@ int	builtin_echo(char **args, int *last_exit)
 		ft_putendl_fd("", STDOUT_FILENO);
 	return (0);
 }
+
+// int main(void)
+// {
+// 	char *args[] = { "echo", "-n", "Hello", "world", NULL };
+// 	int last_exit = 0;
+// 	builtin_echo(args, &last_exit);
+// 	return (0);
+// }

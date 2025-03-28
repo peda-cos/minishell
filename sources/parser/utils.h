@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:33:23 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 02:19:22 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/27 23:10:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ t_command		*append_command(t_command **head);
 */
 t_token			*process_word_tokens(t_command *cmd, t_token *token, char **env,
 					int last_exit);
+
+char	*expand_variables(char *str, char **env, int last_exit);
 
 #endif

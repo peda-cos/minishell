@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 01:51:38 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/27 23:34:23 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,52 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 	while (tokens)
 		tokens = process_token(tokens, &parser);
 	return (parser.head);
+}
+
+int	main(void)
+{
+	t_command	*cmd;
+	int	last_exit;
+
+	char *mock_env[] = {
+			"PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki",
+			"HOME=/Users/jlacerda",
+			"USER=jlacerda",
+			"LOGNAME=jlacerda",
+			"SHLVL=1",
+			"PWD=/Users/jlacerda",
+			"OLDPWD=/Users/jlacerda",
+			"_=/usr/bin/env",
+			NULL // Termina com NULL para indicar o fim da lista
+	};
+	// t_token token3 = { .value = "file.txt", .type = WORD, .next = NULL };
+	t_token token2 = { .value = "-al", .type = REDIRECT_OUT, .next = NULL };
+	t_token token1 = { .value = "ls", .type = WORD, .next = &token2 };
+
+	t_token *tokens = &token1;
+	last_exit = 0;
+	cmd = parse_tokens(tokens, mock_env, last_exit);
+	t_command	*tmp = NULL;
+	while (cmd)
+	{
+		tmp = cmd;
+		printf("Command:\n");
+		printf("Args:\n");
+		for (int i = 0; cmd->args[i]; i++)
+		{
+			printf("  %s\n", cmd->args[i]);
+			free(cmd->args[i]);
+		}
+		free(cmd->args);
+		free(cmd->input_file);
+		free(cmd->output_file);
+		free(cmd->heredoc_delim);
+		printf("Input file: %s\n", cmd->input_file);
+		printf("Output file: %s\n", cmd->output_file);
+		printf("Append: %d\n", cmd->append);
+		printf("Heredoc delimiter: %s\n", cmd->heredoc_delim);
+		cmd = cmd->next;
+		free(tmp);
+	}
+	return (0);
 }
