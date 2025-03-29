@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:24:47 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 15:15:49 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	child_process(t_command *cmd, int pipefd[2], char **env, int *last_exit)
 {
 	if (!cmd || !env || !last_exit)
 		exit(1);
+	reset_signals();
 	if (cmd->next && pipefd[1] > 0)
 	{
 		dup2(pipefd[1], STDOUT_FILENO);
