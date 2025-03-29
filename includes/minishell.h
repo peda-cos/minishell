@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "macros.h"
 # include "structs.h"
+# include "../sources/handler/signals.h"
 
 # include <fcntl.h>
 # include <stdio.h>
