@@ -30,7 +30,10 @@ int	builtin_unset(char **args, char ***env)
 	if (!args || !*args || !env || !*env)
 		return (1);
 	if (!args[1])
-		return (0);
+	{
+		ft_putendl_fd(UNSET_NO_ARGS_ERR, STDERR_FILENO);
+		return (1);
+	}
 	i = 1;
 	while (args[i])
 	{
