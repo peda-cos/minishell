@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:51 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:28:14 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 20:08:20 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	builtin_export(char **args, char ***env)
 	int	i;
 	int	status;
 
-	if (!*env)
+	if (! env || !*env || !args || !*args)
 		return (1);
 	if (!args[1])
 		return (display_environment(*env));
