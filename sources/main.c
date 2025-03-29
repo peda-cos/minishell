@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 13:42:55 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 15:16:51 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,15 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	last_exit = 0;
 	env = copy_env(envp);
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	setup_interactive_signals();
 	while (1)
 	{
 		input = readline("minishell$ ");
-		if (!input)
-		{
-			printf("exit\n");
+		if (handle_eof(input))
 			break ;
-		}
 		if (*input)
 			add_history(input);
+		g_signal_received = 0;
 		tokens = tokenize_input(input);
 		if (tokens)
 		{
@@ -58,7 +55,9 @@ int	main(int argc, char **argv, char **envp)
 				else
 				{
 					saved_stdin = dup(STDIN_FILENO);
+					setup_execution_signals();
 					execute_command(cmd, env, &last_exit);
+					setup_interactive_signals();
 					dup2(saved_stdin, STDIN_FILENO);
 					close(saved_stdin);
 					free_commands(cmd);
@@ -69,5 +68,5 @@ int	main(int argc, char **argv, char **envp)
 		free(input);
 	}
 	free_env(env);
-	return (0);
+	return (last_exit);
 }
