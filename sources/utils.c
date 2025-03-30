@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:34:24 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/30 02:04:18 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,21 @@ void	free_commands(t_command *cmd)
 		return ;
 	while (cmd)
 	{
-		if (cmd->args)
+		i = 0;
+		while (cmd->args[i])
 		{
-			i = 0;
-			while (cmd->args[i])
-			{
-				free(cmd->args[i]);
-				i++;
-			}
-			free(cmd->args);
+			free(cmd->args[i]);
+			i++;
 		}
-		if (cmd->input_file)
-			free(cmd->input_file);
-		if (cmd->output_file)
-			free(cmd->output_file);
-		if (cmd->heredoc_delim)
-			free(cmd->heredoc_delim);
+		free(cmd->args);
+		free(cmd->input_file);
+		free(cmd->output_file);
+		free(cmd->heredoc_delim);
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
 	}
+	free(cmd);
 }
 
 char	*expand_variables(char *str, char **env, int last_exit)

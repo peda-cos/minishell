@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:25:40 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/30 02:06:40 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-void	execute_command(t_command *cmd, char **env, int *last_exit)
+void	execute_command(t_command *cmd,
+	char **env, int *last_exit, t_token	*tokens)
 {
 	int	stdin_backup;
 	int	result;
@@ -27,7 +28,7 @@ void	execute_command(t_command *cmd, char **env, int *last_exit)
 	}
 	while (cmd)
 	{
-		result = process_command(cmd, env, last_exit);
+		result = process_command(cmd, env, last_exit, tokens);
 		if (result < 0)
 			break ;
 		cmd = cmd->next;

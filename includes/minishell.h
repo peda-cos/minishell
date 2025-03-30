@@ -35,7 +35,8 @@ void		free_env(char **env);
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit);
 
 /* 			Executor: executes a command chain (with redirections/pipes) */
-void		execute_command(t_command *cmd, char **env, int *last_exit);
+void		execute_command(t_command *cmd, char **env, int *last_exit,
+						t_token *tokens);
 
 /*			Builtin commands */
 int			builtin_pwd(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:21:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:27:57 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/30 00:58:08 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	builtin_exit(char **args)
 	exit_code = 0;
 	if (args[1])
 		exit_code = ft_atoi(args[1]);
-	exit(exit_code);
-	return (0);
+	return (exit_code);
 }
 
 int	is_parent_builtin(char *cmd)
