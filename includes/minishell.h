@@ -35,7 +35,8 @@ void		free_env(char **env);
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit);
 
 /* 			Executor: executes a command chain (with redirections/pipes) */
-void		execute_command(t_command *cmd, char **env, int *last_exit);
+void		execute_command(t_command *cmd, char **env, int *last_exit,
+						t_token *tokens);
 
 /*			Builtin commands */
 int			builtin_pwd(void);
@@ -57,15 +58,8 @@ void		free_commands(t_command *cmd);
 /* 			Utility for variable expansion */
 char		*expand_variables(char *str, char **env, int last_exit);
 
-/* 			Tokenizer: splits input into tokens 
+/* 			Tokenizer: splits input into tokens
 			(handling quotes and special symbols) */
-int			is_metachar(char c);
 t_token		*tokenize_input(char *input);
-void		add_token(t_token **tokens, t_token *new);
-t_token		*new_token(char *value, t_token_type type);
-int			is_quote_delimiter(char *str, int *index, char delimiter);
-void		add_word_in_quotes(t_token **tokens, char *str, int *index);
-void		add_word_with_quotes(t_token **tokens, char *str, int *index);
-void		add_word_without_quotes(t_token **tokens, char *str, int *index);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:32:28 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 19:58:43 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	builtin_cd(char **args)
 {
+	if (!args)
+		return (1);
 	if (!args[1])
 	{
 		ft_putstr_fd("cd: missing argument\n", STDERR_FILENO);

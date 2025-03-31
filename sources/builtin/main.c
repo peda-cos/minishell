@@ -3,21 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:32:18 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 20:05:54 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+// TODO: Faz sentido ficar aqui se apenas é utilizado em sources/main.c?
+// Nao deveria ser um método static do arquivo main.c?
 char	**copy_env(char **envp)
 {
-	char	**env;
 	int		i;
 	int		count;
+	char	**env;
 
+	if (!envp || !*envp)
+		return (NULL);
 	count = 0;
 	while (envp[count])
 		count++;
@@ -34,22 +38,35 @@ char	**copy_env(char **envp)
 	return (env);
 }
 
-int	find_env_index(const char *key, char **env)
+// TODO: faz sentido esse método ficar aqui??
+// Não deveria ser um método em arquivo utils.c 
+// ja que é usado pelo builtin export
+int	find_env_index(char *key, char **env)
 {
-	int	i;
-	int	key_len;
+	int		i;
+	char	*env_key;
+	char	*equal_chr_ptr;
 
 	i = 0;
-	key_len = ft_strlen(key);
-	while (env && env[i])
+	if (!key || !env)
+		return (-1);
+	while (env[i])
 	{
-		if (!ft_strncmp(env[i], key, key_len) && env[i][key_len] == '=')
+		equal_chr_ptr = ft_strchr(env[i], '=');
+		env_key = ft_substr(env[i], 0, equal_chr_ptr - env[i]);
+		if (ft_strcmp(key, env_key) == 0)
+		{
+			free(env_key);
 			return (i);
+		}
+		free(env_key);
 		i++;
 	}
 	return (-1);
 }
 
+// TODO: faz sentido o nome desse arquivo ser main.c?
+// Nao deveria ser env.c? ja que fornece um dos builtins necessários!
 int	builtin_env(char **env)
 {
 	int	i;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 15:16:51 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/30 02:03:35 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char **argv, char **envp)
 				{
 					saved_stdin = dup(STDIN_FILENO);
 					setup_execution_signals();
-					execute_command(cmd, env, &last_exit);
+					execute_command(cmd, env, &last_exit, tokens);
 					setup_interactive_signals();
 					dup2(saved_stdin, STDIN_FILENO);
 					close(saved_stdin);

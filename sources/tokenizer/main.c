@@ -6,11 +6,11 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 22:09:55 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/29 19:47:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "tokenizer.h"
 
 static int	process_quoted_word(
 	char *str, char *word, int *index, char delimiter)
@@ -30,7 +30,7 @@ static int	process_quoted_word(
 	return (word_index);
 }
 
-void	add_token_word(char *str, int *index, t_token **tokens)
+static void	add_token_word(char *str, int *index, t_token **tokens)
 {
 	char	*word;
 	int		word_index;
@@ -91,11 +91,12 @@ static void	add_token_meta(char *input, int *index, t_token **tokens)
 t_token	*tokenize_input(char *input)
 {
 	int		index;
-	int		is_metachar;
 	t_token	*tokens;
 
 	index = 0;
 	tokens = NULL;
+	if (!input)
+		return (NULL);
 	while (input[index])
 	{
 		if (input[index] == DOT_AND_COMA_CHR)
@@ -105,10 +106,9 @@ t_token	*tokenize_input(char *input)
 			index++;
 			continue ;
 		}
-		is_metachar = (input[index] == PIPE_CHR
-				|| input[index] == REDIRECT_IN_CHR
-				|| input[index] == REDIRECT_OUT_CHR);
-		if (is_metachar)
+		if (input[index] == PIPE_CHR
+			|| input[index] == REDIRECT_IN_CHR
+			|| input[index] == REDIRECT_OUT_CHR)
 			add_token_meta(input, &index, &tokens);
 		else
 			add_token_word(input, &index, &tokens);

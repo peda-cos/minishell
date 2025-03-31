@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:51 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 14:28:14 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/29 20:20:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,20 @@ static int	add_new_entry(char ***env, char *new_entry)
 static int	process_export_arg(char ***env, char *arg)
 {
 	int		idx;
+	char	*arg_key;
 	char	*new_entry;
+	char	*equal_chr_ptr;
 
 	new_entry = ft_strdup(arg);
 	if (!new_entry)
 		return (1);
-	idx = find_env_index(arg, *env);
+	equal_chr_ptr = ft_strchr(arg, '=');
+	if (equal_chr_ptr)
+		arg_key = ft_substr(arg, 0, equal_chr_ptr - arg);
+	else
+		arg_key = ft_strdup(arg);
+	idx = find_env_index(arg_key, *env);
+	free(arg_key);
 	if (idx >= 0)
 		return (update_existing_entry(env, new_entry, idx));
 	else
@@ -77,7 +85,7 @@ int	builtin_export(char **args, char ***env)
 	int	i;
 	int	status;
 
-	if (!*env)
+	if (! env || !*env || !args || !*args)
 		return (1);
 	if (!args[1])
 		return (display_environment(*env));
