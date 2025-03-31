@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:16:22 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:43:33 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	execute_builtin(t_command *cmd, char ***env, int *last_exit)
 	if (!ft_strcmp(cmd->args[0], "echo"))
 		return (builtin_echo(cmd->args, last_exit));
 	else if (!ft_strcmp(cmd->args[0], "cd"))
-		return (builtin_cd(cmd->args));
+		return (builtin_cd(cmd->args, env));
 	else if (!ft_strcmp(cmd->args[0], "pwd"))
 		return (builtin_pwd());
 	else if (!ft_strcmp(cmd->args[0], "export"))
