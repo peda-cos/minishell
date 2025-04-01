@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 16:42:12 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/31 22:16:50 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ int		is_parent_builtin(char *cmd);
 
 /* Utility functions */
 char	*ft_strjoin_char(char *str, char c);
+char	*get_env_value(char *key, char **env);
+void	update_env_variable(char *key, char *value, char ***env);
 
 #endif
