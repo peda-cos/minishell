@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:14:33 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/02 22:55:50 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,11 @@ static int	change_to_home(char ***env, char *old_pwd)
 	{
 		perror("cd");
 		free(old_pwd);
+		free(home);
 		return (1);
 	}
 	update_pwd_env(old_pwd, env);
+	free(home);
 	return (0);
 }
 
