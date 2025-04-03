@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:56:00 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 15:35:54 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:03:04 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,4 @@ void	setup_execution_signals(void)
 	sa_quit.sa_flags = 0;
 	sa_quit.sa_handler = &execution_signal_handler;
 	sigaction(SIGQUIT, &sa_quit, NULL);
-}
-
-void	reset_signals(void)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-}
-
-int	handle_eof(char *input)
-{
-	if (!input)
-	{
-		write(STDOUT_FILENO, "exit\n", 5);
-		return (1);
-	}
-	return (0);
 }

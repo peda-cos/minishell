@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 20:05:54 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:53:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-// TODO: Faz sentido ficar aqui se apenas é utilizado em sources/main.c?
-// Nao deveria ser um método static do arquivo main.c?
 char	**copy_env(char **envp)
 {
 	int		i;
@@ -38,9 +36,6 @@ char	**copy_env(char **envp)
 	return (env);
 }
 
-// TODO: faz sentido esse método ficar aqui??
-// Não deveria ser um método em arquivo utils.c 
-// ja que é usado pelo builtin export
 int	find_env_index(char *key, char **env)
 {
 	int		i;
@@ -65,8 +60,6 @@ int	find_env_index(char *key, char **env)
 	return (-1);
 }
 
-// TODO: faz sentido o nome desse arquivo ser main.c?
-// Nao deveria ser env.c? ja que fornece um dos builtins necessários!
 int	builtin_env(char **env)
 {
 	int	i;

@@ -18,19 +18,23 @@ OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
 PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
-HANDLER_SRCS = sources/handler/main.c
-BUILTIN_SRCS = sources/builtin/main.c sources/builtin/cd_pwd.c \
-				sources/builtin/echo.c sources/builtin/exit.c \
-				sources/builtin/export.c sources/builtin/unset.c
+HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
+BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
+				sources/builtin/cd.c sources/builtin/echo.c \
+				sources/builtin/exit.c sources/builtin/export.c \
+				sources/builtin/pwd.c sources/builtin/unset.c
 EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 				sources/executor/heredoc.c sources/executor/redirection.c \
-				sources/executor/command_utils.c sources/executor/process.c
+				sources/executor/command_utils.c sources/executor/process.c \
+				sources/executor/process_utils.c
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c 
+EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
 
 SRCS = \
 	sources/main.c sources/utils.c \
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
+	$(EXPANSION_SRCS)
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = $(LIBFT_DIR)/libft.a

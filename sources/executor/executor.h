@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/30 00:49:46 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:05:05 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,45 +17,45 @@
 
 typedef struct s_process_command_args
 {
-	int		pid;
-	char **env;
+	int			pid;
+	char		**env;
 	t_command	*cmd;
-	int		pipefd[2];
-	int		*last_exit;
-	t_token	*tokens;
-}	t_process_command_args;
+	int			pipefd[2];
+	int			*last_exit;
+	t_token		*tokens;
+}				t_process_command_args;
 
 /*
 ** Path finding and manipulation functions (path_utils.c)
 */
-void	free_split(char **split);
-char	*find_executable(char *cmd, char **env);
+void			free_split(char **split);
+char			*find_executable(char *cmd, char **env);
 
 /*
 ** Heredoc handling functions (heredoc.c)
 */
-int		handle_heredoc(char *delim);
+int				handle_heredoc(char *delim);
 
 /*
 ** Redirection handling functions (redirection.c)
 */
-int		setup_input_redirection(t_command *cmd);
-int		setup_output_redirection(t_command *cmd);
+int				setup_input_redirection(t_command *cmd);
+int				setup_output_redirection(t_command *cmd);
 
 /*
 ** Command execution functions (command_utils.c)
 */
-int		is_builtin(char *cmd);
-int		execute_builtin(t_command *cmd, char ***env, int *last_exit);
-int		execute_external(t_command *cmd, char **env);
+int				is_builtin(char *cmd);
+int				execute_builtin(t_command *cmd, char ***env, int *last_exit);
+int				execute_external(t_command *cmd, char **env);
 
 /*
 ** Process management functions (process.c)
 */
-int		setup_pipe(t_command *cmd, int pipefd[2]);
-void	child_process(t_process_command_args *param);
-void	parent_process(t_process_command_args *param);
-int	process_command(t_command *cmd,
-			char **env, int *last_exit, t_token	*tokens);
+int				setup_pipe(t_command *cmd, int pipefd[2]);
+void			child_process(t_process_command_args *param);
+void			parent_process(t_process_command_args *param);
+int				process_command(t_command *cmd, char **env, int *last_exit,
+					t_token *tokens);
 
 #endif

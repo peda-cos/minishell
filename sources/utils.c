@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/30 02:04:18 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/03/31 20:59:38 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,18 @@ void	free_commands(t_command *cmd)
 	int			i;
 	t_command	*tmp;
 
-	if (!cmd)
-		return ;
 	while (cmd)
 	{
 		i = 0;
-		while (cmd->args[i])
+		if (cmd->args)
 		{
-			free(cmd->args[i]);
-			i++;
+			while (cmd->args[i])
+			{
+				free(cmd->args[i]);
+				i++;
+			}
+			free(cmd->args);
 		}
-		free(cmd->args);
 		free(cmd->input_file);
 		free(cmd->output_file);
 		free(cmd->heredoc_delim);
@@ -63,42 +64,27 @@ void	free_commands(t_command *cmd)
 		cmd = cmd->next;
 		free(tmp);
 	}
-	free(cmd);
 }
 
-char	*expand_variables(char *str, char **env, int last_exit)
+char	*ft_strjoin_char(char *str, char c)
 {
 	char	*result;
-	char	*var;
-	char	*value;
+	int		len;
 	int		i;
-	int		k;
 
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	result = (char *)malloc(len + 2);
+	if (!result)
+		return (NULL);
 	i = 0;
-	if (!str || str[0] != '$')
-		return (ft_strdup(str));
-	if (ft_strcmp(str, "$?") == 0)
-		return (ft_itoa(last_exit));
-	i = 1;
-	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
-		i++;
-	var = ft_substr(str, 1, i - 1);
-	k = 0;
-	value = NULL;
-	while (env && env[k])
+	while (str[i])
 	{
-		if (ft_strncmp(env[k], var, ft_strlen(var)) == 0
-			&& env[k][ft_strlen(var)] == '=')
-		{
-			value = env[k] + ft_strlen(var) + 1;
-			break ;
-		}
-		k++;
+		result[i] = str[i];
+		i++;
 	}
-	free(var);
-	if (value)
-		result = ft_strdup(value);
-	else
-		result = ft_strdup("");
+	result[i] = c;
+	result[i + 1] = '\0';
 	return (result);
 }

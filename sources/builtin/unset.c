@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:18:12 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 20:09:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/01 21:32:38 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ int	builtin_unset(char **args, char ***env)
 	if (!args || !*args || !env || !*env)
 		return (1);
 	if (!args[1])
-	{
-		ft_putendl_fd(UNSET_NO_ARGS_ERR, STDERR_FILENO);
-		return (1);
-	}
+		return (0);
 	i = 1;
 	while (args[i])
 	{
