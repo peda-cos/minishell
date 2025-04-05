@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 20:59:10 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:37:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ static void	process_input(char *input, char ***env, int *last_exit)
 	tokens = tokenize_input(input);
 	if (!tokens)
 		return ;
+	if (validate_tokens(&tokens))
+	{
+		*last_exit = STDERR_FILENO;
+		return (free_tokens(tokens));
+	}
 	cmd = parse_tokens(tokens, *env, *last_exit);
 	if (cmd)
 	{

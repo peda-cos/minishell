@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 22:15:54 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:28:04 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,8 @@ char		*ft_strjoin_char(char *str, char c);
 
 /* Tokenizer: splits input into tokens */
 t_token		*tokenize_input(char *input);
+
+/* Validates for tokens syntax errors */
+int			validate_tokens(t_token **tokens);
 
 #endif
