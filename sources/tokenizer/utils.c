@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 19:47:31 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:47:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,18 @@ void	add_token(t_token **tokens, t_token *new)
 		tmp = tmp->next;
 	new->prev = tmp;
 	tmp->next = new;
+}
+
+t_token	*get_last_token(t_token **tokens)
+{
+	t_token	*tmp;
+
+	if (!*tokens)
+		return (NULL);
+	tmp = *tokens;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 int	is_metachar(char c)

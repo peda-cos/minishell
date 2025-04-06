@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/29 19:47:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/05 21:33:20 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,30 @@ static void	add_token_word(char *str, int *index, t_token **tokens)
 	add_token(tokens, new_token(word, WORD));
 }
 
+static void	add_redirect_out_token(char *input, int *index, t_token **tokens)
+{
+	t_token	*token;
+	int		token_len;
+
+	token_len = 0;
+	if (ft_isdigit(input[*index - 1]))
+	{
+		token = get_last_token(tokens);
+		token_len = ft_strlen(token->value);
+		if (token_len == 1)
+			token->type = FILE_DESCRIPTOR;
+	}
+	if (input[*index + 1] == REDIRECT_OUT_CHR)
+	{
+		token = new_token(ft_strdup(APPEND_STR), APPEND);
+		(*index)++;
+	}
+	else
+		token = new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT);
+	add_token(tokens, token);
+}
+
+// TODO: Pendente refatoração para contemplar redirecionamento IN < ou <<
 static void	add_token_meta(char *input, int *index, t_token **tokens)
 {
 	if (input[*index] == PIPE_CHR)
@@ -75,16 +99,7 @@ static void	add_token_meta(char *input, int *index, t_token **tokens)
 				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
 	}
 	else if (input[*index] == REDIRECT_OUT_CHR)
-	{
-		if (input[*index + 1] == REDIRECT_OUT_CHR)
-		{
-			add_token(tokens, new_token(ft_strdup(APPEND_STR), APPEND));
-			(*index)++;
-		}
-		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
-	}
+		add_redirect_out_token(input, index, tokens);
 	(*index)++;
 }
 
