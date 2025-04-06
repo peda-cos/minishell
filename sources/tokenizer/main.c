@@ -59,47 +59,48 @@ static void	add_token_word(char *str, int *index, t_token **tokens)
 	add_token(tokens, new_token(word, WORD));
 }
 
-static void	add_redirect_out_token(char *input, int *index, t_token **tokens)
+static t_token	*get_redirect_token(char *input, int *index)
 {
-	t_token	*token;
-	int		token_len;
-
-	token_len = 0;
-	if (ft_isdigit(input[*index - 1]))
-	{
-		token = get_last_token(tokens);
-		token_len = ft_strlen(token->value);
-		if (token_len == 1)
-			token->type = FILE_DESCRIPTOR;
-	}
-	if (input[*index + 1] == REDIRECT_OUT_CHR)
-	{
-		token = new_token(ft_strdup(APPEND_STR), APPEND);
-		(*index)++;
-	}
-	else
-		token = new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT);
-	add_token(tokens, token);
-}
-
-// TODO: Pendente refatoração para contemplar redirecionamento IN < ou <<
-static void	add_token_meta(char *input, int *index, t_token **tokens)
-{
-	if (input[*index] == PIPE_CHR)
-		add_token(tokens, new_token(ft_strdup(PIPE_STR), PIPE));
-	else if (input[*index] == REDIRECT_IN_CHR)
+	if (input[*index] == REDIRECT_IN_CHR)
 	{
 		if (input[*index + 1] == REDIRECT_IN_CHR)
 		{
-			add_token(tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
 			(*index)++;
+			return (new_token(ft_strdup(HEREDOC_STR), HEREDOC));
 		}
 		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+			return (new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
 	}
-	else if (input[*index] == REDIRECT_OUT_CHR)
-		add_redirect_out_token(input, index, tokens);
+	if (input[*index + 1] == REDIRECT_OUT_CHR)
+	{
+		(*index)++;
+		return (new_token(ft_strdup(APPEND_STR), APPEND));
+	}
+	else
+		return (new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+}
+
+static void	add_token_meta(char *input, int *index, t_token **tokens)
+{
+	char	chr;
+	t_token	*token;
+	int		token_len;
+
+	chr = input[*index];
+	if (chr == PIPE_CHR)
+		token = new_token(ft_strdup(PIPE_STR), PIPE);
+	else if (chr == REDIRECT_IN_CHR || chr == REDIRECT_OUT_CHR)
+	{
+		if (ft_isdigit(input[*index - 1]))
+		{
+			token = get_last_token(tokens);
+			token_len = ft_strlen(token->value);
+			if (token_len == 1)
+				token->type = FILE_DESCRIPTOR;
+		}
+		token = get_redirect_token(input, index);
+	}
+	add_token(tokens, token);
 	(*index)++;
 }
 
