@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 21:33:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:37:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ static void	add_token_meta(char *input, int *index, t_token **tokens)
 {
 	char	chr;
 	t_token	*token;
-	int		token_len;
+	t_token	*last_token;
+	int		last_token_len;
 
 	chr = input[*index];
 	if (chr == PIPE_CHR)
@@ -93,10 +94,10 @@ static void	add_token_meta(char *input, int *index, t_token **tokens)
 	{
 		if (ft_isdigit(input[*index - 1]))
 		{
-			token = get_last_token(tokens);
-			token_len = ft_strlen(token->value);
-			if (token_len == 1)
-				token->type = FILE_DESCRIPTOR;
+			last_token = get_last_token(tokens);
+			last_token_len = ft_strlen(last_token->value);
+			if (last_token_len == 1)
+				last_token->type = FILE_DESCRIPTOR;
 		}
 		token = get_redirect_token(input, index);
 	}
