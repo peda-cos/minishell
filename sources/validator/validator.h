@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer.h                                        :+:      :+:    :+:   */
+/*   validator.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 22:31:37 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 14:44:41 by jlacerda         ###   ########.fr       */
+/*   Created: 2025/03/31 14:20:01 by peda-cos          #+#    #+#             */
+/*   Updated: 2025/04/05 19:44:19 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOKENIZER_H
-# define TOKENIZER_H
+#ifndef VALIDATOR_H
+# define VALIDATOR_H
 
 # include "minishell.h"
 
-int		is_metachar(char c);
-t_token	*get_last_token(t_token **tokens);
-void	add_token(t_token **tokens, t_token *new);
-t_token	*new_token(char *value, t_token_type type);
-int		is_quote_delimiter(char *str, int *index, char delimiter);
+# define INVALID_TOKEN_MSG_ERR	"Erro de sintaxe próximo ao token inesperado `"
+
+int	is_pipe(t_token *token);
+int	is_redirection(t_token *token);
+int	is_invalid_token(t_token *token);
+int	is_valid_redirection(t_token *token);
+int	is_valid_pipe_position(t_token *token);
 
 #endif

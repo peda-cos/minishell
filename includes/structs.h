@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/22 19:10:39 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/05 19:46:41 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ typedef enum e_token_type
 	APPEND,
 	HEREDOC,
 	REDIRECT_IN,
-	REDIRECT_OUT
+	REDIRECT_OUT,
+	FILE_DESCRIPTOR
 }	t_token_type;
 
 /* Token linked list */
 typedef struct s_token
 {
 	t_token_type	type;
+	struct s_token	*prev;
 	struct s_token	*next;
 	char			*value;
 }	t_token;

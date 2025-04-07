@@ -34,6 +34,8 @@
 - [ ] Expandir variável com aspas simples dentro de aspas duplas divergente do bash
 	- `echo "'$var'0"` resultando em `'$var'0`, em vez de `10`
 	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`
+- [ ] Redirecionamentos com múltiplos pipes não estão funcionando
+	- `echo 123 > a > b >> c` processa apenas o ultimo redirecionamento
 
 ## Cenários Estranhos
 

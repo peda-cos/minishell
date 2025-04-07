@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/03/29 19:47:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/06 19:37:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,49 @@ static void	add_token_word(char *str, int *index, t_token **tokens)
 	add_token(tokens, new_token(word, WORD));
 }
 
-static void	add_token_meta(char *input, int *index, t_token **tokens)
+static t_token	*get_redirect_token(char *input, int *index)
 {
-	if (input[*index] == PIPE_CHR)
-		add_token(tokens, new_token(ft_strdup(PIPE_STR), PIPE));
-	else if (input[*index] == REDIRECT_IN_CHR)
+	if (input[*index] == REDIRECT_IN_CHR)
 	{
 		if (input[*index + 1] == REDIRECT_IN_CHR)
 		{
-			add_token(tokens, new_token(ft_strdup(HEREDOC_STR), HEREDOC));
 			(*index)++;
+			return (new_token(ft_strdup(HEREDOC_STR), HEREDOC));
 		}
 		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
+			return (new_token(ft_strdup(REDIRECT_IN_STR), REDIRECT_IN));
 	}
-	else if (input[*index] == REDIRECT_OUT_CHR)
+	if (input[*index + 1] == REDIRECT_OUT_CHR)
 	{
-		if (input[*index + 1] == REDIRECT_OUT_CHR)
-		{
-			add_token(tokens, new_token(ft_strdup(APPEND_STR), APPEND));
-			(*index)++;
-		}
-		else
-			add_token(tokens,
-				new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+		(*index)++;
+		return (new_token(ft_strdup(APPEND_STR), APPEND));
 	}
+	else
+		return (new_token(ft_strdup(REDIRECT_OUT_STR), REDIRECT_OUT));
+}
+
+static void	add_token_meta(char *input, int *index, t_token **tokens)
+{
+	char	chr;
+	t_token	*token;
+	t_token	*last_token;
+	int		last_token_len;
+
+	chr = input[*index];
+	if (chr == PIPE_CHR)
+		token = new_token(ft_strdup(PIPE_STR), PIPE);
+	else if (chr == REDIRECT_IN_CHR || chr == REDIRECT_OUT_CHR)
+	{
+		if (ft_isdigit(input[*index - 1]))
+		{
+			last_token = get_last_token(tokens);
+			last_token_len = ft_strlen(last_token->value);
+			if (last_token_len == 1)
+				last_token->type = FILE_DESCRIPTOR;
+		}
+		token = get_redirect_token(input, index);
+	}
+	add_token(tokens, token);
 	(*index)++;
 }
 

@@ -29,12 +29,13 @@ EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 				sources/executor/process_utils.c
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c 
 EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
+VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c
 
 SRCS = \
 	sources/main.c sources/utils.c \
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
-	$(EXPANSION_SRCS)
+	$(EXPANSION_SRCS) $(VALIDATOR_SRCS)
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = $(LIBFT_DIR)/libft.a
