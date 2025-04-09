@@ -1,0 +1,140 @@
+
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/31 14:40:39 by jlacerda          #+#    #+#             */
+/*   Updated: 2025/03/31 21:44:32 by jlacerda         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "parser.h"
+
+// Extrai o nome da variável de uma string
+static char	*extract_var_name(const char *str, int *index)
+{
+    int		start;
+    char	*var;
+
+    start = *index;
+    if (str[start] == '{')
+    {
+        start++;
+        while (str[*index] && str[*index] != '}')
+            (*index)++;
+        if (str[*index] == '}')
+            (*index)++;
+    }
+    else
+    {
+        while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_'))
+            (*index)++;
+    }
+    var = ft_substr(str, start, *index - start - (str[start - 1] == '{' ? 1 : 0));
+    return (var);
+}
+
+// Busca o valor da variável no ambiente
+static char	*get_env_value(const char *var, char **env)
+{
+    int		i;
+    size_t	len;
+
+    i = 0;
+    len = ft_strlen(var);
+    while (env && env[i])
+    {
+        if (ft_strncmp(env[i], var, len) == 0 && env[i][len] == '=')
+            return (env[i] + len + 1);
+        i++;
+    }
+    return (NULL);
+}
+static char	*expand_single_variable(char *str, char **env, int last_exit, int *index)
+{
+    char	*var;
+    char	*value;
+    char	*expanded_value;
+
+    if (str[*index] == '$' && str[*index + 1] == '?')
+    {
+        *index += 2;
+        return (ft_itoa(last_exit));
+    }
+    var = extract_var_name(str, index);
+    if (!var)
+        return (ft_strdup(""));
+    value = get_env_value(var, env);
+    free(var);
+    if (!value)
+        return (ft_strdup(""));
+    // Processa recursivamente o valor expandido para tratar aninhamento
+    expanded_value = expand_variables(value, env, last_exit);
+    return (expanded_value);
+}
+
+// Processa a string completa e expande todas as variáveis
+static char	*process_expansion(char *str, char **env, int last_exit)
+{
+    char	*result;
+    char	*temp;
+    char	*temp2;
+    int		i;
+    int		start;
+
+    result = ft_strdup("");
+    i = 0;
+    while (str[i])
+    {
+        start = i;
+        while (str[i] && str[i] != '$')
+            i++;
+        temp = ft_substr(str, start, i - start);
+        temp2 = result;
+        result = ft_strjoin(result, temp);
+        free(temp2);
+        free(temp);
+        if (str[i] == '$')
+        {
+            i++;
+            temp = expand_single_variable(str, env, last_exit, &i);
+            temp2 = result;
+            result = ft_strjoin(result, temp);
+            free(temp2);
+            free(temp);
+        }
+    }
+    return (result);
+}
+
+// Função principal para expandir variáveis
+char	*expand_variables(char *str, char **env, int last_exit)
+{
+    if (!str)
+        return (NULL);
+    return (process_expansion(str, env, last_exit));
+}
+int main(int argc, char **argv, char **env)
+{
+    char *expanded_str;
+
+    // Teste com expansão simples
+    expanded_str = expand_variables("$HOME", env, 0);
+    printf("Expanded string: %s\n", expanded_str);
+    free(expanded_str);
+
+    // Teste com expansão aninhada
+    expanded_str = expand_variables("${HOME}", env, 0);
+    printf("Expanded string: %s\n", expanded_str);
+    free(expanded_str);
+
+    // Teste com expansão aninhada mais complexa
+    expanded_str = expand_variables("${${${HOME}}}", env, 0);
+    printf("Expanded string: %s\n", expanded_str);
+    free(expanded_str);
+
+    return 0;
+}
