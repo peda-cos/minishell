@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	setup_interactive_signals();
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline(PROMPT);
 		if (handle_eof(input))
 			break ;
 		process_input(input, &env, &last_exit);
