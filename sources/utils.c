@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 20:59:38 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:33:12 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,13 @@ char	*ft_strjoin_char(char *str, char c)
 	result[i] = c;
 	result[i + 1] = '\0';
 	return (result);
+}
+
+void	exit_free(int signal,
+	char **envs, t_command *cmds, t_token *tokens)
+{
+	free_env(envs);
+	free_commands(cmds);
+	free_tokens(tokens);
+	exit(signal);
 }

@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:56:29 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:12:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	exit_child_process(int signal, t_process_command_args *param)
-{
-	free_env(param->env);
-	free_commands(param->cmd);
-	free_tokens(param->tokens);
-	exit(signal);
-}
-
 void	child_process(t_process_command_args *param)
 {
 	if (!param->cmd || !param->env || !(param->last_exit))
-		exit_child_process(1, param);
+		exit_free(1, param->env, param->cmd, param->tokens);
 	reset_signals();
 	if (param->cmd->next && param->pipefd[1] > 0)
 	{
@@ -33,13 +25,14 @@ void	child_process(t_process_command_args *param)
 	}
 	if (setup_input_redirection(param->cmd) < 0
 		|| setup_output_redirection(param->cmd) < 0)
-		exit_child_process(1, param);
+		exit_free(1, param->env, param->cmd, param->tokens);
 	if (param->cmd->argc <= 0)
-		exit_child_process(0, param);
+		exit_free(0, param->env, param->cmd, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_child_process(execute_builtin(param->cmd, &param->env,
-				param->last_exit), param);
-	exit_child_process(execute_external(param->cmd, param->env), param);
+		exit_free(execute_builtin(param->cmd, &param->env, param->last_exit),
+			param->env, param->cmd, param->tokens);
+	exit_free(execute_external(param->cmd, param->env),
+		param->env, param->cmd, param->tokens);
 }
 
 void	parent_process(t_process_command_args *param)
