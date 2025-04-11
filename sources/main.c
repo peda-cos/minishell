@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 22:33:51 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:47:32 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	process_input(char *input, char ***env, int *last_exit)
 	cmd = parse_tokens(tokens, *env, *last_exit);
 	if (cmd)
 	{
-		if (!cmd->next && is_parent_builtin(cmd->args[0]))
+		if (cmd->args && !cmd->next && is_parent_builtin(cmd->args[0]))
 			execute_parent_builtin(cmd, env, last_exit, tokens);
 		else
 			execute_command_line(cmd, *env, last_exit, tokens);

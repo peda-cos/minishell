@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:21:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 21:30:22 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:46:47 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	builtin_exit(char **args)
 
 int	is_parent_builtin(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	return (!ft_strcmp(cmd, "cd") || !ft_strcmp(cmd, "export")
 		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "exit"));
 }
