@@ -9,10 +9,10 @@
 	- ~~`echo "$var 2"` resultando em `1`, em vez de  `1 2`~~
 	- ~~`echo "0$var"` resultando em `0$var`, em vez de  `01`~~
 - [x] ~~Expandir variável colocado com aspas não esta funcionando~~
-	- ~~`echo $var"0"` resultando em vazio, em vez de `10`, o inverso também é valido `echo '0'$var`~~ 
-- [ ] Navegar em diretórios usando apenas pontos com comportamentos diferentes
-	- `.` resultando em `execve: Permission denied`, em vez de `bash: .: filename argument required`
-	- `..` resultando em `execve: Permission denied`, em vez de `..: command not found`
+	- ~~`echo $var"0"` resultando em vazio, em vez de `10`, o inverso também é valido `echo '0'$var`~~
+- [x] ~~Redirecionamento IN e OUT isolados, resultando em segment fault~~
+	- ~~`< in` ou `> out` com comportamento diferente do bash~~ 
+
 - [	] Exportação de variável com caracteres diferentes de alfanuméricos
 	- `export v@r=1` sendo processado, em vez de resultar em `bash: export: 'v@ar': not a valid identifier` no bash
 - [ ] Executar o histórico não esta funcionando
@@ -30,10 +30,9 @@
 	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`
 - [ ] Redirecionamentos com múltiplos pipes não estão funcionando
 	- `echo 123 > a > b >> c` processa apenas o ultimo redirecionamento
-- [ ] Redirecionamento IN e OUT isolados, resultando em segment fault
-	- `< in` ou `> out` com comportamento diferente do bash
 - [ ] Comando `exit` deveria registrar "exit" no terminal?
 	- "Validar se é um comportamento do `WSL` do windows ou se no unix acontece a mesma coisa
+- [ ] Redirecionamento IN e OUT isolados `< in` ou `> out`, pendentes de implementação
 
 
 ## [[`IN_EVAL?`]] Vale a pena cobrir? 
@@ -45,7 +44,11 @@
 - [ ] Expandir variável com colchetes não esta funcionando
 	- Deveria ser coberto `{}` ? Não diz que sim e nem que não o SUBJECT
 	- `echo ${var}` resultando em vazio, em vez de `1`
-	- [[`IN_EVAL?`]] Vale a pena cobrir? 
+- [ ] Navegar em diretórios usando apenas pontos com comportamentos diferentes
+	- `.` resultando em `execve: Permission denied`, em vez de `bash: .: filename argument required`
+	- `..` resultando em `execve: Permission denied`, em vez de `..: command not found`
+- [ ] Execução de ´.´ seguido de um arquivo, não esta funcionando
+	- `. file.sh` resultando em `execve: Permission denied`, em vez de executar o arquivo
 
 ## Cenários Estranhos
 
