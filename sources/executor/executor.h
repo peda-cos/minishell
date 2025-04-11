@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:05:05 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/10 23:20:05 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
+# include <sys/stat.h>
 # include "minishell.h"
 
 typedef struct s_process_command_args

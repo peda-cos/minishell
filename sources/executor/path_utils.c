@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:37 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:14:52 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/10 23:38:44 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ char	*find_executable(char *cmd, char **env)
 
 	if (!cmd || !env)
 		return (NULL);
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	if (cmd[0] == '/'
+		|| (cmd[0] == '.' && cmd[1] == '/')
+		|| (cmd[0] == '.' && cmd[1] == '.' && cmd[2] == '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 			return (ft_strdup(cmd));
