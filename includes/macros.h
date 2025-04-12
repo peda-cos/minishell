@@ -31,4 +31,6 @@
 # define REDIRECT_OUT_STR ">"
 /* ----------------------- */
 
+# define PROMPT "\033[32m Minishell $ \033[0m"
+
 #endif

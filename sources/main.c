@@ -6,13 +6,14 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/05 19:37:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/10 21:47:32 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit)
+static void	execute_parent_builtin(t_command *cmd,
+	char ***env, int *last_exit, t_token *tokens)
 {
 	if (!ft_strcmp(cmd->args[0], "cd"))
 		*last_exit = builtin_cd(cmd->args, env);
@@ -21,11 +22,14 @@ static void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit)
 	else if (!ft_strcmp(cmd->args[0], "unset"))
 		*last_exit = builtin_unset(cmd->args, env);
 	else if (!ft_strcmp(cmd->args[0], "exit"))
+	{
 		*last_exit = builtin_exit(cmd->args);
+		exit_free(*last_exit, *env, cmd, tokens);
+	}
 }
 
-static void	execute_command_line(t_command *cmd, char **env, int *last_exit,
-		t_token *tokens)
+static void	execute_command_line(t_command *cmd,
+	char **env, int *last_exit, t_token *tokens)
 {
 	int	saved_stdin;
 
@@ -57,8 +61,8 @@ static void	process_input(char *input, char ***env, int *last_exit)
 	cmd = parse_tokens(tokens, *env, *last_exit);
 	if (cmd)
 	{
-		if (!cmd->next && is_parent_builtin(cmd->args[0]))
-			execute_parent_builtin(cmd, env, last_exit);
+		if (cmd->args && !cmd->next && is_parent_builtin(cmd->args[0]))
+			execute_parent_builtin(cmd, env, last_exit, tokens);
 		else
 			execute_command_line(cmd, *env, last_exit, tokens);
 		free_commands(cmd);
@@ -79,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	setup_interactive_signals();
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline(PROMPT);
 		if (handle_eof(input))
 			break ;
 		process_input(input, &env, &last_exit);

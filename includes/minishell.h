@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/05 19:28:04 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:12:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 /* Environment management */
 char		**copy_env(char **envp);
 void		free_env(char **env);
+void		exit_free(int signal,
+				char **envs, t_command *cmds, t_token *tokens);
 
 /* Parser: builds a linked list of commands from tokens */
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit);
