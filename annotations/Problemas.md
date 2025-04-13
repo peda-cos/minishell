@@ -12,7 +12,6 @@
 	- ~~`echo $var"0"` resultando em vazio, em vez de `10`, o inverso também é valido `echo '0'$var`~~
 - [x] ~~Redirecionamento IN e OUT isolados, resultando em segment fault~~
 	- ~~`< in` ou `> out` com comportamento diferente do bash~~ 
-
 - [	] Exportação de variável com caracteres diferentes de alfanuméricos
 	- `export v@r=1` sendo processado, em vez de resultar em `bash: export: 'v@ar': not a valid identifier` no bash
 - [ ] Executar o histórico não esta funcionando
@@ -34,7 +33,6 @@
 	- "Validar se é um comportamento do `WSL` do windows ou se no unix acontece a mesma coisa
 - [ ] Redirecionamento IN e OUT isolados `< in` ou `> out`, pendentes de implementação
 
-
 ## [[`IN_EVAL?`]] Vale a pena cobrir? 
 
 - [ ] Expandir variável com underscore não esta funcionando
@@ -49,6 +47,9 @@
 	- `..` resultando em `execve: Permission denied`, em vez de `..: command not found`
 - [ ] Execução de ´.´ seguido de um arquivo, não esta funcionando
 	- `. file.sh` resultando em `execve: Permission denied`, em vez de executar o arquivo
+- [ ] Expandir variável com aspas depois de `$` com comportamento diferente
+	- `echo $'var'` resultando em `$var: command not found'`, no bash não tem o cifrão `var: command not found`
+	- `echo $"var"` resultando em `$var: command not found'`, no bash não tem o cifrão `var: command not found`
 
 ## Cenários Estranhos
 
