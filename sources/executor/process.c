@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 22:12:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/13 09:23:58 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	child_process(t_process_command_args *param)
 	if (is_builtin(param->cmd->args[0]))
 		exit_free(execute_builtin(param->cmd, &param->env, param->last_exit),
 			param->env, param->cmd, param->tokens);
-	exit_free(execute_external(param->cmd, param->env),
-		param->env, param->cmd, param->tokens);
+	exit_free(execute_external(param->cmd, param->env), param->env, param->cmd,
+		param->tokens);
 }
 
 void	parent_process(t_process_command_args *param)
@@ -47,8 +47,11 @@ void	parent_process(t_process_command_args *param)
 		dup2(param->pipefd[0], STDIN_FILENO);
 		close(param->pipefd[0]);
 	}
-	waitpid(param->pid, &status, 0);
-	*(param->last_exit) = WEXITSTATUS(status);
+	if (!param->cmd->next)
+	{
+		waitpid(param->pid, &status, 0);
+		*(param->last_exit) = WEXITSTATUS(status);
+	}
 }
 
 int	process_command(t_command *cmd, char **env, int *last_exit, t_token *tokens)

@@ -32,7 +32,7 @@ EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
 VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c
 
 SRCS = \
-	sources/main.c sources/utils.c \
+	sources/main.c sources/utils.c sources/gay.c\
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
 	$(EXPANSION_SRCS) $(VALIDATOR_SRCS)
