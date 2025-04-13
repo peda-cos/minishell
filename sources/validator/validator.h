@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:20:01 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/05 19:44:19 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:52:24 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 int	is_pipe(t_token *token);
 int	is_redirection(t_token *token);
-int	is_invalid_token(t_token *token);
 int	is_valid_redirection(t_token *token);
 int	is_valid_pipe_position(t_token *token);
+int	is_invalid_token(t_token *token, char *value);
 
 #endif

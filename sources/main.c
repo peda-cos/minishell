@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/10 21:47:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:57:25 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	process_input(char *input, char ***env, int *last_exit)
 	tokens = tokenize_input(input);
 	if (!tokens)
 		return ;
-	if (validate_tokens(&tokens))
+	if (validate_tokens(&tokens, *env, last_exit))
 	{
 		*last_exit = STDERR_FILENO;
 		return (free_tokens(tokens));
@@ -81,7 +81,7 @@ int	main(int argc, char **argv, char **envp)
 	last_exit = 0;
 	env = copy_env(envp);
 	setup_interactive_signals();
-	while (1)
+	while (TRUE)
 	{
 		input = readline(PROMPT);
 		if (handle_eof(input))

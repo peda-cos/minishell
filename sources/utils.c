@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 22:33:12 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:55:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,20 @@ void	free_env(char **env)
 
 void	free_tokens(t_token *tokens)
 {
-	t_token	*tmp;
+	t_token			*tmp;
+	t_token_content	*tmp_content;
 
 	while (tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
-		free(tmp->value);
+		while (tmp->content)
+		{
+			tmp_content = tmp->content;
+			tmp->content = tmp->content->next;
+			free(tmp_content->value);
+			free(tmp_content);
+		}
 		free(tmp);
 	}
 }
@@ -96,4 +103,30 @@ void	exit_free(int signal,
 	free_commands(cmds);
 	free_tokens(tokens);
 	exit(signal);
+}
+
+char	*get_content_value(t_content_params *params)
+{
+	t_token_content	*content;
+	char			*temp_str;
+	char			*value_str;
+	char			*value_expanded;
+
+	if (!params->content)
+		return (NULL);
+	value_str = ft_strdup("");
+	content = params->content;
+	while (content)
+	{
+		temp_str = value_str;
+		if (content->in_single_quotes)
+			value_expanded = ft_strdup(content->value);
+		else
+			value_expanded = expand_variable(content->value,
+					params->envs, *params->last_exit_code);
+		value_str = ft_strjoin(value_str, value_expanded);
+		free(temp_str);
+		content = content->next;
+	}
+	return (value_str);
 }

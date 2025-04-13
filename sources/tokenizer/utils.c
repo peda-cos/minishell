@@ -6,23 +6,31 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 19:47:45 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:56:00 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
-t_token	*new_token(char *value, t_token_type type)
+t_token	*new_token(t_token_content *content, t_token_type type)
 {
-	t_token	*token;
+	t_token			*token;
+	t_token_content	*tmp_content;
 
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->value = value;
-	token->type = type;
+	token->length = 0;
 	token->prev = NULL;
 	token->next = NULL;
+	token->type = type;
+	token->content = content;
+	tmp_content = content;
+	while (tmp_content->next)
+	{
+		token->length += ft_strlen(tmp_content->value);
+		tmp_content = tmp_content->next;
+	}
 	return (token);
 }
 

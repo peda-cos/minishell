@@ -22,8 +22,8 @@
 	- O que é estranho pois quando executado `cat Makefile |>out grep ".c"` ele funciona normalmente
 - [ ] `export var=1 2` esta colocando	o valor 2 como variável de ambiente além de `var=1`
 	- O bash resulta ein: `bash: export: '2': not a valid identifier` e coloca `var=1` como variável de ambiente
-- [ ] Expandir variável dentro de aspas simples esta ocorrendo, mas não deveria
-	- `echo '$var 2'` resultando em `1 2`, em vez de  `$var 2`
+- [x] ~~Expandir variável dentro de aspas simples esta ocorrendo, mas não deveria~~
+	- ~~`echo '$var 2'` resultando em `1 2`, em vez de  `$var 2`~~
 - [ ] Expandir variável com aspas simples dentro de aspas duplas divergente do bash
 	- `echo "'$var'0"` resultando em `'$var'0`, em vez de `10`
 	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`

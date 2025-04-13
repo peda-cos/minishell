@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 19:45:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:52:18 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	is_pipe(t_token *token)
 	return (token->type == PIPE);
 }
 
-int	is_invalid_token(t_token *token)
+int	is_invalid_token(t_token *token, char *value)
 {
-	if (token->type == WORD && (!token->value || strlen(token->value) == 0))
+	if (token->type == WORD && (!value || strlen(value) == 0))
 		return (TRUE);
 	if (is_pipe(token) && (!token->prev || !token->next))
 		return (TRUE);

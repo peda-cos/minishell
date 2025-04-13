@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 22:12:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 23:31:13 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,16 @@ void		free_tokens(t_token *tokens);
 void		free_commands(t_command *cmd);
 
 /* Utility for variable expansion */
-char		*expand_variables(char *str, char **env, int last_exit);
+char		*expand_variable(char *str, char **env, int last_exit);
 char		*ft_strjoin_char(char *str, char c);
 
 /* Tokenizer: splits input into tokens */
 t_token		*tokenize_input(char *input);
 
 /* Validates for tokens syntax errors */
-int			validate_tokens(t_token **tokens);
+int			validate_tokens(t_token **tokens, char **env, int *last_exit);
+
+/* Utils */
+char		*get_content_value(t_content_params *params);
 
 #endif

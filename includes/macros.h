@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/27 22:42:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:08:13 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@
 # define REDIRECT_OUT_STR ">"
 /* ----------------------- */
 
-# define PROMPT "\033[32m Minishell $ \033[0m"
+# define PROMPT "\033[32mMinishell $ \033[0m"
 
 #endif
