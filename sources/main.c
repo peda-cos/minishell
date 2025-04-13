@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/10 21:47:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/13 09:40:51 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	execute_parent_builtin(t_command *cmd,
-	char ***env, int *last_exit, t_token *tokens)
+static void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
+		t_token *tokens)
 {
 	if (!ft_strcmp(cmd->args[0], "cd"))
 		*last_exit = builtin_cd(cmd->args, env);
@@ -28,8 +28,8 @@ static void	execute_parent_builtin(t_command *cmd,
 	}
 }
 
-static void	execute_command_line(t_command *cmd,
-	char **env, int *last_exit, t_token *tokens)
+static void	execute_command_line(t_command *cmd, char **env, int *last_exit,
+		t_token *tokens)
 {
 	int	saved_stdin;
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 	setup_interactive_signals();
 	while (1)
 	{
-		input = readline(PROMPT);
+		input = readline(get_colored_prompt());
 		if (handle_eof(input))
 			break ;
 		process_input(input, &env, &last_exit);

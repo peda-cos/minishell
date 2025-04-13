@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macros.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/27 22:42:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/13 09:34:11 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,5 @@
 # define REDIRECT_IN_STR "<"
 # define REDIRECT_OUT_STR ">"
 /* ----------------------- */
-
-# define PROMPT "\033[32m Minishell $ \033[0m"
 
 #endif
