@@ -31,7 +31,7 @@ valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressi
 
 ### 5. **Variáveis de ambiente**
 - [x] Implementar a expansão de variáveis de ambiente, quando o caractere `$` for seguido por uma sequência de caracteres.
-- [ ] Implementar a expansão do ` $? ` que deve se expandir para o status de saída do pipeline em primeiro plano mais recentemente executado.
+- [x] Implementar a expansão do ` $? ` que deve se expandir para o status de saída do pipeline em primeiro plano mais recentemente executado.
 
 ### 6. **Comportamento de sinais**
 - [x] Implementar o comportamento dos sinais `ctrl-C`, `ctrl-D` e `ctrl-\` conforme o comportamento do bash.
