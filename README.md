@@ -1,5 +1,9 @@
 # Checklist para a implementação do Minishell
 
+```sh
+valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=leaks.supp -q ./minishell
+```
+
 ### 1. **Comportamento básico do shell**
 - [x] Exibir um prompt ao aguardar um novo comando.
 - [x] Implementar histórico de comandos.
