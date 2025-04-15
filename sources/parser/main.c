@@ -66,6 +66,9 @@ static int	handle_redirection(t_command *cmd,
 		ft_putstr_fd(SYNTAX_ERROR_MSG, STDERR_FILENO);
 		return (0);
 	}
+	params.envs = envs;
+	params.last_exit_code = last_exit;
+	params.content = (*token_ptr)->content;
 	if (token->type == REDIRECT_OUT || token->type == APPEND)
 	{
 		content_value = get_token_content_value(&params);
@@ -73,9 +76,6 @@ static int	handle_redirection(t_command *cmd,
 		if (!result)
 			return (0);
 	}
-	params.envs = envs;
-	params.last_exit_code = last_exit;
-	params.content = (*token_ptr)->content;
 	set_redirection_target(cmd, token, &params);
 	*token_ptr = (*token_ptr)->next;
 	return (1);
