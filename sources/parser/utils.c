@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 01:50:55 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:23:23 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "parser.h"
 
 static t_command	*new_command(void)
 {
@@ -67,8 +67,9 @@ static int	count_word_tokens(t_token *token)
 t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 		int last_exit)
 {
-	int	count;
-	int	i;
+	int					i;
+	int					count;
+	t_content_params	content_params;
 
 	count = count_word_tokens(token);
 	cmd->args = malloc(sizeof(char *) * (count + 1));
@@ -77,11 +78,20 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 	i = 0;
 	while (i < count && token && token->type == WORD)
 	{
-		cmd->args[i] = expand_variables(token->value, env, last_exit);
+		content_params.envs = env;
+		content_params.last_exit_code = &last_exit;
+		content_params.content = token->content;
+		cmd->args[i] = get_token_content_value(&content_params);
 		i++;
 		token = token->next;
 	}
 	cmd->args[i] = NULL;
 	cmd->argc = count;
 	return (token);
+}
+
+int	is_redirection(t_token_type type)
+{
+	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND
+		|| type == HEREDOC);
 }

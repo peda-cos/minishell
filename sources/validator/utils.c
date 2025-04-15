@@ -6,17 +6,11 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/14 11:55:25 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/14 22:39:19 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "validator.h"
-
-int	is_redirection(t_token *token)
-{
-	return (token->type == REDIRECT_IN || token->type == REDIRECT_OUT
-		|| token->type == HEREDOC || token->type == APPEND);
-}
 
 int	is_pipe(t_token *token)
 {
@@ -25,7 +19,11 @@ int	is_pipe(t_token *token)
 
 int	is_invalid_token(t_token *token)
 {
-	if (token->type == WORD && (!token->value || strlen(token->value) == 0))
+	int	is_empty_or_null;
+
+	is_empty_or_null = !token->content->value
+		|| strlen(token->content->value) == 0;
+	if (token->type == WORD && is_empty_or_null)
 		return (TRUE);
 	if (is_pipe(token) && (!token->prev || !token->next))
 		return (TRUE);

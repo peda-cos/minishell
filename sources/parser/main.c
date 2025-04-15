@@ -3,38 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/14 02:07:45 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:43:53 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
-
-static int	is_redirection(t_token_type type)
-{
-	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND
-		|| type == HEREDOC);
-}
+#include "parser.h"
 
 static void	set_redirection_target(t_command *cmd, t_token *token,
-		t_token *target)
+		t_content_params *content_params)
 {
 	if (token->type == REDIRECT_IN)
-		cmd->input_file = ft_strdup(target->value);
+		cmd->input_file = get_token_content_value(content_params);
 	else if (token->type == REDIRECT_OUT)
 	{
-		cmd->output_file = ft_strdup(target->value);
+		cmd->output_file = get_token_content_value(content_params);
 		cmd->append = 0;
 	}
 	else if (token->type == APPEND)
 	{
-		cmd->output_file = ft_strdup(target->value);
+		cmd->output_file = get_token_content_value(content_params);
 		cmd->append = 1;
 	}
 	else if (token->type == HEREDOC)
-		cmd->heredoc_delim = ft_strdup(target->value);
+		cmd->heredoc_delim = get_token_content_value(content_params);
 }
 
 static int	create_output_file(char *filename, int append)
@@ -57,31 +51,38 @@ static int	create_output_file(char *filename, int append)
 	return (1);
 }
 
-static int	handle_redirection(t_command *cmd, t_token **token_ptr)
+static int	handle_redirection(t_command *cmd,
+	t_token **token_ptr, char **envs, int *last_exit)
 {
-	t_token	*token;
-	int		result;
+	t_token				*token;
+	int					result;
+	t_content_params	params;
+	char				*content_value;
 
 	token = *token_ptr;
 	*token_ptr = token->next;
 	if (!*token_ptr || (*token_ptr)->type != WORD)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token\n",
-			STDERR_FILENO);
+		ft_putstr_fd(SYNTAX_ERROR_MSG, STDERR_FILENO);
 		return (0);
 	}
 	if (token->type == REDIRECT_OUT || token->type == APPEND)
 	{
-		result = create_output_file((*token_ptr)->value, token->type == APPEND);
+		content_value = get_token_content_value(&params);
+		result = create_output_file(content_value, token->type == APPEND);
 		if (!result)
 			return (0);
 	}
-	set_redirection_target(cmd, token, *token_ptr);
+	params.envs = envs;
+	params.last_exit_code = last_exit;
+	params.content = (*token_ptr)->content;
+	set_redirection_target(cmd, token, &params);
 	*token_ptr = (*token_ptr)->next;
 	return (1);
 }
 
-static t_token	*process_token(t_token *token, t_parser_context *parser)
+static t_token	*process_token(t_token *token,
+	t_parser_context *parser, char **envs, int *last_exit)
 {
 	if (!parser->current)
 	{
@@ -96,7 +97,7 @@ static t_token	*process_token(t_token *token, t_parser_context *parser)
 	}
 	if (is_redirection(token->type))
 	{
-		if (!handle_redirection(parser->current, &token))
+		if (!handle_redirection(parser->current, &token, envs, last_exit))
 			return (token);
 		return (token);
 	}
@@ -115,6 +116,6 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 	parser.env = env;
 	parser.last_exit = last_exit;
 	while (tokens)
-		tokens = process_token(tokens, &parser);
+		tokens = process_token(tokens, &parser, env, &last_exit);
 	return (parser.head);
 }

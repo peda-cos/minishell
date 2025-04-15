@@ -3,58 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 22:11:04 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:29:33 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static char	*init_expansion(char *str, int *params)
+static char	*extract_var_name(const char *str, int *index)
 {
-	char	*result;
+	int		start;
 
-	if (!str)
-		return (NULL);
-	result = ft_strdup("");
-	if (!result)
-		return (NULL);
-	params[0] = 0;
-	params[1] = 0;
+	start = *index;
+	while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_'))
+		(*index)++;
+	return (ft_substr(str, start, *index - start));
+}
+
+static char	*extract_env_value(char *str, char **env, int last_exit, int *index)
+{
+	char	*var;
+	char	*value;
+
+	if (str[*index] == '?')
+	{
+		*index += 1;
+		return (ft_itoa(last_exit));
+	}
+	var = extract_var_name(str, index);
+	if (!var)
+		return (ft_strdup(""));
+	value = get_env_value(var, env);
+	free(var);
+	if (!value)
+		return (ft_strdup(""));
+	return (ft_strdup(value));
+}
+
+static char	*extract_result(char *partial, char *result)
+{
+	char	*partial_temp;
+	char	*result_temp;
+
+	if (!partial)
+		return (result);
+	partial_temp = partial;
+	result_temp = result;
+	result = ft_strjoin(result, partial_temp);
+	free(result_temp);
+	free(partial_temp);
 	return (result);
 }
 
-static void	handle_char(char *str, char **result, int *i, int *in_quotes)
+char	*expand_variable(char *str, char **env, int last_exit)
 {
-	char	*temp;
+	int		i;
+	int		start;
+	char	*value;
+	char	*result;
 
-	if (str[*i] == '\'')
-		*in_quotes = !(*in_quotes);
-	temp = *result;
-	*result = ft_strjoin_char(*result, str[*i]);
-	free(temp);
-	(*i)++;
-}
-
-char	*expand_variables(char *str, char **env, int last_exit)
-{
-	t_expansion_ctx	ctx;
-	char			*result;
-	int				params[2];
-
-	ctx.env = env;
-	ctx.last_exit = last_exit;
-	result = init_expansion(str, params);
-	if (!result)
+	i = 0;
+	if (!str)
 		return (NULL);
-	while (str[params[0]])
+	result = ft_strdup("");
+	while (str[i])
 	{
-		if (str[params[0]] == '$' && !params[1])
-			result = process_var_expansion(result, str, &params[0], &ctx);
-		else
-			handle_char(str, &result, &params[0], &params[1]);
+		start = i;
+		while (str[i] && str[i] != '$')
+			i++;
+		result = extract_result(ft_substr(str, start, i - start), result);
+		if (str[i] == '$')
+		{
+			i++;
+			value = extract_env_value(str, env, last_exit, &i);
+			result = extract_result(value, result);
+		}
 	}
 	return (result);
 }
