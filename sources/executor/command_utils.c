@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/11 00:32:27 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/13 14:53:09 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	is_builtin(char *cmd)
 		return (0);
 	return (!ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "cd") || !ft_strcmp(cmd,
 			"pwd") || !ft_strcmp(cmd, "export") || !ft_strcmp(cmd, "unset")
-		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit"));
+		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "exit") || !ft_strcmp(cmd,
+			"history"));
 }
 
 int	execute_builtin(t_command *cmd, char ***env, int *last_exit)
@@ -39,6 +40,8 @@ int	execute_builtin(t_command *cmd, char ***env, int *last_exit)
 		return (builtin_env(*env));
 	else if (!ft_strcmp(cmd->args[0], "exit"))
 		return (builtin_exit(cmd->args));
+	else if (!ft_strcmp(cmd->args[0], "history"))
+		return (builtin_history(cmd->args, last_exit));
 	return (1);
 }
 

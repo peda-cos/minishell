@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 09:48:36 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/13 14:30:29 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../sources/handler/signals.h"
 # include "../sources/builtin/builtin.h"
 # include "../sources/expansion/expansion.h"
+# include "../sources/history/history.h"
 
 # include <fcntl.h>
 # include <stdio.h>
