@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/07 22:12:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/13 14:30:29 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "../sources/handler/signals.h"
 # include "../sources/builtin/builtin.h"
 # include "../sources/expansion/expansion.h"
+# include "../sources/history/history.h"
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -32,8 +33,8 @@
 /* Environment management */
 char		**copy_env(char **envp);
 void		free_env(char **env);
-void		exit_free(int signal,
-				char **envs, t_command *cmds, t_token *tokens);
+void		exit_free(int signal, char **envs, t_command *cmds,
+				t_token *tokens);
 
 /* Parser: builds a linked list of commands from tokens */
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit);
@@ -58,5 +59,8 @@ t_token		*tokenize_input(char *input);
 
 /* Validates for tokens syntax errors */
 int			validate_tokens(t_token **tokens);
+
+/* Returns a colored prompt string with rotating pastel colors */
+char		*get_colored_prompt(void);
 
 #endif

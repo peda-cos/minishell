@@ -6,7 +6,7 @@
 #    By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/19 19:01:24 by peda-cos          #+#    #+#              #
-#    Updated: 2025/03/25 08:29:15 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/04/13 15:24:26 by peda-cos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,14 @@ EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c 
 EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
 VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c
+HISTORY_SRCS = sources/history/main.c sources/history/read.c \
+				sources/history/file.c sources/history/write.c
 
 SRCS = \
-	sources/main.c sources/utils.c \
+	sources/main.c sources/utils.c sources/gay.c\
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
-	$(EXPANSION_SRCS) $(VALIDATOR_SRCS)
+	$(EXPANSION_SRCS) $(VALIDATOR_SRCS) $(HISTORY_SRCS)
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = $(LIBFT_DIR)/libft.a
