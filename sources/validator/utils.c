@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 19:45:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:55:25 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 int	is_redirection(t_token *token)
 {
-	return (token->type == REDIRECT_IN
-		|| token->type == REDIRECT_OUT
-		|| token->type == HEREDOC
-		|| token->type == APPEND);
+	return (token->type == REDIRECT_IN || token->type == REDIRECT_OUT
+		|| token->type == HEREDOC || token->type == APPEND);
 }
 
 int	is_pipe(t_token *token)
@@ -38,7 +36,10 @@ int	is_valid_pipe_position(t_token *token)
 {
 	if (!token->prev || !token->next)
 		return (FALSE);
-	if (token->prev->type != WORD || token->next->type != WORD)
+	if (token->prev->type != WORD)
+		return (FALSE);
+	if (token->next->type != WORD && !(is_redirection(token->next)
+			&& token->next->next && token->next->next->type == WORD))
 		return (FALSE);
 	return (TRUE);
 }

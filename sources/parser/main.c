@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 01:51:38 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/14 02:07:45 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,30 @@ static void	set_redirection_target(t_command *cmd, t_token *token,
 		cmd->heredoc_delim = ft_strdup(target->value);
 }
 
+static int	create_output_file(char *filename, int append)
+{
+	int	flags;
+	int	fd;
+
+	flags = O_WRONLY | O_CREAT;
+	if (append)
+		flags |= O_APPEND;
+	else
+		flags |= O_TRUNC;
+	fd = open(filename, flags, 0644);
+	if (fd < 0)
+	{
+		perror(filename);
+		return (0);
+	}
+	close(fd);
+	return (1);
+}
+
 static int	handle_redirection(t_command *cmd, t_token **token_ptr)
 {
 	t_token	*token;
+	int		result;
 
 	token = *token_ptr;
 	*token_ptr = token->next;
@@ -48,6 +69,12 @@ static int	handle_redirection(t_command *cmd, t_token **token_ptr)
 		ft_putstr_fd("minishell: syntax error near unexpected token\n",
 			STDERR_FILENO);
 		return (0);
+	}
+	if (token->type == REDIRECT_OUT || token->type == APPEND)
+	{
+		result = create_output_file((*token_ptr)->value, token->type == APPEND);
+		if (!result)
+			return (0);
 	}
 	set_redirection_target(cmd, token, *token_ptr);
 	*token_ptr = (*token_ptr)->next;
