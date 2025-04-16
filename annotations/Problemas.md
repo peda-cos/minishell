@@ -15,23 +15,23 @@
 - [x] ~~Expandir variável dentro de aspas simples esta ocorrendo, mas não deveria~~
 	- ~~`echo '$var 2'` resultando em `1 2`, em vez de  `$var 2`~~
 - [x] Expandir variável com aspas simples dentro de aspas duplas divergente do bash
+- [x] Execução de redirect aninhado resultando em arquivo vazio
+	- `cat Makefile |>out` resultando em arquivo vazio
+	- O que é estranho pois quando executado `cat Makefile |>out grep ".c"` ele funciona normalmente
+- [x] `export var=1 2` esta colocando	o valor 2 como variável de ambiente além de `var=1`
+	- O bash resulta ein: `bash: export: '2': not a valid identifier` e coloca `var=1` como variável de ambiente
+	- `echo "'$var'0"` resultando em `'$var'0`, em vez de `10`
+	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`
+- [x] Redirecionamentos com múltiplos pipes não estão funcionando
+	- `echo 123 > a > b >> c` processa apenas o ultimo redirecionamento
+- [x] Redirecionamento IN e OUT isolados `< in` ou `> out`, pendentes de implementação
 - [	] Exportação de variável com caracteres diferentes de alfanuméricos
 	- `export v@r=1` sendo processado, em vez de resultar em `bash: export: 'v@ar': not a valid identifier` no bash
 - [ ] Executar o histórico não esta funcionando
 	- `history` resultando em `history: command not found`, em vez de exibir o histórico
 	- Validar se `<<` não esta atualizando o histórico
-- [ ] Execução de redirect aninhado resultando em arquivo vazio
-	- `cat Makefile |>out` resultando em arquivo vazio
-	- O que é estranho pois quando executado `cat Makefile |>out grep ".c"` ele funciona normalmente
-- [ ] `export var=1 2` esta colocando	o valor 2 como variável de ambiente além de `var=1`
-	- O bash resulta ein: `bash: export: '2': not a valid identifier` e coloca `var=1` como variável de ambiente
-	- `echo "'$var'0"` resultando em `'$var'0`, em vez de `10`
-	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`
-- [ ] Redirecionamentos com múltiplos pipes não estão funcionando
-	- `echo 123 > a > b >> c` processa apenas o ultimo redirecionamento
 - [ ] Comando `exit` deveria registrar "exit" no terminal?
 	- "Validar se é um comportamento do `WSL` do windows ou se no unix acontece a mesma coisa
-- [ ] Redirecionamento IN e OUT isolados `< in` ou `> out`, pendentes de implementação
 
 ## [[`IN_EVAL?`]] Vale a pena cobrir? 
 
