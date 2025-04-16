@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/05 19:46:41 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/12 21:27:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,22 @@ typedef enum e_token_type
 	HEREDOC,
 	REDIRECT_IN,
 	REDIRECT_OUT,
-	FILE_DESCRIPTOR
+	FILE_DESCRIPTOR,
 }	t_token_type;
+
+typedef struct s_token_content
+{
+	struct s_token_content	*next;
+	char					*value;
+	int						in_single_quotes;
+}	t_token_content;
+
+typedef struct s_content_params
+{
+	char			**envs;
+	int				*last_exit_code;
+	t_token_content	*content;
+}	t_content_params;
 
 /* Token linked list */
 typedef struct s_token
@@ -31,7 +45,8 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*prev;
 	struct s_token	*next;
-	char			*value;
+	t_token_content	*content;
+	int				length;
 }	t_token;
 
 /* Command structure: a command is one segment (separated by pipes) */

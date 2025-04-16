@@ -27,14 +27,16 @@ EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 				sources/executor/heredoc.c sources/executor/redirection.c \
 				sources/executor/command_utils.c sources/executor/process.c \
 				sources/executor/process_utils.c
-TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c 
+TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c \
+				sources/tokenizer/word.c sources/tokenizer/redirect.c \
+				sources/tokenizer/token.c
 EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
 VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c
 HISTORY_SRCS = sources/history/main.c sources/history/read.c \
 				sources/history/file.c sources/history/write.c
 
 SRCS = \
-	sources/main.c sources/utils.c sources/gay.c\
+	sources/main.c sources/free.c sources/gay.c \
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
 	$(EXPANSION_SRCS) $(VALIDATOR_SRCS) $(HISTORY_SRCS)

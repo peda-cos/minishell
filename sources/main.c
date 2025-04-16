@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 15:37:09 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/12 22:57:25 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	main(int argc, char **argv, char **envp)
 	env = copy_env(envp);
 	setup_interactive_signals();
 	load_history();
-	while (1)
+	while (TRUE)
 	{
 		input = readline(get_colored_prompt());
 		if (handle_eof(input))

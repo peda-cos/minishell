@@ -12,7 +12,9 @@
 	- ~~`echo $var"0"` resultando em vazio, em vez de `10`, o inverso também é valido `echo '0'$var`~~
 - [x] ~~Redirecionamento IN e OUT isolados, resultando em segment fault~~
 	- ~~`< in` ou `> out` com comportamento diferente do bash~~ 
-
+- [x] ~~Expandir variável dentro de aspas simples esta ocorrendo, mas não deveria~~
+	- ~~`echo '$var 2'` resultando em `1 2`, em vez de  `$var 2`~~
+- [x] Expandir variável com aspas simples dentro de aspas duplas divergente do bash
 - [	] Exportação de variável com caracteres diferentes de alfanuméricos
 	- `export v@r=1` sendo processado, em vez de resultar em `bash: export: 'v@ar': not a valid identifier` no bash
 - [ ] Executar o histórico não esta funcionando
@@ -23,9 +25,6 @@
 	- O que é estranho pois quando executado `cat Makefile |>out grep ".c"` ele funciona normalmente
 - [ ] `export var=1 2` esta colocando	o valor 2 como variável de ambiente além de `var=1`
 	- O bash resulta ein: `bash: export: '2': not a valid identifier` e coloca `var=1` como variável de ambiente
-- [ ] Expandir variável dentro de aspas simples esta ocorrendo, mas não deveria
-	- `echo '$var 2'` resultando em `1 2`, em vez de  `$var 2`
-- [ ] Expandir variável com aspas simples dentro de aspas duplas divergente do bash
 	- `echo "'$var'0"` resultando em `'$var'0`, em vez de `10`
 	- `echo "'$var$var'"` resultando em `'$var$var'`, em vez de `11`
 - [ ] Redirecionamentos com múltiplos pipes não estão funcionando
@@ -33,7 +32,6 @@
 - [ ] Comando `exit` deveria registrar "exit" no terminal?
 	- "Validar se é um comportamento do `WSL` do windows ou se no unix acontece a mesma coisa
 - [ ] Redirecionamento IN e OUT isolados `< in` ou `> out`, pendentes de implementação
-
 
 ## [[`IN_EVAL?`]] Vale a pena cobrir? 
 
@@ -49,6 +47,9 @@
 	- `..` resultando em `execve: Permission denied`, em vez de `..: command not found`
 - [ ] Execução de ´.´ seguido de um arquivo, não esta funcionando
 	- `. file.sh` resultando em `execve: Permission denied`, em vez de executar o arquivo
+- [ ] Expandir variável com aspas depois de `$` com comportamento diferente
+	- `echo $'var'` resultando em `$var: command not found'`, no bash não tem o cifrão `var: command not found`
+	- `echo $"var"` resultando em `$var: command not found'`, no bash não tem o cifrão `var: command not found`
 
 ## Cenários Estranhos
 
