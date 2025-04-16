@@ -42,7 +42,7 @@
 - [ ] Expandir variável com colchetes não esta funcionando
 	- Deveria ser coberto `{}` ? Não diz que sim e nem que não o SUBJECT
 	- `echo ${var}` resultando em vazio, em vez de `1`
-- [ ] Navegar em diretórios usando apenas pontos com comportamentos diferentes
+- [x] Navegar em diretórios usando apenas pontos com comportamentos diferentes
 	- `.` resultando em `execve: Permission denied`, em vez de `bash: .: filename argument required`
 	- `..` resultando em `execve: Permission denied`, em vez de `..: command not found`
 - [ ] Execução de ´.´ seguido de um arquivo, não esta funcionando
@@ -55,7 +55,7 @@
 
 > Faz sentido cobrir?
 
-- [ ] Echo usado por ultimo em pipe tem comportamento diferente
+- [x] Echo usado por ultimo em pipe tem comportamento diferente
 	- Quando o echo vai como ultimo comando em um pipe, no shell original exibe a saída logo de imediato, no minishell ele aguarda o comando anterior finalizar
 	- `cat | echo 1` original exibi `1` e finaliza a leitura após o primeiro argumento lido, o minishell espera o delimitador
-	- [ ] `sleep 2 | echo 3` original exibe	o `3` primeiro antes de processar o `sleep`, o	minishell aguarda o sleep primeiro
+	- [x] `sleep 2 | echo 3` original exibe	o `3` primeiro antes de processar o `sleep`, o	minishell aguarda o sleep primeiro
