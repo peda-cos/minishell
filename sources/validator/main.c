@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/15 00:24:11 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:51:37 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	validate_tokens(t_token **tokens)
 	token = *tokens;
 	while (token)
 	{
-		if (is_invalid_token(token))
-			return (print_syntax_error(token->content->value));
 		if (is_pipe(token) && !is_valid_pipe_position(token))
 			return (print_syntax_error(token->content->value));
 		if (is_redirection(token) && !is_valid_redirection(token))

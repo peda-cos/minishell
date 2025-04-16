@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:20:01 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/15 02:25:51 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:53:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 # define INVALID_TOKEN_MSG_ERR	"Erro de sintaxe próximo ao token inesperado `"
 
 int	is_pipe(t_token *token);
-int	is_redirection(t_token *token);
-int	is_invalid_token(t_token *token);
+int	is_redirection(t_token_type type);
 int	is_valid_redirection(t_token *token);
 int	is_valid_pipe_position(t_token *token);
 
