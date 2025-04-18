@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/16 19:51:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:52:48 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	print_syntax_error(char *token_value)
 {
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(INVALID_TOKEN_MSG_ERR, STDERR_FILENO);
 	ft_putstr_fd(token_value, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);

@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/15 00:52:56 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:35:48 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,3 @@ void	add_token_word(char *str, int *index, t_token **tokens)
 	content = add_only_content_word(content, &param);
 	add_token(tokens, new_token(content, WORD));
 }
-// Precisa validar se content existe ?
