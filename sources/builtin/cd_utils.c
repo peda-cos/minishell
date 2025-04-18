@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:16:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 22:13:00 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/18 19:27:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	update_env_variable(char *key, char *value, char ***env)
 {
 	int		i;
+	char	*temp;
 	int		key_len;
 	char	*new_value;
 
@@ -25,7 +26,9 @@ void	update_env_variable(char *key, char *value, char ***env)
 		if (ft_strncmp((*env)[i], key, key_len) == 0
 			&& (*env)[i][key_len] == '=')
 		{
-			new_value = ft_strjoin(key, value);
+			temp = ft_strjoin(key, "=");
+			new_value = ft_strjoin(temp, value);
+			free(temp);
 			free((*env)[i]);
 			(*env)[i] = new_value;
 			return ;
