@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/12 22:40:35 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:27:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_token	*tokenize_input(char *input)
 	{
 		if (input[index] == DOT_AND_COMA_CHR)
 			break ;
-		if (ft_isspace(input[index]))
+		if (ft_isspace(input[index]) || input[index] == BACKSLASH_CHR)
 		{
 			index++;
 			continue ;

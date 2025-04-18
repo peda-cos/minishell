@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:20:01 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/16 19:53:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:47:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-# define INVALID_TOKEN_MSG_ERR	"Erro de sintaxe próximo ao token inesperado `"
+# define INVALID_TOKEN_MSG_ERR	"syntax error near unexpected token `"
 
 int	is_pipe(t_token *token);
 int	is_redirection(t_token_type type);

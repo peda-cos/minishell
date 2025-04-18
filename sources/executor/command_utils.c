@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 14:53:09 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:48:59 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static int	is_valid_executable(char *path)
 	if (stat(path, &path_stat) != 0)
 	{
 		err_stat = ft_strjoin("minishell: ", path);
-		perror(err_stat);
+		ft_putstr_fd(err_stat, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		free(err_stat);
 		return (FALSE);
 	}
