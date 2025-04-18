@@ -29,7 +29,7 @@ int	validate_tokens(t_token **tokens)
 	{
 		if (is_pipe(token) && !is_valid_pipe_position(token))
 			return (print_syntax_error(token->content->value));
-		if (is_redirection(token) && !is_valid_redirection(token))
+		if (is_redirection(token->type) && !is_valid_redirection(token))
 			return (print_syntax_error(token->content->value));
 		token = token->next;
 	}

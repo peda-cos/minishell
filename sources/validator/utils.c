@@ -23,7 +23,7 @@ int	is_valid_pipe_position(t_token *token)
 		return (FALSE);
 	if (token->prev->type != WORD)
 		return (FALSE);
-	if (token->next->type != WORD && !(is_redirection(token->next)
+	if (token->next->type != WORD && !(is_redirection(token->next->type)
 			&& token->next->next && token->next->next->type == WORD))
 		return (FALSE);
 	return (TRUE);
