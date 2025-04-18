@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/15 00:56:35 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:42:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int		builtin_exit(char **args);
 int		is_parent_builtin(char *cmd);
 
 /* Utility functions */
+int		is_valid_key(char *key);
+void	print_invalid_arg(char *arg);
 char	*get_env_value(char *key, char **env);
 void	update_env_variable(char *key, char *value, char ***env);
 

@@ -21,8 +21,8 @@ PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
 BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
 				sources/builtin/cd.c sources/builtin/echo.c \
-				sources/builtin/exit.c sources/builtin/export.c \
-				sources/builtin/pwd.c sources/builtin/unset.c
+				sources/builtin/pwd.c sources/builtin/unset.c \
+				sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c
 EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 				sources/executor/heredoc.c sources/executor/redirection.c \
 				sources/executor/command_utils.c sources/executor/process.c \
