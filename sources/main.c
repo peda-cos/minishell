@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/12 22:57:25 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:30:00 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 	else if (!ft_strcmp(cmd->args[0], "exit"))
 	{
 		*last_exit = builtin_exit(cmd->args);
-		exit_free(*last_exit, *env, cmd, tokens);
+		if (*last_exit != 1)
+			exit_free(*last_exit, *env, cmd, tokens);
 	}
 }
 
