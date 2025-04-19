@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/15 00:56:35 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 16:52:14 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ int		is_parent_builtin(char *cmd);
 
 /* Utility functions */
 char	*get_env_value(char *key, char **env);
+
+/* CD Utility functions */
+void	update_pwd_env(char *old_pwd, char ***env);
+int		change_to_home(char ***env, char *old_pwd);
+int		change_to_previous(char ***env, char *old_pwd);
+int		change_directory(char *dir, char ***env, char *old_pwd);
 void	update_env_variable(char *key, char *value, char ***env);
 
 #endif
