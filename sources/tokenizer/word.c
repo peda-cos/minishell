@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/20 00:21:47 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 00:25:02 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static t_token_content	*append_token_content(t_token_content *content,
 		param->word = get_word_in_quotes(param->str, param->str_index,
 				param->delimiter);
 		if (!param->word)
+		{
+			free(temp);
 			return (NULL);
+		}
 		new_content = new_token_content(ft_strdup(param->word),
 				param->delimiter == SINGLE_QUOTE_CHR);
 		free(temp);
