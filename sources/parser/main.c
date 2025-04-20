@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/12 21:43:53 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:48:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ static int	handle_redirection(t_command *cmd,
 	token = *token_ptr;
 	*token_ptr = token->next;
 	if (!*token_ptr || (*token_ptr)->type != WORD)
-	{
-		ft_putstr_fd(SYNTAX_ERROR_MSG, STDERR_FILENO);
-		return (0);
-	}
+		return (ft_putstr_fd(SYNTAX_ERROR_MSG, STDERR_FILENO), 0);
 	params.envs = envs;
 	params.last_exit_code = last_exit;
 	params.content = (*token_ptr)->content;
@@ -73,6 +70,7 @@ static int	handle_redirection(t_command *cmd,
 	{
 		content_value = get_token_content_value(&params);
 		result = create_output_file(content_value, token->type == APPEND);
+		free(content_value);
 		if (!result)
 			return (0);
 	}

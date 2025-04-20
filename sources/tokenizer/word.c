@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/18 15:35:48 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 19:02:33 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static t_token_content	*add_only_content_word(
 	{
 		param->word[param->word_index] = '\0';
 		content = append_token_content(content, param);
-		free(param->word);
 	}
 	return (content);
 }
@@ -83,6 +82,7 @@ static t_token_content	*process_word_in_quotes(
 	malloc_word_len = ft_strlen(param->str + *param->str_index);
 	param->delimiter = param->str[*param->str_index];
 	content = add_only_content_word(content, param);
+	free(param->word);
 	param->word = (char *)malloc(sizeof(char) * (malloc_word_len + 1));
 	param->word_index = 0;
 	param->in_quotes = TRUE;
@@ -116,5 +116,6 @@ void	add_token_word(char *str, int *index, t_token **tokens)
 		(*index)++;
 	}
 	content = add_only_content_word(content, &param);
+	free(param.word);
 	add_token(tokens, new_token(content, WORD));
 }

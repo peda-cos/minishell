@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/18 15:33:14 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:49:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*new_token(t_token_content *content, t_token_type type)
 	t_token_content	*tmp_content;
 
 	token = malloc(sizeof(t_token));
-	if (!token ||	!content)
+	if (!token || !content)
 		return (NULL);
 	token->length = 0;
 	token->prev = NULL;
@@ -95,6 +95,7 @@ char	*get_token_content_value(t_content_params *params)
 			value_expanded = expand_variable(content->value,
 					params->envs, *params->last_exit_code);
 		value_str = ft_strjoin(value_str, value_expanded);
+		free(value_expanded);
 		free(temp_str);
 		content = content->next;
 	}
