@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/19 22:49:06 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:33:50 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ t_token_content	*new_token_content(char *value, int in_single_quotes)
 	if (!value)
 		return (NULL);
 	content = malloc(sizeof(t_token_content));
+	if (!content)
+	{
+		free(value);
+		return (NULL);
+	}
 	content->next = NULL;
 	content->value = value;
 	content->in_single_quotes = in_single_quotes;
@@ -82,9 +87,11 @@ char	*get_token_content_value(t_content_params *params)
 	char			*value_str;
 	char			*value_expanded;
 
-	if (!params->content)
+	if (!params || !params->content)
 		return (NULL);
 	value_str = ft_strdup("");
+	if (!value_str)
+		return (NULL);
 	content = params->content;
 	while (content)
 	{
@@ -92,11 +99,18 @@ char	*get_token_content_value(t_content_params *params)
 		if (content->in_single_quotes)
 			value_expanded = ft_strdup(content->value);
 		else
-			value_expanded = expand_variable(content->value,
-					params->envs, *params->last_exit_code);
+			value_expanded = expand_variable(content->value, params->envs,
+					*params->last_exit_code);
+		if (!value_expanded)
+		{
+			free(value_str);
+			return (NULL);
+		}
 		value_str = ft_strjoin(value_str, value_expanded);
 		free(value_expanded);
 		free(temp_str);
+		if (!value_str)
+			return (NULL);
 		content = content->next;
 	}
 	return (value_str);
