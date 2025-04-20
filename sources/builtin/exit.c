@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:21:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/10 21:46:47 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 17:32:33 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,17 @@ static int	is_numeric_arg(char *str)
 	int	i;
 
 	i = 0;
+	if (str[i] == '\0')
+		return (FALSE);
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
-			return (0);
+			return (FALSE);
 		i++;
 	}
-	return (1);
+	return (TRUE);
 }
 
 int	builtin_exit(char **args)
@@ -34,7 +36,7 @@ int	builtin_exit(char **args)
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	exit_code = 0;
-	if (!args[1])
+	if (args[1] == NULL)
 		return (exit_code);
 	if (!is_numeric_arg(args[1]))
 	{
