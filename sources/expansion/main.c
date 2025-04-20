@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/19 22:38:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:35:00 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static char	*extract_env_value(char *str, char **env, int last_exit, int *index)
 	char	*var;
 	char	*value;
 
+	if (ft_isspace(str[*index]) || str[*index] == '\0')
+		return (ft_strdup("$"));
 	if (str[*index] == '?')
 	{
 		*index += 1;
