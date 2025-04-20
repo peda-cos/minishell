@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 00:54:39 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 01:57:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define ANSI_ESC_START "\001\033["
 # define ANSI_ESC_END "\002"
 # define ANSI_RESET "\001\033[0m\002"
+# define COLOR_PASTEL_WHITE "\001\033[38;5;255m\002"
 # define COLOR_PASTEL_ORANGE "\001\033[38;5;214m\002"
 # define COLOR_PASTEL_PURPLE "\001\033[38;5;183m\002"
 # define COLOR_PASTEL_PINK "\001\033[38;5;217m\002"
