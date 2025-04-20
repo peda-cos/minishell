@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/18 16:42:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 23:46:37 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ int		is_parent_builtin(char *cmd);
 int		is_valid_key(char *key);
 void	print_invalid_arg(char *arg);
 char	*get_env_value(char *key, char **env);
+
+/* CD Utility functions */
+void	update_pwd_env(char *old_pwd, char ***env);
+int		change_to_home(char ***env, char *old_pwd);
+int		change_to_previous(char ***env, char *old_pwd);
+int		change_directory(char *dir, char ***env, char *old_pwd);
 void	update_env_variable(char *key, char *value, char ***env);
 
 #endif
