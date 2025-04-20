@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/15 00:23:26 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/19 19:50:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	add_token_redirect(char *input, int *index, t_token **tokens)
 	}
 	else
 	{
-		if (ft_isdigit(input[*index - 1]))
+		if (input && *index > 0 && ft_isdigit(input[*index - 1]))
 		{
 			last_token = get_last_token(tokens);
 			if (last_token->length == 1)
