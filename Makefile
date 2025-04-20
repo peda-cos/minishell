@@ -36,7 +36,7 @@ HISTORY_SRCS = sources/history/main.c sources/history/read.c \
 				sources/history/file.c sources/history/write.c
 
 SRCS = \
-	sources/main.c sources/free.c sources/gay.c \
+	sources/main.c sources/utils.c sources/free.c sources/gay.c \
 	$(EXECUTOR_SRCS) $(TOKENIZER_SRCS) \
 	$(PARSER_SRCS) $(HANDLER_SRCS) $(BUILTIN_SRCS) \
 	$(EXPANSION_SRCS) $(VALIDATOR_SRCS) $(HISTORY_SRCS)
