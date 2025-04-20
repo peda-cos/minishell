@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/12 22:23:23 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:33:19 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,16 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 		int last_exit)
 {
 	int					i;
+	int					j;
 	int					count;
 	t_content_params	content_params;
+	t_token				*orig_token;
 
 	count = count_word_tokens(token);
 	cmd->args = malloc(sizeof(char *) * (count + 1));
 	if (!cmd->args)
 		return (token);
+	orig_token = token;
 	i = 0;
 	while (i < count && token && token->type == WORD)
 	{
@@ -82,6 +85,14 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 		content_params.last_exit_code = &last_exit;
 		content_params.content = token->content;
 		cmd->args[i] = get_token_content_value(&content_params);
+		if (!cmd->args[i])
+		{
+			for (j = 0; j < i; j++)
+				free(cmd->args[j]);
+			free(cmd->args);
+			cmd->args = NULL;
+			return (orig_token);
+		}
 		i++;
 		token = token->next;
 	}
