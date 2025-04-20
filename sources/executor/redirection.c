@@ -6,17 +6,17 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:15:40 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:16:36 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 00:55:08 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static int	setup_heredoc_input(char *delim)
+static int	setup_heredoc_input(char *delim, char **env, int last_exit)
 {
 	int	hd_fd;
 
-	hd_fd = handle_heredoc(delim);
+	hd_fd = handle_heredoc(delim, env, last_exit);
 	if (hd_fd < 0)
 		return (-1);
 	if (dup2(hd_fd, STDIN_FILENO) < 0)
@@ -43,12 +43,12 @@ static int	setup_file_input(char *input_file)
 	return (0);
 }
 
-int	setup_input_redirection(t_command *cmd)
+int	setup_input_redirection(t_command *cmd, char **env, int last_exit)
 {
 	if (!cmd)
 		return (-1);
 	if (cmd->heredoc_delim)
-		return (setup_heredoc_input(cmd->heredoc_delim));
+		return (setup_heredoc_input(cmd->heredoc_delim, env, last_exit));
 	else if (cmd->input_file)
 		return (setup_file_input(cmd->input_file));
 	return (0);

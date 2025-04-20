@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/25 08:16:51 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 00:55:01 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,91 @@ static char	*append_to_buffer(char *buffer, char *line)
 	return (result);
 }
 
-static char	*read_heredoc_content(char *delim)
+static int	is_quoted_delimiter(char *delim)
+{
+	int	len;
+
+	len = ft_strlen(delim);
+	return (len >= 2 && delim[0] == '\'' && delim[len - 1] == '\'');
+}
+
+static char	*process_heredoc_line(char *line, char **env, int last_exit,
+		int expand_vars)
+{
+	char	*expanded;
+
+	if (!expand_vars)
+		return (ft_strdup(line));
+	expanded = expand_variable(line, env, last_exit);
+	return (expanded);
+}
+
+static char	*read_heredoc_content(char *delim, char **env, int last_exit)
 {
 	char	*line;
 	char	*buffer;
+	char	*processed_line;
+	int		expand_vars;
+	char	*stripped_delim;
 
 	buffer = ft_strdup("");
 	if (!buffer)
 		return (NULL);
+	expand_vars = !is_quoted_delimiter(delim);
+	if (!expand_vars && delim[0] == '\'')
+	{
+		stripped_delim = ft_substr(delim, 1, ft_strlen(delim) - 2);
+		if (!stripped_delim)
+		{
+			free(buffer);
+			return (NULL);
+		}
+	}
+	else
+		stripped_delim = ft_strdup(delim);
+	if (!stripped_delim)
+	{
+		free(buffer);
+		return (NULL);
+	}
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, delim))
+		if (!line || !ft_strcmp(line, stripped_delim))
 		{
 			free(line);
+			free(stripped_delim);
 			break ;
 		}
-		buffer = append_to_buffer(buffer, line);
-		if (!buffer)
-			return (NULL);
+		processed_line = process_heredoc_line(line, env, last_exit,
+				expand_vars);
 		free(line);
+		if (!processed_line)
+		{
+			free(buffer);
+			free(stripped_delim);
+			return (NULL);
+		}
+		buffer = append_to_buffer(buffer, processed_line);
+		free(processed_line);
+		if (!buffer)
+		{
+			free(stripped_delim);
+			return (NULL);
+		}
 	}
 	return (buffer);
 }
 
-int	handle_heredoc(char *delim)
+int	handle_heredoc(char *delim, char **env, int last_exit)
 {
 	int		pipefd[2];
 	char	*buffer;
 
 	if (!delim || pipe(pipefd) < 0)
 		return (-1);
-	buffer = read_heredoc_content(delim);
+	signal(SIGINT, SIG_DFL);
+	buffer = read_heredoc_content(delim, env, last_exit);
 	if (!buffer)
 	{
 		close(pipefd[0]);

@@ -6,13 +6,14 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/14 11:57:13 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 00:55:10 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static int	setup_child_io(t_command *cmd, int pipefd[2])
+static int	setup_child_io(t_command *cmd, int pipefd[2], char **env,
+		int last_exit)
 {
 	if (cmd->next && pipefd[1] > 0)
 	{
@@ -20,7 +21,8 @@ static int	setup_child_io(t_command *cmd, int pipefd[2])
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
-	if (setup_input_redirection(cmd) < 0 || setup_output_redirection(cmd) < 0)
+	if (setup_input_redirection(cmd, env, last_exit) < 0
+		|| setup_output_redirection(cmd) < 0)
 		return (-1);
 	return (0);
 }
@@ -48,10 +50,17 @@ static int	handle_empty_command(t_command *cmd)
 
 void	child_process(t_process_command_args *param)
 {
+	struct sigaction	sa;
+
 	if (!param->cmd || !param->env || !(param->last_exit))
 		exit_free(1, param->env, param->cmd, param->tokens);
-	reset_signals();
-	if (setup_child_io(param->cmd, param->pipefd) < 0)
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	if (setup_child_io(param->cmd, param->pipefd, param->env,
+			*(param->last_exit)) < 0)
 		exit_free(1, param->env, param->cmd, param->tokens);
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->cmd, param->tokens);
@@ -65,6 +74,7 @@ void	child_process(t_process_command_args *param)
 void	parent_process(t_process_command_args *param)
 {
 	int	status;
+	int	exit_status;
 
 	if (!param->cmd || !(param->last_exit))
 		return ;
@@ -77,7 +87,17 @@ void	parent_process(t_process_command_args *param)
 	if (!param->cmd->next)
 	{
 		waitpid(param->pid, &status, 0);
-		*(param->last_exit) = WEXITSTATUS(status);
+		if (WIFSIGNALED(status))
+		{
+			exit_status = WTERMSIG(status) + 128;
+			if (WTERMSIG(status) == SIGINT)
+				ft_putchar_fd('\n', STDOUT_FILENO);
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		}
+		else
+			exit_status = WEXITSTATUS(status);
+		*(param->last_exit) = exit_status;
 	}
 }
 
