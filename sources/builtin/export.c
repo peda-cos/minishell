@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:51 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 20:20:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:46:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,18 @@ static int	process_export_arg(char ***env, char *arg)
 		arg_key = ft_substr(arg, 0, equal_chr_ptr - arg);
 	else
 		arg_key = ft_strdup(arg);
+	if (!is_valid_key(arg_key))
+	{
+		free(new_entry);
+		free(arg_key);
+		print_invalid_arg(arg);
+		return (1);
+	}
 	idx = find_env_index(arg_key, *env);
 	free(arg_key);
 	if (idx >= 0)
 		return (update_existing_entry(env, new_entry, idx));
-	else
-		return (add_new_entry(env, new_entry));
+	return (add_new_entry(env, new_entry));
 }
 
 int	builtin_export(char **args, char ***env)
