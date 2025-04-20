@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/19 22:48:15 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:34:35 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ static int	create_output_file(char *filename, int append)
 	return (1);
 }
 
-static int	handle_redirection(t_command *cmd,
-	t_token **token_ptr, char **envs, int *last_exit)
+static int	handle_redirection(t_command *cmd, t_token **token_ptr, char **envs,
+		int *last_exit)
 {
 	t_token				*token;
 	int					result;
@@ -69,6 +69,8 @@ static int	handle_redirection(t_command *cmd,
 	if (token->type == REDIRECT_OUT || token->type == APPEND)
 	{
 		content_value = get_token_content_value(&params);
+		if (!content_value)
+			return (0);
 		result = create_output_file(content_value, token->type == APPEND);
 		free(content_value);
 		if (!result)
@@ -79,8 +81,8 @@ static int	handle_redirection(t_command *cmd,
 	return (1);
 }
 
-static t_token	*process_token(t_token *token,
-	t_parser_context *parser, char **envs, int *last_exit)
+static t_token	*process_token(t_token *token, t_parser_context *parser,
+		char **envs, int *last_exit)
 {
 	if (!parser->current)
 	{
