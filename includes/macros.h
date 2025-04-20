@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 12:19:45 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 10:02:01 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@
 # define ANSI_ESC_START "\001\033["
 # define ANSI_ESC_END "\002"
 # define ANSI_RESET "\001\033[0m\002"
+# define COLOR_PASTEL_WHITE "\001\033[38;5;255m\002"
+# define COLOR_PASTEL_ORANGE "\001\033[38;5;214m\002"
 # define COLOR_PASTEL_PURPLE "\001\033[38;5;183m\002"
 # define COLOR_PASTEL_PINK "\001\033[38;5;217m\002"
 # define COLOR_PASTEL_GREEN "\001\033[38;5;122m\002"
 # define COLOR_PASTEL_YELLOW "\001\033[38;5;229m\002"
 # define COLOR_PASTEL_BLUE "\001\033[38;5;153m\002"
 # define COLOR_RESET "\001\033[0m\002"
-# define PROMPT_TEXT "Minishell $ "
+# define PROMPT_TEXT "minishell 🧙 ❯ "
 /* ----------------------- */
 #endif
