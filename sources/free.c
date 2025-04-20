@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/12 22:55:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 01:23:14 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,28 @@ void	free_env(char **env)
 	free(env);
 }
 
+void	free_token_content(t_token_content *content)
+{
+	t_token_content	*tmp;
+
+	while (content)
+	{
+		tmp = content;
+		content = content->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}
+
 void	free_tokens(t_token *tokens)
 {
-	t_token			*tmp;
-	t_token_content	*tmp_content;
+	t_token	*tmp;
 
 	while (tokens)
 	{
 		tmp = tokens;
 		tokens = tokens->next;
-		while (tmp->content)
-		{
-			tmp_content = tmp->content;
-			tmp->content = tmp->content->next;
-			free(tmp_content->value);
-			free(tmp_content);
-		}
+		free_token_content(tmp->content);
 		free(tmp);
 	}
 }
@@ -73,11 +79,13 @@ void	free_commands(t_command *cmd)
 	}
 }
 
-void	exit_free(int signal,
-	char **envs, t_command *cmds, t_token *tokens)
+void	exit_free(int signal, char **envs, t_command *cmds, t_token *tokens)
 {
-	free_env(envs);
-	free_commands(cmds);
-	free_tokens(tokens);
+	if (envs)
+		free_env(envs);
+	if (cmds)
+		free_commands(cmds);
+	if (tokens)
+		free_tokens(tokens);
 	exit(signal);
 }
