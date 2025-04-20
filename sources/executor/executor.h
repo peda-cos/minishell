@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/10 23:20:05 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 00:55:05 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include <sys/stat.h>
 # include "minishell.h"
+# include <sys/stat.h>
 
 typedef struct s_process_command_args
 {
@@ -35,12 +35,13 @@ char			*find_executable(char *cmd, char **env);
 /*
 ** Heredoc handling functions (heredoc.c)
 */
-int				handle_heredoc(char *delim);
+int				handle_heredoc(char *delim, char **env, int last_exit);
 
 /*
 ** Redirection handling functions (redirection.c)
 */
-int				setup_input_redirection(t_command *cmd);
+int				setup_input_redirection(t_command *cmd, char **env,
+					int last_exit);
 int				setup_output_redirection(t_command *cmd);
 
 /*
