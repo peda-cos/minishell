@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/20 10:33:50 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/20 15:35:21 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,38 +80,47 @@ t_token_content	*new_token_content(char *value, int in_single_quotes)
 	return (content);
 }
 
+static char	*get_env_value_expanded(char *current_value_str,
+	t_token_content	*content, t_content_params *params)
+{
+	char			*result;
+	char			*temp_str;
+	char			*value_expanded;
+
+	temp_str = current_value_str;
+	if (content->in_single_quotes)
+		value_expanded = ft_strdup(content->value);
+	else
+		value_expanded = expand_variable(content->value, params->envs,
+				*params->last_exit_code);
+	if (!value_expanded)
+	{
+		free(current_value_str);
+		return (NULL);
+	}
+	result = ft_strjoin(current_value_str, value_expanded);
+	free(value_expanded);
+	free(temp_str);
+	return (result);
+}
+
 char	*get_token_content_value(t_content_params *params)
 {
 	t_token_content	*content;
-	char			*temp_str;
-	char			*value_str;
-	char			*value_expanded;
+	char			*content_value;
 
 	if (!params || !params->content)
 		return (NULL);
-	value_str = ft_strdup("");
-	if (!value_str)
+	content_value = ft_strdup("");
+	if (!content_value)
 		return (NULL);
 	content = params->content;
 	while (content)
 	{
-		temp_str = value_str;
-		if (content->in_single_quotes)
-			value_expanded = ft_strdup(content->value);
-		else
-			value_expanded = expand_variable(content->value, params->envs,
-					*params->last_exit_code);
-		if (!value_expanded)
-		{
-			free(value_str);
-			return (NULL);
-		}
-		value_str = ft_strjoin(value_str, value_expanded);
-		free(value_expanded);
-		free(temp_str);
-		if (!value_str)
+		content_value = get_env_value_expanded(content_value, content, params);
+		if (!content_value)
 			return (NULL);
 		content = content->next;
 	}
-	return (value_str);
+	return (content_value);
 }
