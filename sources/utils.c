@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 17:02:43 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:01:30 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_parent_builtin(
-	t_command *cmd, char ***env, int *last_exit, t_token *tokens)
+void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
+		t_token *tokens)
 {
 	t_process_command_args	args;
 	char					*command;
@@ -55,7 +55,7 @@ int	process_tokens(t_token **tokens, int *last_exit)
 }
 
 void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
-	t_token *tokens)
+		t_token *tokens)
 {
 	int	saved_stdin;
 	int	saved_stdout;
@@ -95,6 +95,12 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (process_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
+	if (cmd == NULL)
+	{
+		*last_exit = 2;
+		free_tokens(tokens);
+		return ;
+	}
 	execute_parsed_commands(cmd, env, last_exit, tokens);
 	free_tokens(tokens);
 }
