@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 15:48:52 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:52:11 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int	count_word_tokens(t_token *token)
 	return (count);
 }
 
-static void	free_commands_during_process_word_tokens(t_command	*cmd)
+static void	free_commands_during_process_word_tokens(t_command *cmd)
 {
 	int	index;
 
@@ -84,8 +84,8 @@ static void	free_commands_during_process_word_tokens(t_command	*cmd)
 	cmd->args = NULL;
 }
 
-t_token	*process_word_tokens(
-	t_command *cmd, t_token *token, char **env, int last_exit)
+t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
+		int last_exit)
 {
 	int					i;
 	int					count;
@@ -105,7 +105,10 @@ t_token	*process_word_tokens(
 		content_params.content = token->content;
 		cmd->args[i] = get_token_content_value(&content_params);
 		if (!cmd->args[i])
+		{
+			cmd->args[i] = NULL;
 			return (free_commands_during_process_word_tokens(cmd), orig_token);
+		}
 		i++;
 		token = token->next;
 	}
