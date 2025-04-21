@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 15:00:31 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:29:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	execute_builtin(t_process_command_args *arg)
 		return (builtin_export(command_with_args, arg->env));
 	else if (!ft_strcmp(command, "unset"))
 		return (builtin_unset(command_with_args, arg->env));
-	else if (!ft_strcmp(command, "arg->env"))
+	else if (!ft_strcmp(command, "env"))
 		return (builtin_env(*arg->env));
 	else if (!ft_strcmp(command, "exit"))
 		return (builtin_exit(arg));
