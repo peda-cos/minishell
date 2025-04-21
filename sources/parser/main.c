@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 10:34:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 18:02:04 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,35 @@
 static void	set_redirection_target(t_command *cmd, t_token *token,
 		t_content_params *content_params)
 {
+	char	*value;
+
+	value = get_token_content_value(content_params);
+	if (!value)
+		return ;
 	if (token->type == REDIRECT_IN)
-		cmd->input_file = get_token_content_value(content_params);
+	{
+		free(cmd->input_file);
+		cmd->input_file = value;
+	}
 	else if (token->type == REDIRECT_OUT)
 	{
-		cmd->output_file = get_token_content_value(content_params);
+		free(cmd->output_file);
+		cmd->output_file = value;
 		cmd->append = 0;
 	}
 	else if (token->type == APPEND)
 	{
-		cmd->output_file = get_token_content_value(content_params);
+		free(cmd->output_file);
+		cmd->output_file = value;
 		cmd->append = 1;
 	}
 	else if (token->type == HEREDOC)
-		cmd->heredoc_delim = get_token_content_value(content_params);
+	{
+		free(cmd->heredoc_delim);
+		cmd->heredoc_delim = value;
+	}
+	else
+		free(value);
 }
 
 static int	create_output_file(char *filename, int append)
@@ -84,6 +99,8 @@ static int	handle_redirection(t_command *cmd, t_token **token_ptr, char **envs,
 static t_token	*process_token(t_token *token, t_parser_context *parser,
 		char **envs, int *last_exit)
 {
+	t_token	*next_tok;
+
 	if (!parser->current)
 	{
 		parser->current = append_command(&parser->head);
@@ -98,24 +115,38 @@ static t_token	*process_token(t_token *token, t_parser_context *parser,
 	if (is_redirection(token->type))
 	{
 		if (!handle_redirection(parser->current, &token, envs, last_exit))
-			return (token);
+			return (NULL);
 		return (token);
 	}
 	if (token->type == WORD)
-		return (process_word_tokens(parser->current, token, parser->env,
-				parser->last_exit));
+	{
+		next_tok = process_word_tokens(parser->current, token, parser->env,
+				parser->last_exit);
+		if (parser->current && !parser->current->args && next_tok == token)
+			return (NULL);
+		return (next_tok);
+	}
 	return (token->next);
 }
 
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 {
 	t_parser_context	parser;
+	t_token				*next_token;
 
 	parser.head = NULL;
 	parser.current = NULL;
 	parser.env = env;
 	parser.last_exit = last_exit;
 	while (tokens)
-		tokens = process_token(tokens, &parser, env, &last_exit);
+	{
+		next_token = process_token(tokens, &parser, env, &last_exit);
+		if (next_token == NULL)
+		{
+			free_commands(parser.head);
+			return (NULL);
+		}
+		tokens = next_token;
+	}
 	return (parser.head);
 }
