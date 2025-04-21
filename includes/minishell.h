@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 03:11:24 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:02:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,8 @@
 /* Main Utils */
 int			process_tokens(t_token **tokens, int *last_exit);
 void		process_input(char *input, char ***env, int *last_exit);
-void		execute_command_line(
+void		execute_parent_builtin(
 				t_command *cmd, char ***env, int *last_exit, t_token *tokens);
-void		execute_parent_builtin(t_process_command_args *arg);
 void		execute_parsed_commands(
 				t_command *cmd, char ***env, int *last_exit, t_token *tokens);
 
