@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/18 15:48:59 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:00:31 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,32 @@ int	is_builtin(char *cmd)
 			"history"));
 }
 
-int	execute_builtin(t_command *cmd, char ***env, int *last_exit)
+int	execute_builtin(t_process_command_args *arg)
 {
-	if (!cmd || !cmd->args || !cmd->args[0] || !env || !last_exit)
+	char	*command;
+	char	**command_with_args;
+
+	command = arg->cmd->args[0];
+	command_with_args = arg->cmd->args;
+	if (!arg->cmd || !command_with_args
+		|| !command || !arg->env || !arg->last_exit)
 		return (1);
-	if (!ft_strcmp(cmd->args[0], "echo"))
-		return (builtin_echo(cmd->args, last_exit));
-	else if (!ft_strcmp(cmd->args[0], "cd"))
-		return (builtin_cd(cmd->args, env));
-	else if (!ft_strcmp(cmd->args[0], "pwd"))
+	if (!ft_strcmp(command, "echo"))
+		return (builtin_echo(command_with_args, arg->last_exit));
+	else if (!ft_strcmp(command, "cd"))
+		return (builtin_cd(command_with_args, arg->env));
+	else if (!ft_strcmp(command, "pwd"))
 		return (builtin_pwd());
-	else if (!ft_strcmp(cmd->args[0], "export"))
-		return (builtin_export(cmd->args, env));
-	else if (!ft_strcmp(cmd->args[0], "unset"))
-		return (builtin_unset(cmd->args, env));
-	else if (!ft_strcmp(cmd->args[0], "env"))
-		return (builtin_env(*env));
-	else if (!ft_strcmp(cmd->args[0], "exit"))
-		return (builtin_exit(cmd->args));
-	else if (!ft_strcmp(cmd->args[0], "history"))
-		return (builtin_history(cmd->args, last_exit));
+	else if (!ft_strcmp(command, "export"))
+		return (builtin_export(command_with_args, arg->env));
+	else if (!ft_strcmp(command, "unset"))
+		return (builtin_unset(command_with_args, arg->env));
+	else if (!ft_strcmp(command, "arg->env"))
+		return (builtin_env(*arg->env));
+	else if (!ft_strcmp(command, "exit"))
+		return (builtin_exit(arg));
+	else if (!ft_strcmp(command, "history"))
+		return (builtin_history(command_with_args, arg->last_exit));
 	return (1);
 }
 

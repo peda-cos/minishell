@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/12 21:27:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 02:48:31 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,16 @@ typedef struct s_command
 	char				*output_file;
 	char				*heredoc_delim;
 }	t_command;
+
+typedef struct s_process_command_args
+{
+	int			pid;
+	char		***env;
+	t_command	*cmd;
+	int			pipefd[2];
+	int			*last_exit;
+	t_token		*tokens;
+	int			has_fd_redirect_to_stderr;
+}				t_process_command_args;
 
 #endif

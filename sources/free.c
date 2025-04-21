@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 01:23:14 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 03:07:38 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	free_commands(t_command *cmd)
 	}
 }
 
-void	exit_free(int signal, char **envs, t_command *cmds, t_token *tokens)
+void	exit_free(int signal, char ***envs, t_command *cmds, t_token *tokens)
 {
 	if (envs)
-		free_env(envs);
+		free_env(*envs);
 	if (cmds)
 		free_commands(cmds);
 	if (tokens)

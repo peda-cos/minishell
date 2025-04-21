@@ -6,30 +6,34 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 00:04:00 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:00:20 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
-	t_token *tokens)
+void	execute_parent_builtin(t_process_command_args *param)
 {
-	if (!ft_strcmp(cmd->args[0], "cd"))
-		*last_exit = builtin_cd(cmd->args, env);
-	else if (!ft_strcmp(cmd->args[0], "export"))
-		*last_exit = builtin_export(cmd->args, env);
-	else if (!ft_strcmp(cmd->args[0], "unset"))
-		*last_exit = builtin_unset(cmd->args, env);
-	else if (!ft_strcmp(cmd->args[0], "exit"))
+	char	*command;
+	char	**command_with_args;
+
+	command = param->cmd->args[0];
+	command_with_args = param->cmd->args;
+	if (!ft_strcmp(command, "cd"))
+		*param->last_exit = builtin_cd(command_with_args, param->env);
+	else if (!ft_strcmp(command, "export"))
+		*param->last_exit = builtin_export(command_with_args, param->env);
+	else if (!ft_strcmp(command, "unset"))
+		*param->last_exit = builtin_unset(command_with_args, param->env);
+	else if (!ft_strcmp(command, "exit"))
 	{
-		*last_exit = builtin_exit(cmd->args);
-		if (*last_exit != 1)
-			exit_free(*last_exit, *env, cmd, tokens);
+		*param->last_exit = builtin_exit(param);
+		if (*param->last_exit != 1)
+			exit_free(*param->last_exit, param->env, param->cmd, param->tokens);
 	}
 }
 
-void	execute_command_line(t_command *cmd, char **env, int *last_exit,
+void	execute_command_line(t_command *cmd, char ***env, int *last_exit,
 	t_token *tokens)
 {
 	int	saved_stdin;
@@ -58,12 +62,20 @@ int	process_tokens(t_token **tokens, int *last_exit)
 void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 	t_token *tokens)
 {
+	t_process_command_args	args;
+
 	if (!cmd)
 		return ;
+	args.cmd = cmd;
+	args.env = env;
+	args.tokens = tokens;
+	args.last_exit = last_exit;
+	args.has_fd_redirect_to_stderr = FALSE;
+	setup_output_redirection(&args);
 	if (cmd->args && !cmd->next && is_parent_builtin(cmd->args[0]))
-		execute_parent_builtin(cmd, env, last_exit, tokens);
+		execute_parent_builtin(&args);
 	else
-		execute_command_line(cmd, *env, last_exit, tokens);
+		execute_command_line(cmd, env, last_exit, tokens);
 	free_commands(cmd);
 }
 

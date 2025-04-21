@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 09:44:15 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 03:12:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	has_pipeline(t_command *cmd)
  * @brief Iterates through and processes each command in the chain
  * @return 0 on success, -1 on failure
  */
-static int	process_command_chain(t_command *cmd, char **env, int *last_exit,
+static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
 	int	result;
@@ -80,13 +80,13 @@ static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
  * This is the main coordination function that handles the entire execution
  * flow of commands, including pipeline handling and resource management.
  */
-void	execute_command(t_command *cmd, char **env, int *last_exit,
+void	execute_command(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
 	int	stdin_backup;
 	int	pipeline_exists;
 
-	stdin_backup = setup_command_execution(cmd, env, last_exit);
+	stdin_backup = setup_command_execution(cmd, *env, last_exit);
 	if (stdin_backup < 0)
 		return ;
 	pipeline_exists = has_pipeline(cmd);
