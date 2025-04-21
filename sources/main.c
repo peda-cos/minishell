@@ -42,7 +42,7 @@ static char	*get_input_from_no_interactive_mode(void)
 		free(buffer);
 		return (NULL);
 	}
-	if (buffer[bytes_read - 1] == '\n')
+	if (bytes_read > 0 && buffer[bytes_read - 1] == '\n')
 		buffer[bytes_read - 1] = '\0';
 	buffer[bytes_read] = '\0';
 	return (buffer);
