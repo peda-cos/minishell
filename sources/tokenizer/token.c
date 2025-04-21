@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/20 15:35:21 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/20 21:02:57 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*new_token(t_token_content *content, t_token_type type)
 	token->type = type;
 	token->content = content;
 	tmp_content = content;
-	while (tmp_content->next)
+	while (tmp_content)
 	{
 		token->length += ft_strlen(tmp_content->value);
 		tmp_content = tmp_content->next;
