@@ -44,6 +44,5 @@
 # define COLOR_PASTEL_BLUE "\001\033[38;5;153m\002"
 # define COLOR_RESET "\001\033[0m\002"
 # define PROMPT_TEXT "🧙 Minishell ❯ "
-# define NO_INTERACTIVE_PROMPT_TEXT ""
 /* ----------------------- */
 #endif
