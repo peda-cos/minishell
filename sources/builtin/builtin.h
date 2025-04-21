@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/19 23:46:37 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:46:12 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ char	**copy_env(char **envp);
 int		find_env_index(char *key, char **env);
 
 /* Builtin commands */
+int		is_parent_builtin(char *cmd);
 int		builtin_echo(char **args, int *last_exit);
 int		builtin_cd(char **args, char ***env);
 int		builtin_pwd(void);
 int		builtin_export(char **args, char ***env);
 int		builtin_unset(char **args, char ***env);
 int		builtin_env(char **env);
-int		builtin_exit(char **args);
-int		is_parent_builtin(char *cmd);
+int		builtin_exit(t_process_command_args	*param);
 
 /* Utility functions */
 int		is_valid_key(char *key);

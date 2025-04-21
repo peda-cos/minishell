@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:15:40 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 00:55:08 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:32:20 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,49 @@ int	setup_input_redirection(t_command *cmd, char **env, int last_exit)
 	return (0);
 }
 
-int	setup_output_redirection(t_command *cmd)
+static int	has_fd_redirect_to_stderr(t_process_command_args *arg)
+{
+	t_token	*tmp;
+	int		redirect_fd;
+
+	tmp = arg->tokens;
+	redirect_fd = FALSE;
+	while (tmp && ft_strcmp(tmp->content->value, arg->cmd->output_file) != 0)
+	{
+		if (tmp->type == FILE_DESCRIPTOR
+			&& ft_atoi(tmp->content->value) == STDERR_FILENO)
+		{
+			arg->has_fd_redirect_to_stderr = TRUE;
+			redirect_fd = TRUE;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+	return (redirect_fd);
+}
+
+int	setup_output_redirection(t_process_command_args *param)
 {
 	int	fd;
 	int	flags;
 
-	if (!cmd->output_file)
+	if (!param->cmd->output_file)
 		return (0);
 	flags = O_WRONLY | O_CREAT;
-	if (cmd->append)
+	if (param->cmd->append)
 		flags |= O_APPEND;
 	else
 		flags |= O_TRUNC;
-	fd = open(cmd->output_file, flags, 0644);
+	fd = open(param->cmd->output_file, flags, 0644);
 	if (fd < 0)
 	{
-		perror(cmd->output_file);
+		perror(param->cmd->output_file);
 		return (-1);
 	}
-	dup2(fd, STDOUT_FILENO);
+	if (has_fd_redirect_to_stderr(param))
+		dup2(fd, STDERR_FILENO);
+	else
+		dup2(fd, STDOUT_FILENO);
 	close(fd);
 	return (0);
 }

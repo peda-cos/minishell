@@ -3,26 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 00:55:10 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:15:47 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static int	setup_child_io(t_command *cmd, int pipefd[2], char **env,
-		int last_exit)
+static int	setup_child_io(t_process_command_args *arg)
 {
-	if (cmd->next && pipefd[1] > 0)
+	int	setup_io_failure;
+
+	if (arg->cmd->next && arg->pipefd[1] > 0)
 	{
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
+		dup2(arg->pipefd[1], STDOUT_FILENO);
+		close(arg->pipefd[0]);
+		close(arg->pipefd[1]);
 	}
-	if (setup_input_redirection(cmd, env, last_exit) < 0
-		|| setup_output_redirection(cmd) < 0)
+	setup_io_failure = setup_output_redirection(arg) < 0
+		|| setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0;
+	if (setup_io_failure)
 		return (-1);
 	return (0);
 }
@@ -59,15 +61,14 @@ void	child_process(t_process_command_args *param)
 	sa.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
-	if (setup_child_io(param->cmd, param->pipefd, param->env,
-			*(param->last_exit)) < 0)
+	if (setup_child_io(param) < 0)
 		exit_free(1, param->env, param->cmd, param->tokens);
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->cmd, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param->cmd, &param->env, param->last_exit),
+		exit_free(execute_builtin(param),
 			param->env, param->cmd, param->tokens);
-	exit_free(execute_external(param->cmd, param->env), param->env, param->cmd,
+	exit_free(execute_external(param->cmd, *param->env), param->env, param->cmd,
 		param->tokens);
 }
 
@@ -101,22 +102,24 @@ void	parent_process(t_process_command_args *param)
 	}
 }
 
-int	process_command(t_command *cmd, char **env, int *last_exit, t_token *tokens)
+int	process_command(
+	t_command *cmd, char ***envs, int *last_exit, t_token *tokens)
 {
 	int						pipefd[2];
 	t_process_command_args	args;
 
-	if (!cmd || !env || !last_exit)
+	if (!cmd || !envs || !last_exit)
 		return (-1);
 	if (setup_pipe(cmd, pipefd) < 0)
 		return (-1);
 	args.cmd = cmd;
-	args.env = env;
+	args.env = envs;
 	args.tokens = tokens;
 	args.last_exit = last_exit;
 	args.pid = fork();
 	args.pipefd[0] = pipefd[0];
 	args.pipefd[1] = pipefd[1];
+	args.has_fd_redirect_to_stderr = FALSE;
 	if (args.pid < 0)
 	{
 		perror("fork");
