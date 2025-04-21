@@ -34,9 +34,9 @@ int	builtin_exit(t_process_command_args	*param)
 {
 	int	exit_code;
 
-	if (param->has_fd_redirect_to_stderr)
+	if (param->has_fd_redirect_to_stderr && isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", STDERR_FILENO);
-	else
+	else if (isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	exit_code = 0;
 	if (param->cmd->args[1] == NULL)
