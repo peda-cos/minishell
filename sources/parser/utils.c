@@ -107,7 +107,7 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 		if (!cmd->args[i])
 		{
 			cmd->args[i] = NULL;
-			return (free_commands_during_process_word_tokens(cmd), orig_token);
+			return (free_commands_during_process_word_tokens(cmd), NULL);
 		}
 		i++;
 		token = token->next;
