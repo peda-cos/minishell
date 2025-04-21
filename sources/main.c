@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+int	is_empty_string(const char *str)
+{
+	int		i;
+
+	if (str == NULL)
+		return (FALSE);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
+
 static char	*get_input_from_no_interactive_mode(void)
 {
 	char	*buffer;
@@ -37,8 +53,16 @@ static int	process_no_interactive_mode(char ***env)
 	char	*input;
 	int		exit_status;
 
+	exit_status = 0;
 	input = get_input_from_no_interactive_mode();
-	process_input(input, env, &exit_status);
+	if (is_empty_string(input))
+	{
+		free_env(*env);
+		free(input);
+		return (0);
+	}
+	if (input)
+		process_input(input, env, &exit_status);
 	free(input);
 	free_env(*env);
 	return (exit_status);
