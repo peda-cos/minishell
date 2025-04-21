@@ -27,7 +27,8 @@ int	handle_eof(char *input)
 {
 	if (!input)
 	{
-		write(STDOUT_FILENO, "exit\n", 5);
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "exit\n", 5);
 		return (1);
 	}
 	return (0);
