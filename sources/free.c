@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 03:07:38 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:19:54 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	free_commands(t_command *cmd)
 		free(cmd->input_file);
 		free(cmd->output_file);
 		free(cmd->heredoc_delim);
+		if (cmd->heredoc_fd >= 0)
+			close(cmd->heredoc_fd);
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
