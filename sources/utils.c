@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 18:01:30 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:25:03 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 		free_tokens(tokens);
 		return ;
 	}
+	preprocess_heredocs(cmd);
 	execute_parsed_commands(cmd, env, last_exit, tokens);
 	free_tokens(tokens);
 }
