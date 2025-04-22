@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 00:55:01 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 23:24:20 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,61 @@ int	handle_heredoc(char *delim, char **env, int last_exit)
 	close(pipefd[1]);
 	free(buffer);
 	return (pipefd[0]);
+}
+
+char	*read_heredoc_content_to_buffer(char *delim)
+{
+	char	*line;
+	char	*buffer;
+	char	*tmp;
+
+	buffer = ft_strdup("");
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || !ft_strcmp(line, delim))
+		{
+			free(line);
+			break ;
+		}
+		tmp = buffer;
+		buffer = ft_strjoin(buffer, line);
+		free(tmp);
+		tmp = buffer;
+		buffer = ft_strjoin(buffer, "\n");
+		free(tmp);
+		free(line);
+	}
+	return (buffer);
+}
+
+void	preprocess_heredocs(t_command *cmd_list)
+{
+	t_command	*cmd;
+	int			pipefd[2];
+	char		*buffer;
+
+	cmd = cmd_list;
+	while (cmd)
+	{
+		if (cmd->heredoc_delim)
+		{
+			if (pipe(pipefd) < 0)
+			{
+				perror("pipe");
+				return ;
+			}
+			buffer = read_heredoc_content_to_buffer(cmd->heredoc_delim);
+			if (buffer)
+			{
+				write(pipefd[1], buffer, ft_strlen(buffer));
+				free(buffer);
+			}
+			close(pipefd[1]);
+			cmd->heredoc_fd = pipefd[0];
+		}
+		else
+			cmd->heredoc_fd = -1;
+		cmd = cmd->next;
+	}
 }
