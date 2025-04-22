@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 17:52:11 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/21 22:21:40 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,11 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 	int					i;
 	int					count;
 	t_content_params	content_params;
-	t_token				*orig_token;
 
 	count = count_word_tokens(token);
 	cmd->args = malloc(sizeof(char *) * (count + 1));
 	if (!cmd->args)
 		return (token);
-	orig_token = token;
 	i = 0;
 	while (i < count && token && token->type == WORD)
 	{
@@ -115,4 +113,32 @@ t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
 	cmd->args[i] = NULL;
 	cmd->argc = count;
 	return (token);
+}
+
+int	append_argument(t_command *cmd, char *arg_value)
+{
+	char	**new_args;
+	int		i;
+
+	if (!cmd || !arg_value)
+		return (0);
+	new_args = malloc(sizeof(char *) * (cmd->argc + 2));
+	if (!new_args)
+	{
+		free(arg_value);
+		return (0);
+	}
+	i = 0;
+	while (i < cmd->argc)
+	{
+		new_args[i] = cmd->args[i];
+		i++;
+	}
+	new_args[cmd->argc] = arg_value;
+	new_args[cmd->argc + 1] = NULL;
+	if (cmd->args)
+		free(cmd->args);
+	cmd->args = new_args;
+	cmd->argc += 1;
+	return (1);
 }
