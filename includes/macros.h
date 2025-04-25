@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/20 20:11:25 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:19:13 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # define REDIRECT_IN_CHR '<'
 # define REDIRECT_OUT_CHR '>'
 # define SINGLE_QUOTE_CHR '\''
+# define DOLLAR_CHR '$'
+# define BRACKET_OPEN_CHR '{'
+# define BRACKET_CLOSE_CHR '}'
+# define UNDERSCORE_CHR '_'
 # define DOUBLE_QUOTE_CHR '"'
 # define PIPE_STR "|"
 # define APPEND_STR ">>"

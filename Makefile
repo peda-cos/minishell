@@ -31,7 +31,8 @@ EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c \
 	sources/tokenizer/word.c sources/tokenizer/redirect.c \
 	sources/tokenizer/token.c
-EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c
+EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c \
+	sources/expansion/advanced.c
 VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c
 HISTORY_SRCS = sources/history/main.c sources/history/read.c \
 	sources/history/file.c sources/history/write.c
