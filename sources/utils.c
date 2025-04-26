@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/24 23:34:29 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:19:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	cmd = parse_tokens(tokens, *env, *last_exit);
 	if (cmd == NULL)
 	{
-		*last_exit = 2;
+		*last_exit = 1;
 		free_tokens(tokens);
 		return ;
 	}

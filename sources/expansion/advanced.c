@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:50:10 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/24 23:30:31 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:18:34 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,12 @@ char	*extract_var_name_in_brackets_entered(
 	char	*var_name;
 
 	var_name = extract_braced_var_name(str, index);
+	if (!var_name)
+		return (NULL);
 	if (var_name[0] == '\0')
 	{
-		ft_putstr_fd("minishell: ${}: bad substitution", STDERR_FILENO);
+		ft_putendl_fd("minishell: ${}: bad substitution", STDERR_FILENO);
+		free(var_name);
 		return (NULL);
 	}
 	i = 0;
