@@ -51,20 +51,20 @@ int	execute_builtin(t_process_command_args *arg)
 	return (1);
 }
 
-static int	is_valid_executable(char *path)
+static int	validates_executable(char *path)
 {
 	struct stat	path_stat;
 	char		*err_stat;
 
 	if (!path)
-		return (FALSE);
+		return (126);
 	if (stat(path, &path_stat) != 0)
 	{
 		err_stat = ft_strjoin("minishell: ", path);
 		ft_putstr_fd(err_stat, STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		free(err_stat);
-		return (FALSE);
+		return (127);
 	}
 	if ((path[0] == '/' || path[0] == '.') && access(path, X_OK) == 0)
 	{
@@ -73,23 +73,28 @@ static int	is_valid_executable(char *path)
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(path, STDERR_FILENO);
 			ft_putendl_fd(": Is a directory", STDERR_FILENO);
-			return (FALSE);
+			return (126);
 		}
-		return (TRUE);
+		return (0);
 	}
-	return (FALSE);
+	return (126);
 }
 
 int	execute_external(t_command *cmd, char **env)
 {
 	char	*cmd_path;
 	char	*command;
+	int		has_signal_validation_executable;
 
 	command = cmd->args[0];
 	if (!cmd || !cmd->args || !command || !env)
 		return (1);
-	if (ft_strchr(command, '/') && !is_valid_executable(command))
-		return (126);
+	if (ft_strchr(command, '/'))
+	{
+		has_signal_validation_executable = validates_executable(command);
+		if (has_signal_validation_executable > 0)
+			return (has_signal_validation_executable);
+	}
 	cmd_path = find_executable(command, env);
 	if (!cmd_path)
 	{

@@ -81,6 +81,20 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 	free_commands(cmd);
 }
 
+static void	process_invalid_command(t_command *cmd,
+	int *last_exit, t_token *tokens)
+{
+	if (cmd && cmd->args && *cmd->args[0] == '\0')
+	{
+		ft_putendl_fd("Minishell: Comand '' not found", STDERR_FILENO);
+		*last_exit = 127;
+	}
+	else
+		*last_exit = 1;
+	free_commands(cmd);
+	free_tokens(tokens);
+}
+
 void	process_input(char *input, char ***env, int *last_exit)
 {
 	t_token		*tokens;
@@ -95,12 +109,8 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (process_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
-	if (cmd == NULL)
-	{
-		*last_exit = 2;
-		free_tokens(tokens);
-		return ;
-	}
+	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
+		return (process_invalid_command(cmd, last_exit, tokens));
 	preprocess_heredocs(cmd);
 	execute_parsed_commands(cmd, env, last_exit, tokens);
 	free_tokens(tokens);
