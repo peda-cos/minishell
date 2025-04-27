@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 22:31:37 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/26 22:56:18 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 23:56:26 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void			add_token(t_token **tokens, t_token *new);
 t_token			*new_token(t_token_content *content, t_token_type type);
 t_token_content	*new_token_content(char *value,
 					int in_quotes, int in_single_quotes);
-
 
 int				is_metachar(char c);
 int				is_quote_delimiter(char *str, int *index, char delimiter);

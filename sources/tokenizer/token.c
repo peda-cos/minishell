@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/26 22:53:49 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 23:54:35 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ char	*get_token_content_value(t_content_params *params)
 	content = params->content;
 	while (content)
 	{
-		if (ft_strcmp(content->value, "$") == 0 && content->next->in_quotes)
+		if (ft_strcmp(content->value, "$") == 0
+			&& (content->next && content->next->in_quotes))
 		{
 			content = content->next;
 			continue ;
