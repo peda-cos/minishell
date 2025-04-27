@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/27 19:42:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/27 20:36:21 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ void	update_cmd_args_with_spaces(t_command *cmd)
 	if (!should_update_cmd(cmd))
 		return ;
 	new_args = malloc_new_args(cmd);
-	new_args[0] = NULL;
 	if (!new_args)
 	{
 		free_commands(cmd);
 		cmd = NULL;
 		return ;
 	}
+	new_args[0] = NULL;
 	while (cmd->args[i])
 	{
 		if (!process_command_arg(new_args, &new_args_index, cmd->args[i]))
