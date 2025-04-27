@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/25 00:10:26 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:40:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ static t_token_content	*append_token_content(t_token_content *content,
 			free(temp);
 			return (NULL);
 		}
-		new_content = new_token_content(ft_strdup(param->word),
+		new_content = new_token_content(ft_strdup(param->word), TRUE,
 				param->delimiter == SINGLE_QUOTE_CHR);
 		free(temp);
 	}
 	else
-		new_content = new_token_content(ft_strdup(param->word), FALSE);
+		new_content = new_token_content(ft_strdup(param->word), FALSE, FALSE);
 	if (!content)
 	{
 		content = new_content;

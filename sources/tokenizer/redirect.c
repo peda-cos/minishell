@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/19 19:50:06 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:04:14 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static t_token	*get_redirect_in_token(char *input, int *index)
 	if (input[*index + 1] == REDIRECT_IN_CHR)
 	{
 		(*index)++;
-		content = new_token_content(ft_strdup(HEREDOC_STR), FALSE);
+		content = new_token_content(ft_strdup(HEREDOC_STR), FALSE, FALSE);
 		return (new_token(content, HEREDOC));
 	}
-	content = new_token_content(ft_strdup(REDIRECT_IN_STR), FALSE);
+	content = new_token_content(ft_strdup(REDIRECT_IN_STR), FALSE, FALSE);
 	return (new_token(content, REDIRECT_IN));
 }
 
@@ -33,10 +33,10 @@ static t_token	*get_redirect_out_token(char *input, int *index)
 	if (input[*index + 1] == REDIRECT_OUT_CHR)
 	{
 		(*index)++;
-		content = new_token_content(ft_strdup(APPEND_STR), FALSE);
+		content = new_token_content(ft_strdup(APPEND_STR), FALSE, FALSE);
 		return (new_token(content, APPEND));
 	}
-	content = new_token_content(ft_strdup(REDIRECT_OUT_STR), FALSE);
+	content = new_token_content(ft_strdup(REDIRECT_OUT_STR), FALSE, FALSE);
 	return (new_token(content, REDIRECT_OUT));
 }
 
@@ -58,7 +58,7 @@ void	add_token_redirect(char *input, int *index, t_token **tokens)
 	chr = input[*index];
 	if (chr == PIPE_CHR)
 	{
-		content = new_token_content(ft_strdup(PIPE_STR), FALSE);
+		content = new_token_content(ft_strdup(PIPE_STR), FALSE, FALSE);
 		token = new_token(content, PIPE);
 	}
 	else

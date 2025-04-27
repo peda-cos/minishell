@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:00:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/24 23:34:45 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:39:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ char	*get_special_variable(char *str,
 	char	*value;
 
 	value = NULL;
-	if (ft_isspace(str[*index]) || str[*index] == '\0')
+	if (ft_isspace(str[*index]))
+		value = (ft_strdup("$ "));
+	else if (str[*index] == '\0')
 		value = (ft_strdup("$"));
 	if (str[*index] == '?')
 		value = ft_itoa(last_exit);

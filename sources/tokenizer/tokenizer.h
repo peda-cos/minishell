@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 22:31:37 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/12 18:56:41 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:56:18 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ typedef struct s_tokenizer_ctx
 
 t_token			*get_last_token(t_token **tokens);
 void			add_token(t_token **tokens, t_token *new);
-t_token_content	*new_token_content(char *value, int in_single_quotes);
 t_token			*new_token(t_token_content *content, t_token_type type);
+t_token_content	*new_token_content(char *value,
+					int in_quotes, int in_single_quotes);
+
 
 int				is_metachar(char c);
 int				is_quote_delimiter(char *str, int *index, char delimiter);

@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/25 00:11:18 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:53:49 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_token	*get_last_token(t_token **tokens)
 	return (tmp);
 }
 
-t_token_content	*new_token_content(char *value, int in_single_quotes)
+t_token_content	*new_token_content(char *value,
+	int in_quotes, int in_single_quotes)
 {
 	t_token_content	*content;
 
@@ -38,6 +39,7 @@ t_token_content	*new_token_content(char *value, int in_single_quotes)
 	}
 	content->next = NULL;
 	content->value = value;
+	content->in_quotes = in_quotes;
 	content->in_single_quotes = in_single_quotes;
 	return (content);
 }
@@ -70,6 +72,20 @@ static char	*append_to_final_value(char *final_value,
 	return (final_value);
 }
 
+static char	*process_final_value(char *final_value,
+	t_content_params *params, t_token_content *content)
+{
+	char	*temp;
+
+	if (content->value[0] == '~' && content->value[1] == '\0')
+	{
+		temp = content->value;
+		content->value = get_env_value("HOME", params->envs);
+		free(temp);
+	}
+	return (append_to_final_value(final_value, content, params));
+}
+
 char	*get_token_content_value(t_content_params *params)
 {
 	t_token_content	*content;
@@ -83,7 +99,12 @@ char	*get_token_content_value(t_content_params *params)
 	content = params->content;
 	while (content)
 	{
-		final_value = append_to_final_value(final_value, content, params);
+		if (ft_strcmp(content->value, "$") == 0 && content->next->in_quotes)
+		{
+			content = content->next;
+			continue ;
+		}
+		final_value = process_final_value(final_value, params, content);
 		if (!final_value)
 			return (NULL);
 		content = content->next;
