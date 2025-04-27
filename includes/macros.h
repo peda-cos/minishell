@@ -28,6 +28,7 @@
 # define HEREDOC_STR "<<"
 # define REDIRECT_IN_STR "<"
 # define REDIRECT_OUT_STR ">"
+# define SPACE_CHR ' '
 /* ----------------------- */
 
 /* Prompt ---------------- */

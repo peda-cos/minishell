@@ -109,6 +109,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (process_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
+	update_cmd_args_with_spaces(cmd);
 	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
 		return (process_invalid_command(cmd, last_exit, tokens));
 	preprocess_heredocs(cmd);
