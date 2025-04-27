@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/24 23:29:01 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:08:41 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,29 @@ static char	*extract_result(char *partial, char *result)
 	return (result);
 }
 
-char	*expand_variable(char *str, char **envs, int last_exit,
+static void	process_expansion(char **result, char **value,
 	int *has_error_flag_control)
+{
+	if (!*value)
+		*has_error_flag_control = TRUE;
+	*result = extract_result(*value, *result);
+}
+
+char	*expand_variable(char *str,
+	char **envs, int last_exit, int *has_error_flag_control)
 {
 	int		i;
 	int		start;
 	char	*value;
 	char	*result;
+	int		str_len;
 
 	i = 0;
 	if (!str)
 		return (NULL);
 	result = ft_strdup("");
-	while (str[i])
+	str_len = ft_strlen(str);
+	while (str[i] && i < str_len)
 	{
 		start = i;
 		while (str[i] && str[i] != '$')
@@ -88,9 +98,7 @@ char	*expand_variable(char *str, char **envs, int last_exit,
 		{
 			i++;
 			value = extract_env_value(str, envs, last_exit, &i);
-			if (!value)
-				*has_error_flag_control = TRUE;
-			result = extract_result(value, result);
+			process_expansion(&result, &value, has_error_flag_control);
 		}
 	}
 	return (result);
