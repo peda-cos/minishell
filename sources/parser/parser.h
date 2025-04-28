@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:33:23 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 22:21:37 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:59:50 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "minishell.h"
 
+# define OUTPUT_FILES_MAX_SIZE 25
 # define SYNTAX_ERROR_MSG "minishell: syntax error near unexpected token\n"
-
 /*
 ** Parser context structure to reduce parameter count in functions
 */

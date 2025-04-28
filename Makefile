@@ -25,9 +25,9 @@ BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
 	sources/builtin/pwd.c sources/builtin/unset.c \
 	sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c
 EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
-	sources/executor/heredoc.c sources/executor/redirection.c \
+	sources/executor/redirection.c sources/executor/redirection_utils.c \
 	sources/executor/command_utils.c sources/executor/process.c \
-	sources/executor/process_utils.c
+	sources/executor/process_utils.c sources/executor/heredoc.c 
 TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c \
 	sources/tokenizer/word.c sources/tokenizer/redirect.c \
 	sources/tokenizer/token.c

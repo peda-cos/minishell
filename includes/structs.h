@@ -58,7 +58,8 @@ typedef struct s_command
 	struct s_command		*next;
 	char					**args;
 	char					*input_file;
-	char					*output_file;
+	char					**output_file_list;
+	int						amount_output_files;
 	char					*heredoc_delim;
 	int						heredoc_fd;
 }							t_command;
