@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 17:48:41 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:31:57 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	child_process(t_process_command_args *param)
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->cmd, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param),
-			param->env, param->cmd, param->tokens);
+		exit_free(execute_builtin(param), param->env, param->cmd,
+			param->tokens);
 	exit_free(execute_external(param->cmd, *param->env), param->env, param->cmd,
 		param->tokens);
 }
@@ -75,6 +75,7 @@ void	parent_process(t_process_command_args *param)
 	int	status;
 	int	exit_status;
 
+	status = 0;
 	if (!param->cmd || !(param->last_exit))
 		return ;
 	if (param->cmd->next && param->pipefd[0] > 0)
@@ -100,8 +101,8 @@ void	parent_process(t_process_command_args *param)
 	}
 }
 
-int	process_command(
-	t_command *cmd, char ***envs, int *last_exit, t_token *tokens)
+int	process_command(t_command *cmd, char ***envs, int *last_exit,
+		t_token *tokens)
 {
 	int						pipefd[2];
 	t_process_command_args	args;
