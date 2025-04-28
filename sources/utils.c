@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/25 22:19:01 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:05:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,20 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 	free_commands(cmd);
 }
 
+static void	process_invalid_command(t_command *cmd,
+	int *last_exit, t_token *tokens)
+{
+	if (cmd && cmd->args && *cmd->args[0] == '\0')
+	{
+		ft_putendl_fd("Minishell: Command  '' not found", STDERR_FILENO);
+		*last_exit = 127;
+	}
+	else
+		*last_exit = 1;
+	free_commands(cmd);
+	free_tokens(tokens);
+}
+
 void	process_input(char *input, char ***env, int *last_exit)
 {
 	t_token		*tokens;
@@ -110,12 +124,9 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (process_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
-	if (cmd == NULL)
-	{
-		*last_exit = 1;
-		free_tokens(tokens);
-		return ;
-	}
+	update_cmd_args_with_spaces(cmd);
+	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
+		return (process_invalid_command(cmd, last_exit, tokens));
 	preprocess_heredocs(cmd);
 	set_last_arg_without_pipe_executed(tokens, cmd, env);
 	execute_parsed_commands(cmd, env, last_exit, tokens);

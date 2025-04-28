@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/25 00:19:13 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:05:23 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # define HEREDOC_STR "<<"
 # define REDIRECT_IN_STR "<"
 # define REDIRECT_OUT_STR ">"
+# define SPACE_CHR ' '
 # define SINGLE_QUOTE_STR "'"
 # define DOUBLE_QUOTE_STR "\""
 /* ----------------------- */

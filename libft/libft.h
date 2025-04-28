@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/05 16:02:17 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/02/27 08:33:24 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/27 17:07:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char				*ft_strnstr(const char *big, const char *little,
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *s1, char const *set);
+int					ft_count_words(const char *s, char c);
 char				**ft_split(char const *s, char c);
 long				ft_strtol(const char *nptr, char **endptr, int base);
 int					ft_atoi(const char *nptr);
