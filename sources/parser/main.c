@@ -31,29 +31,20 @@ static void	set_output_redirect_file(char *value,
 
 static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
 {
-	char	*temp;
-	char	*quotes_delim;
-	char	*here_doc_delim;
+	char			*temp;
+	char			*heredoc_delimiter;
+	t_token_content	*tmp_content;
 
-	quotes_delim = NULL;
-	free(cmd->heredoc_delim);
-	if (content->in_quotes && content->in_single_quotes)
-		quotes_delim = SINGLE_QUOTE_STR;
-	else if (content->in_quotes && !content->in_single_quotes)
-		quotes_delim = DOUBLE_QUOTE_STR;
-	if (quotes_delim)
+	heredoc_delimiter = ft_strdup("");
+	tmp_content = content;
+	while (tmp_content)
 	{
-		here_doc_delim = ft_strdup(quotes_delim);
-		temp = here_doc_delim;
-		here_doc_delim = ft_strjoin(temp, content->value);
+		temp = heredoc_delimiter;
+		heredoc_delimiter = ft_strjoin(temp, tmp_content->value);
 		free(temp);
-		temp = here_doc_delim;
-		here_doc_delim = ft_strjoin(temp, quotes_delim);
-		free(temp);
+		tmp_content = tmp_content->next;
 	}
-	else
-		here_doc_delim = ft_strdup(content->value);
-	cmd->heredoc_delim = ft_strdup(here_doc_delim);
+	cmd->heredoc_delim = ft_strdup(heredoc_delimiter);
 }
 
 static void	set_redirection_target(t_command *cmd,
