@@ -32,6 +32,8 @@
 # define HEREDOC_STR "<<"
 # define REDIRECT_IN_STR "<"
 # define REDIRECT_OUT_STR ">"
+# define SINGLE_QUOTE_STR "'"
+# define DOUBLE_QUOTE_STR "\""
 /* ----------------------- */
 
 /* Prompt ---------------- */
