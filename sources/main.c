@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 17:51:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:17:24 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,25 @@ static char	*get_input_from_no_interactive_mode(void)
 
 static int	process_no_interactive_mode(char ***env)
 {
+	int		index;
 	char	*input;
+	char	**inputs;
 	int		exit_status;
 
 	exit_status = 0;
 	input = get_input_from_no_interactive_mode();
 	if (is_empty_string(input))
+		return (free_env(*env), free(input), 0);
+	index = 0;
+	inputs = ft_split(input, '\n');
+	while (inputs[index])
 	{
-		free_env(*env);
-		free(input);
-		return (0);
+		if (!is_empty_string(inputs[index]))
+			process_input(inputs[index], env, &exit_status);
+		free(inputs[index]);
+		index++;
 	}
-	if (input)
-		process_input(input, env, &exit_status);
+	free(inputs);
 	free(input);
 	free_env(*env);
 	return (exit_status);

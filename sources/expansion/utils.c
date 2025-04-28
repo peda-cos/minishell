@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:00:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 22:12:43 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/26 23:50:47 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,48 @@ char	*get_env_value(char *key, char **env)
 		i++;
 	}
 	return (ft_strdup(""));
+}
+
+char	*get_underscore_arg_value(char **envs)
+{
+	char	*value;
+
+	value = get_env_value("_", envs);
+	if (!value)
+		return (getcwd(NULL, 0));
+	return (value);
+}
+
+void	set_underscore_arg_value(t_command *cmd, char ***envs)
+{
+	int		index;
+	char	*last_arg_value;
+
+	index = 0;
+	while (cmd->args && cmd->args[index])
+		index++;
+	if (index > 0)
+	{
+		last_arg_value = cmd->args[index - 1];
+		update_env_variable("_", last_arg_value, envs);
+	}
+}
+
+char	*get_special_variable(char *str,
+	int *index, char **envs, int last_exit)
+{
+	char	*value;
+
+	value = NULL;
+	if (ft_isspace(str[*index]))
+		value = (ft_strdup("$ "));
+	else if (str[*index] == '\0')
+		value = (ft_strdup("$"));
+	else if (str[*index] == '?')
+		value = ft_itoa(last_exit);
+	else if (str[*index] == '0')
+		value = (ft_strdup("minishell"));
+	else if (str[*index] == '_')
+		value = (get_underscore_arg_value(envs));
+	return (value);
 }
