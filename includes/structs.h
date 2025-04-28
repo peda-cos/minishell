@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/21 23:18:24 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/26 22:58:34 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_token_content
 {
 	struct s_token_content	*next;
 	char					*value;
+	int						in_quotes;
 	int						in_single_quotes;
 }							t_token_content;
 

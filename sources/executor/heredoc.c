@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 23:24:20 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/24 22:59:37 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ static char	*process_heredoc_line(char *line, char **env, int last_exit,
 		int expand_vars)
 {
 	char	*expanded;
+	int		has_error;
 
+	has_error = FALSE;
 	if (!expand_vars)
 		return (ft_strdup(line));
-	expanded = expand_variable(line, env, last_exit);
+	expanded = expand_variable(line, env, last_exit, &has_error);
 	return (expanded);
 }
 

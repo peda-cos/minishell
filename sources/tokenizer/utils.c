@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/15 00:49:40 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:36:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,42 @@ int	is_quote_delimiter(char *str, int *index, char delimiter)
 	else if (is_quote && str[*index - 1] != BACKSLASH_CHR)
 		return (TRUE);
 	return (FALSE);
+}
+
+t_token	*new_token(t_token_content *content, t_token_type type)
+{
+	t_token			*token;
+	t_token_content	*tmp_content;
+
+	token = malloc(sizeof(t_token));
+	if (!token || !content)
+		return (NULL);
+	token->length = 0;
+	token->prev = NULL;
+	token->next = NULL;
+	token->type = type;
+	token->content = content;
+	tmp_content = content;
+	while (tmp_content)
+	{
+		token->length += ft_strlen(tmp_content->value);
+		tmp_content = tmp_content->next;
+	}
+	return (token);
+}
+
+void	add_token(t_token **tokens, t_token *new)
+{
+	t_token	*tmp;
+
+	if (!*tokens)
+	{
+		*tokens = new;
+		return ;
+	}
+	tmp = *tokens;
+	while (tmp->next)
+		tmp = tmp->next;
+	new->prev = tmp;
+	tmp->next = new;
 }

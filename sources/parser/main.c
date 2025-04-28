@@ -12,8 +12,35 @@
 
 #include "parser.h"
 
+static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
+{
+	char	*temp;
+	char	*quotes_delim;
+	char	*here_doc_delim;
+
+	quotes_delim = NULL;
+	free(cmd->heredoc_delim);
+	if (content->in_quotes && content->in_single_quotes)
+		quotes_delim = SINGLE_QUOTE_STR;
+	else if (content->in_quotes && !content->in_single_quotes)
+		quotes_delim = DOUBLE_QUOTE_STR;
+	if (quotes_delim)
+	{
+		here_doc_delim = ft_strdup(quotes_delim);
+		temp = here_doc_delim;
+		here_doc_delim = ft_strjoin(temp, content->value);
+		free(temp);
+		temp = here_doc_delim;
+		here_doc_delim = ft_strjoin(temp, quotes_delim);
+		free(temp);
+	}
+	else
+		here_doc_delim = ft_strdup(content->value);
+	cmd->heredoc_delim = ft_strdup(here_doc_delim);
+}
+
 static void	set_redirection_target(t_command *cmd, t_token *token,
-		t_content_params *content_params)
+	t_content_params *content_params)
 {
 	char	*value;
 
@@ -38,10 +65,7 @@ static void	set_redirection_target(t_command *cmd, t_token *token,
 		cmd->append = 1;
 	}
 	else if (token->type == HEREDOC)
-	{
-		free(cmd->heredoc_delim);
-		cmd->heredoc_delim = value;
-	}
+		process_heredoc_delim(content_params->content, cmd);
 	else
 		free(value);
 }
