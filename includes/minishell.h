@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 23:22:07 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:19:05 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void		execute_parsed_commands(
 				t_command *cmd, char ***env, int *last_exit, t_token *tokens);
 
 /* Environment management */
+void		set_underscore_arg_value(t_command *cmd, char ***envs);
 char		**copy_env(char **envp);
 void		free_env(char **env);
 void		exit_free(
@@ -57,9 +58,11 @@ int			setup_output_redirection(t_process_command_args *param);
 /* Memory cleanup */
 void		free_tokens(t_token *tokens);
 void		free_commands(t_command *cmd);
+void		free_token_content(t_token_content *content);
 
 /* Utility for variable expansion */
-char		*expand_variable(char *str, char **env, int last_exit);
+char		*expand_variable(char *str, char **envs, int last_exit,
+				int *has_error_flag_control);
 
 /* Tokenizer: splits input into tokens */
 t_token		*tokenize_input(char *input);

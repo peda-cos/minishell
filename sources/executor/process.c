@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 14:15:47 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:48:41 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 static int	setup_child_io(t_process_command_args *arg)
 {
-	int	setup_io_failure;
-
 	if (arg->cmd->next && arg->pipefd[1] > 0)
 	{
 		dup2(arg->pipefd[1], STDOUT_FILENO);
 		close(arg->pipefd[0]);
 		close(arg->pipefd[1]);
 	}
-	setup_io_failure = setup_output_redirection(arg) < 0
-		|| setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0;
-	if (setup_io_failure)
+	if (setup_output_redirection(arg) < 0)
+		return (-1);
+	if (setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0)
 		return (-1);
 	return (0);
 }
@@ -36,7 +34,7 @@ static int	handle_empty_command(t_command *cmd)
 
 	if (cmd->argc <= 0)
 	{
-		if (cmd->output_file != NULL)
+		if (cmd->output_file_list[0] != NULL)
 		{
 			bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
 			while (bytes_read > 0)

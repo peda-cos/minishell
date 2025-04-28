@@ -3,47 +3,80 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 22:21:36 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:52:00 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static void	set_redirection_target(t_command *cmd, t_token *token,
-		t_content_params *content_params)
+static void	set_output_redirect_file(char *value,
+	t_command	*cmd, int is_append)
 {
-	char	*value;
+	int	index;
 
-	value = get_token_content_value(content_params);
-	if (!value)
+	index = cmd->amount_output_files;
+	if (index < OUTPUT_FILES_MAX_SIZE)
+	{
+		if (cmd->output_file_list[index])
+			free(cmd->output_file_list[index]);
+		cmd->output_file_list[index] = value;
+		cmd->output_file_list[index + 1] = NULL;
+		cmd->amount_output_files++;
+		cmd->append = is_append;
+	}
+}
+
+static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
+{
+	char	*temp;
+	char	*quotes_delim;
+	char	*here_doc_delim;
+
+	quotes_delim = NULL;
+	free(cmd->heredoc_delim);
+	if (content->in_quotes && content->in_single_quotes)
+		quotes_delim = SINGLE_QUOTE_STR;
+	else if (content->in_quotes && !content->in_single_quotes)
+		quotes_delim = DOUBLE_QUOTE_STR;
+	if (quotes_delim)
+	{
+		here_doc_delim = ft_strdup(quotes_delim);
+		temp = here_doc_delim;
+		here_doc_delim = ft_strjoin(temp, content->value);
+		free(temp);
+		temp = here_doc_delim;
+		here_doc_delim = ft_strjoin(temp, quotes_delim);
+		free(temp);
+	}
+	else
+		here_doc_delim = ft_strdup(content->value);
+	cmd->heredoc_delim = ft_strdup(here_doc_delim);
+}
+
+static void	set_redirection_target(t_command *cmd,
+	t_token *token, t_content_params *content_params)
+{
+	char	*filename;
+
+	filename = get_token_content_value(content_params);
+	if (!filename)
 		return ;
 	if (token->type == REDIRECT_IN)
 	{
 		free(cmd->input_file);
-		cmd->input_file = value;
+		cmd->input_file = filename;
 	}
 	else if (token->type == REDIRECT_OUT)
-	{
-		free(cmd->output_file);
-		cmd->output_file = value;
-		cmd->append = 0;
-	}
+		set_output_redirect_file(filename, cmd, FALSE);
 	else if (token->type == APPEND)
-	{
-		free(cmd->output_file);
-		cmd->output_file = value;
-		cmd->append = 1;
-	}
+		set_output_redirect_file(filename, cmd, TRUE);
 	else if (token->type == HEREDOC)
-	{
-		free(cmd->heredoc_delim);
-		cmd->heredoc_delim = value;
-	}
+		process_heredoc_delim(content_params->content, cmd);
 	else
-		free(value);
+		free(filename);
 }
 
 static int	create_output_file(char *filename, int append)

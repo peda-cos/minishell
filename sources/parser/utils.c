@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 22:21:40 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:42:48 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ static t_command	*new_command(void)
 	cmd->args = NULL;
 	cmd->argc = 0;
 	cmd->input_file = NULL;
-	cmd->output_file = NULL;
+	cmd->output_file_list = malloc(sizeof(char *) * OUTPUT_FILES_MAX_SIZE);
+	cmd->output_file_list[0] = NULL;
+	cmd->amount_output_files = 0;
 	cmd->append = 0;
 	cmd->heredoc_delim = NULL;
 	cmd->next = NULL;

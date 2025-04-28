@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 23:24:43 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:40:37 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,11 @@ void	child_process(t_process_command_args *param);
 void	parent_process(t_process_command_args *param);
 int		process_command(t_command *cmd, char ***envs, int *last_exit,
 			t_token *tokens);
+
+int		setup_file_input(char *input_file);
+t_token	*get_fd_redirect_token(char *target_file, t_token *tokens);
+int		dup_fd_std(int fd, char *filename, t_process_command_args *arg);
+int		set_redirection_to_files(t_process_command_args *arg, int *flags);
+int		setup_input_redirection(t_command *cmd, char **env, int last_exit);
 
 #endif

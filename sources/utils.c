@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 23:25:03 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:05:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	set_last_arg_without_pipe_executed(
+	t_token *tokens, t_command *cmd, char ***envs)
+{
+	t_token	*current_token;
+
+	if (!tokens || !cmd || !envs)
+		return ;
+	current_token = tokens;
+	while (current_token && current_token->type != PIPE)
+		current_token = current_token->next;
+	if (current_token && current_token->type == PIPE)
+		return ;
+	set_underscore_arg_value(cmd, envs);
+}
 
 void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
@@ -113,6 +128,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
 		return (process_invalid_command(cmd, last_exit, tokens));
 	preprocess_heredocs(cmd);
+	set_last_arg_without_pipe_executed(tokens, cmd, env);
 	execute_parsed_commands(cmd, env, last_exit, tokens);
 	free_tokens(tokens);
 }
