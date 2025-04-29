@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/25 00:19:05 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:21:46 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/readline.h>
 
 /* Main Utils */
-void		update_cmd_args_with_spaces(t_command *cmd);
+void		update_cmd_args_when_expanded(t_command *cmd);
 int			process_tokens(t_token **tokens, int *last_exit);
 void		process_input(char *input, char ***env, int *last_exit);
 void		execute_parent_builtin(
@@ -61,8 +61,7 @@ void		free_commands(t_command *cmd);
 void		free_token_content(t_token_content *content);
 
 /* Utility for variable expansion */
-char		*expand_variable(char *str, char **envs, int last_exit,
-				int *has_error_flag_control);
+char		*expand_variable(char *str, t_expansion_ctx *exp);
 
 /* Tokenizer: splits input into tokens */
 t_token		*tokenize_input(char *input);

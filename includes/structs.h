@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/26 22:58:34 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:01:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_token_content
 	struct s_token_content	*next;
 	char					*value;
 	int						in_quotes;
+	int						was_expanded;
 	int						in_single_quotes;
 }							t_token_content;
 
@@ -74,5 +75,13 @@ typedef struct s_process_command_args
 	t_token					*tokens;
 	int						has_fd_redirect_to_stderr;
 }							t_process_command_args;
+
+typedef struct s_expansion_ctx
+{
+	char			**envs;
+	t_token_content	*content;
+	int				*last_exit;
+	int				*has_error_flag_control;
+}	t_expansion_ctx;
 
 #endif

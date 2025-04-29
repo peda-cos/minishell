@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/27 15:08:41 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:55:56 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static char	*extract_var_name(const char *str, int *index)
 }
 
 static char	*extract_env_value(
-	char *str, char **envs, int last_exit, int *index)
+	char *str, int *index, t_expansion_ctx *exp)
 {
 	char	*var;
 	char	*value;
 	int		in_brackets_entered;
 
-	value = get_special_variable(str, index, envs, last_exit);
+	value = get_special_variable(str, index, exp->envs, *exp->last_exit);
 	if (value)
 	{
 		(*index)++;
@@ -44,7 +44,7 @@ static char	*extract_env_value(
 		return (NULL);
 	if (!var)
 		return (ft_strdup(""));
-	value = get_env_value(var, envs);
+	value = get_env_value(var, exp->envs, exp->content);
 	free(var);
 	if (!value)
 		return (ft_strdup(""));
@@ -74,8 +74,7 @@ static void	process_expansion(char **result, char **value,
 	*result = extract_result(*value, *result);
 }
 
-char	*expand_variable(char *str,
-	char **envs, int last_exit, int *has_error_flag_control)
+char	*expand_variable(char *str, t_expansion_ctx *exp)
 {
 	int		i;
 	int		start;
@@ -97,8 +96,8 @@ char	*expand_variable(char *str,
 		if (str[i] == '$')
 		{
 			i++;
-			value = extract_env_value(str, envs, last_exit, &i);
-			process_expansion(&result, &value, has_error_flag_control);
+			value = extract_env_value(str, &i, exp);
+			process_expansion(&result, &value, exp->has_error_flag_control);
 		}
 	}
 	return (result);

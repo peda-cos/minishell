@@ -17,9 +17,10 @@ LIBFT_DIR = ./libft
 OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
-MAIN_SRCS = sources/main.c sources/utils.c \
-	sources/cmd_utils.c sources/free.c sources/gay.c
-PARSER_SRCS = sources/parser/main.c sources/parser/utils.c
+MAIN_SRCS = sources/main.c \
+	sources/utils.c sources/free.c sources/gay.c
+PARSER_SRCS = sources/parser/main.c \
+	sources/parser/utils.c sources/parser/cmd_utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
 BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
 	sources/builtin/cd.c sources/builtin/echo.c \

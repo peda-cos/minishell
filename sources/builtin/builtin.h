@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 14:46:12 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:07:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		builtin_exit(t_process_command_args	*param);
 /* Utility functions */
 int		is_valid_key(char *key);
 void	print_invalid_arg(char *arg);
-char	*get_env_value(char *key, char **env);
+char	*get_env_value(char *key, char **envs, t_token_content *content);
 
 /* CD Utility functions */
 void	update_pwd_env(char *old_pwd, char ***env);

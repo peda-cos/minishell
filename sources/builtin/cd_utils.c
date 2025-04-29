@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:16:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/19 16:52:25 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:07:43 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	change_to_previous(char ***env, char *old_pwd)
 {
 	char	*prev_pwd;
 
-	prev_pwd = get_env_value("OLDPWD", *env);
+	prev_pwd = get_env_value("OLDPWD", *env, NULL);
 	if (!prev_pwd)
 	{
 		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
@@ -78,7 +78,7 @@ int	change_to_home(char ***env, char *old_pwd)
 {
 	char	*home;
 
-	home = get_env_value("HOME", *env);
+	home = get_env_value("HOME", *env, NULL);
 	if (!home)
 	{
 		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);
