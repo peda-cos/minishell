@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/24 22:59:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:35:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,17 @@ static int	is_quoted_delimiter(char *delim)
 static char	*process_heredoc_line(char *line, char **env, int last_exit,
 		int expand_vars)
 {
-	char	*expanded;
-	int		has_error;
+	char			*expanded;
+	int				has_error;
+	t_expansion_ctx	expansion_cxt;
 
 	has_error = FALSE;
 	if (!expand_vars)
 		return (ft_strdup(line));
-	expanded = expand_variable(line, env, last_exit, &has_error);
+	expansion_cxt.envs = env;
+	expansion_cxt.last_exit = &last_exit;
+	expansion_cxt.has_error_flag_control = &has_error;
+	expanded = expand_variable(line, &expansion_cxt);
 	return (expanded);
 }
 

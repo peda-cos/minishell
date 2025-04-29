@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/27 20:36:21 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:21:46 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	process_command_arg(char **new_args, int *new_idx, char *arg)
 	return (TRUE);
 }
 
-void	update_cmd_args_with_spaces(t_command *cmd)
+void	update_cmd_args_when_expanded(t_command *cmd)
 {
 	int		i;
 	char	**new_args;

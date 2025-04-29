@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/27 04:19:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:37:11 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,36 @@ t_token_content	*new_token_content(char *value,
 	}
 	content->next = NULL;
 	content->value = value;
+	content->was_expanded = FALSE;
 	content->in_quotes = in_quotes;
 	content->in_single_quotes = in_single_quotes;
 	return (content);
 }
 
+static char	*get_segment_expanded(t_token_content *content,
+	t_content_params *params, int *has_error)
+{
+	t_expansion_ctx	expansion_context;
+
+	expansion_context.content = content;
+	expansion_context.envs = params->envs;
+	expansion_context.has_error_flag_control = has_error;
+	expansion_context.last_exit = params->last_exit_code;
+	return (expand_variable(content->value, &expansion_context));
+}
+
 static char	*append_to_final_value(char *final_value,
 	t_token_content *content, t_content_params *params)
 {
-	int		has_error;
-	char	*temp_value;
-	char	*current_segment;
+	int				has_error;
+	char			*temp_value;
+	char			*current_segment;
 
 	has_error = FALSE;
 	if (content->in_single_quotes)
 		current_segment = ft_strdup(content->value);
 	else
-		current_segment = expand_variable(content->value,
-				params->envs, *params->last_exit_code, &has_error);
+		current_segment = get_segment_expanded(content, params, &has_error);
 	if (has_error)
 	{
 		free(current_segment);
@@ -80,7 +92,7 @@ static char	*process_final_value(char *final_value,
 	if (content->value[0] == '~' && content->value[1] == '\0')
 	{
 		temp = content->value;
-		content->value = get_env_value("HOME", params->envs);
+		content->value = get_env_value("HOME", params->envs, NULL);
 		free(temp);
 	}
 	return (append_to_final_value(final_value, content, params));

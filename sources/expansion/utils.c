@@ -6,27 +6,29 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:00:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 23:50:47 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:07:40 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-char	*get_env_value(char *key, char **env)
+char	*get_env_value(char *key, char **envs, t_token_content *content)
 {
 	int		i;
 	int		key_len;
 	char	*value;
 
-	if (!key || !env)
+	if (!key || !envs)
 		return (NULL);
 	key_len = ft_strlen(key);
 	i = 0;
-	while (env[i])
+	while (envs[i])
 	{
-		if (ft_strncmp(env[i], key, key_len) == 0 && env[i][key_len] == '=')
+		if (ft_strncmp(envs[i], key, key_len) == 0 && envs[i][key_len] == '=')
 		{
-			value = ft_strdup(env[i] + key_len + 1);
+			value = ft_strdup(envs[i] + key_len + 1);
+			if (content)
+				content->was_expanded = TRUE;
 			return (value);
 		}
 		i++;
@@ -38,7 +40,7 @@ char	*get_underscore_arg_value(char **envs)
 {
 	char	*value;
 
-	value = get_env_value("_", envs);
+	value = get_env_value("_", envs, NULL);
 	if (!value)
 		return (getcwd(NULL, 0));
 	return (value);

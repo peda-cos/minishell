@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 17:52:00 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/04/28 21:21:46 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ static t_token	*process_token(t_token *token, t_parser_context *parser,
 		content_params.last_exit_code = last_exit;
 		content_params.content = token->content;
 		arg_val = get_token_content_value(&content_params);
+		if (token->content->was_expanded)
+			update_cmd_args_when_expanded(parser->current);
 		if (!arg_val)
 		{
 			cleanup_parser_on_error(parser);
