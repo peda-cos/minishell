@@ -56,7 +56,7 @@ int	change_to_previous(char ***env, char *old_pwd)
 {
 	char	*prev_pwd;
 
-	prev_pwd = get_env_value("OLDPWD", *env, NULL);
+	prev_pwd = get_env_value("OLDPWD", *env);
 	if (!prev_pwd)
 	{
 		ft_putstr_fd("cd: OLDPWD not set\n", STDERR_FILENO);
@@ -78,7 +78,7 @@ int	change_to_home(char ***env, char *old_pwd)
 {
 	char	*home;
 
-	home = get_env_value("HOME", *env, NULL);
+	home = get_env_value("HOME", *env);
 	if (!home)
 	{
 		ft_putstr_fd("cd: HOME not set\n", STDERR_FILENO);

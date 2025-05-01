@@ -130,8 +130,8 @@ static void	cleanup_parser_on_error(t_parser_context *parser)
 	}
 }
 
-static t_token	*process_token(t_token *token, t_parser_context *parser,
-		char **envs, int *last_exit)
+static t_token	*process_token(t_token *token,
+	t_parser_context *parser, char **envs, int *last_exit)
 {
 	t_content_params	content_params;
 	char				*arg_val;
@@ -159,11 +159,10 @@ static t_token	*process_token(t_token *token, t_parser_context *parser,
 	if (token->type == WORD)
 	{
 		content_params.envs = envs;
-		content_params.last_exit_code = last_exit;
+		content_params.was_expanded = FALSE;
 		content_params.content = token->content;
+		content_params.last_exit_code = last_exit;
 		arg_val = get_token_content_value(&content_params);
-		if (token->content->was_expanded)
-			update_cmd_args_when_expanded(parser->current);
 		if (!arg_val)
 		{
 			cleanup_parser_on_error(parser);
@@ -174,6 +173,8 @@ static t_token	*process_token(t_token *token, t_parser_context *parser,
 			cleanup_parser_on_error(parser);
 			return (NULL);
 		}
+		if (content_params.was_expanded)
+			parser->was_expanded = TRUE;
 		return (token->next);
 	}
 	return (token->next);
@@ -183,10 +184,13 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 {
 	t_parser_context	parser;
 	t_token				*next_token;
+	t_token				*tokens_head;
 
+	tokens_head = tokens;
+	parser.env = env;
 	parser.head = NULL;
 	parser.current = NULL;
-	parser.env = env;
+	parser.was_expanded = FALSE;
 	parser.last_exit = last_exit;
 	while (tokens)
 	{
@@ -195,5 +199,7 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 			return (NULL);
 		tokens = next_token;
 	}
+	if (parser.was_expanded)
+		update_cmd_args_when_expanded(parser.current, tokens_head);
 	return (parser.head);
 }

@@ -44,7 +44,8 @@ static char	*extract_env_value(
 		return (NULL);
 	if (!var)
 		return (ft_strdup(""));
-	value = get_env_value(var, exp->envs, exp->content);
+	value = get_env_value(var, exp->envs);
+	*exp->was_expanded = TRUE;
 	free(var);
 	if (!value)
 		return (ft_strdup(""));

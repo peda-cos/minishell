@@ -32,7 +32,6 @@
 # include <readline/readline.h>
 
 /* Main Utils */
-void		update_cmd_args_when_expanded(t_command *cmd);
 int			process_tokens(t_token **tokens, int *last_exit);
 void		process_input(char *input, char ***env, int *last_exit);
 void		execute_parent_builtin(
