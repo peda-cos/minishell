@@ -39,7 +39,6 @@ t_token_content	*new_token_content(char *value,
 	}
 	content->next = NULL;
 	content->value = value;
-	content->was_expanded = FALSE;
 	content->in_quotes = in_quotes;
 	content->in_single_quotes = in_single_quotes;
 	return (content);
@@ -54,6 +53,7 @@ static char	*get_segment_expanded(t_token_content *content,
 	expansion_context.envs = params->envs;
 	expansion_context.has_error_flag_control = has_error;
 	expansion_context.last_exit = params->last_exit_code;
+	expansion_context.was_expanded = &params->was_expanded;
 	return (expand_variable(content->value, &expansion_context));
 }
 
@@ -92,7 +92,7 @@ static char	*process_final_value(char *final_value,
 	if (content->value[0] == '~' && content->value[1] == '\0')
 	{
 		temp = content->value;
-		content->value = get_env_value("HOME", params->envs, NULL);
+		content->value = get_env_value("HOME", params->envs);
 		free(temp);
 	}
 	return (append_to_final_value(final_value, content, params));

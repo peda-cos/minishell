@@ -30,15 +30,15 @@ typedef struct s_token_content
 	struct s_token_content	*next;
 	char					*value;
 	int						in_quotes;
-	int						was_expanded;
 	int						in_single_quotes;
 }							t_token_content;
 
 typedef struct s_content_params
 {
 	char					**envs;
-	int						*last_exit_code;
 	t_token_content			*content;
+	int						was_expanded;
+	int						*last_exit_code;
 }							t_content_params;
 
 /* Token linked list */
@@ -81,6 +81,7 @@ typedef struct s_expansion_ctx
 	char			**envs;
 	t_token_content	*content;
 	int				*last_exit;
+	int				*was_expanded;
 	int				*has_error_flag_control;
 }	t_expansion_ctx;
 

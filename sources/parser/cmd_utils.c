@@ -29,10 +29,18 @@ static char	**malloc_new_args(t_command *cmd)
 	return ((char **)malloc(sizeof(char *) * (words + 1)));
 }
 
-static int	should_update_cmd(t_command *cmd)
+static int	should_update_cmd(t_command *cmd, t_token	*tokens_head)
 {
 	char	*command;
+	t_token	*token;
 
+	token = tokens_head;
+	while (token)
+	{
+		if (token->content->in_quotes)
+			return (FALSE);
+		token = token->next;
+	}
 	if (!cmd || !cmd->args)
 		return (FALSE);
 	command = cmd->args[0];
@@ -79,7 +87,8 @@ static int	process_command_arg(char **new_args, int *new_idx, char *arg)
 	return (TRUE);
 }
 
-void	update_cmd_args_when_expanded(t_command *cmd)
+void	update_cmd_args_when_expanded(t_command *cmd,
+	t_token	*tokens_head)
 {
 	int		i;
 	char	**new_args;
@@ -87,7 +96,7 @@ void	update_cmd_args_when_expanded(t_command *cmd)
 
 	i = 0;
 	new_args_index = 0;
-	if (!should_update_cmd(cmd))
+	if (!should_update_cmd(cmd, tokens_head))
 		return ;
 	new_args = malloc_new_args(cmd);
 	if (!new_args)
@@ -103,6 +112,7 @@ void	update_cmd_args_when_expanded(t_command *cmd)
 			return (free_split(new_args));
 		i++;
 	}
+	new_args[new_args_index] = NULL;
 	free_split(cmd->args);
 	cmd->args = new_args;
 }

@@ -12,7 +12,7 @@
 
 #include "expansion.h"
 
-char	*get_env_value(char *key, char **envs, t_token_content *content)
+char	*get_env_value(char *key, char **envs)
 {
 	int		i;
 	int		key_len;
@@ -27,8 +27,6 @@ char	*get_env_value(char *key, char **envs, t_token_content *content)
 		if (ft_strncmp(envs[i], key, key_len) == 0 && envs[i][key_len] == '=')
 		{
 			value = ft_strdup(envs[i] + key_len + 1);
-			if (content)
-				content->was_expanded = TRUE;
 			return (value);
 		}
 		i++;
@@ -40,7 +38,7 @@ char	*get_underscore_arg_value(char **envs)
 {
 	char	*value;
 
-	value = get_env_value("_", envs, NULL);
+	value = get_env_value("_", envs);
 	if (!value)
 		return (getcwd(NULL, 0));
 	return (value);

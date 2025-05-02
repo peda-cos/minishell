@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-char	*get_env_value(char *key, char **envs, t_token_content *content);
+char	*get_env_value(char *key, char **envs);
 char	*get_underscore_arg_value(char **envs);
 void	set_underscore_arg_value(t_command *cmd, char ***envs);
 char	*extract_var_name_in_brackets_entered(char *str, int *index);

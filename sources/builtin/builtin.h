@@ -32,7 +32,7 @@ int		builtin_exit(t_process_command_args	*param);
 /* Utility functions */
 int		is_valid_key(char *key);
 void	print_invalid_arg(char *arg);
-char	*get_env_value(char *key, char **envs, t_token_content *content);
+char	*get_env_value(char *key, char **envs);
 
 /* CD Utility functions */
 void	update_pwd_env(char *old_pwd, char ***env);

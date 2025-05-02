@@ -26,6 +26,7 @@ typedef struct s_parser_context
 	t_command	*current;
 	char		**env;
 	int			last_exit;
+	int			was_expanded;
 }				t_parser_context;
 
 /*
@@ -47,8 +48,11 @@ t_token			*process_word_tokens(t_command *cmd, t_token *token, char **env,
 */
 int				append_argument(t_command *cmd, char *arg_value);
 
+/*				Other functions */
+void			free_commands(t_command *head);
 int				is_redirection(t_token_type type);
 char			*get_token_content_value(t_content_params *params);
-void			free_commands(t_command *head);
+void			update_cmd_args_when_expanded(t_command *cmd,
+					t_token *tokens_head);
 
 #endif
