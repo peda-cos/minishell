@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 15:04:10 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:38:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define EQUAL_CHR '='
 # define DASH_CHR '-'
 # define SPACE_CHR ' '
+# define EMPTY_STR ""
 # define DASH_STR "-"
 # define EQUAL_STR "="
 # define PIPE_STR "|"

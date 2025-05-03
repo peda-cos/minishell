@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 15:13:11 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:48:03 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "minishell.h"
 
 # define EXPORT_OPTINS_CHARS	"afnp"
+# define UNSET_OPTINS_CHARS	"fnv"
 
 /* Environment management */
 char	**copy_env(char **envp);
@@ -35,6 +36,7 @@ int		builtin_exit(t_process_command_args	*param);
 int		is_valid_key(char *key);
 int		print_invalid_arg(char *arg);
 char	*get_env_value(char *key, char **envs);
+void	print_invalid_option(char *builtin, char *arg, char *arg_options);
 
 /* CD Utility functions */
 void	update_pwd_env(char *old_pwd, char ***env);
