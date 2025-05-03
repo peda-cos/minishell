@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 18:40:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:10:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ char	*find_executable(char *cmd, char **env);
 */
 int		handle_heredoc(char *delim, char **env, int last_exit);
 void	preprocess_heredocs(t_command *cmd_list);
+char	*append_to_buffer(char *buffer, char *line);
+int		is_quoted_delimiter(char *delim);
+char	*process_heredoc_line(char *line, char **env, int last_exit,
+			int expand_vars);
+char	*get_stripped_delim(int expand_vars, char *delim);
 
 /*
 ** Redirection handling functions (redirection.c)
@@ -45,6 +50,7 @@ int		execute_external(t_command *cmd, char **env);
 ** Process management functions (process.c)
 */
 int		setup_pipe(t_command *cmd, int pipefd[2]);
+int		setup_child_io(t_process_command_args *arg);
 void	child_process(t_process_command_args *param);
 void	parent_process(t_process_command_args *param);
 int		process_command(t_command *cmd, char ***envs, int *last_exit,

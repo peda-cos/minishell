@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:50:10 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/25 22:18:34 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:13:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,8 @@ static char	*extract_braced_var_name(char *str, int *index)
 	return (bracket_content);
 }
 
-char	*extract_var_name_in_brackets_entered(
-	char *str, int *index)
+static char	*get_var_name(char *str, int *index)
 {
-	int		i;
 	char	*var_name;
 
 	var_name = extract_braced_var_name(str, index);
@@ -53,6 +51,18 @@ char	*extract_var_name_in_brackets_entered(
 		free(var_name);
 		return (NULL);
 	}
+	return (var_name);
+}
+
+char	*extract_var_name_in_brackets_entered(
+	char *str, int *index)
+{
+	int		i;
+	char	*var_name;
+
+	var_name = get_var_name(str, index);
+	if (!var_name)
+		return (NULL);
 	i = 0;
 	while (var_name[i])
 	{

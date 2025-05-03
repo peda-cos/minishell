@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 18:31:57 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:10:23 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
-
-static int	setup_child_io(t_process_command_args *arg)
-{
-	if (arg->cmd->next && arg->pipefd[1] > 0)
-	{
-		dup2(arg->pipefd[1], STDOUT_FILENO);
-		close(arg->pipefd[0]);
-		close(arg->pipefd[1]);
-	}
-	if (setup_output_redirection(arg) < 0)
-		return (-1);
-	if (setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0)
-		return (-1);
-	return (0);
-}
 
 static int	handle_empty_command(t_command *cmd)
 {
@@ -46,6 +31,16 @@ static int	handle_empty_command(t_command *cmd)
 		return (1);
 	}
 	return (0);
+}
+
+static void	set_pipefd_stdin(t_process_command_args *param)
+{
+	if (param->cmd->next && param->pipefd[0] > 0)
+	{
+		close(param->pipefd[1]);
+		dup2(param->pipefd[0], STDIN_FILENO);
+		close(param->pipefd[0]);
+	}
 }
 
 void	child_process(t_process_command_args *param)
@@ -78,12 +73,7 @@ void	parent_process(t_process_command_args *param)
 	status = 0;
 	if (!param->cmd || !(param->last_exit))
 		return ;
-	if (param->cmd->next && param->pipefd[0] > 0)
-	{
-		close(param->pipefd[1]);
-		dup2(param->pipefd[0], STDIN_FILENO);
-		close(param->pipefd[0]);
-	}
+	set_pipefd_stdin(param);
 	if (!param->cmd->next)
 	{
 		waitpid(param->pid, &status, 0);

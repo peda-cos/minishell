@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 22:17:24 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:57:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,28 @@ static int	process_no_interactive_mode(char ***env)
 	free(input);
 	free_env(*env);
 	return (exit_status);
+}
+
+void	process_input(char *input, char ***env, int *last_exit)
+{
+	t_token		*tokens;
+	t_command	*cmd;
+
+	if (!input || !*input)
+		return ;
+	add_history(input);
+	save_command_to_history(input);
+	g_signal_received = 0;
+	tokens = tokenize_input(input);
+	if (process_tokens(&tokens, last_exit))
+		return ;
+	cmd = parse_tokens(tokens, *env, *last_exit);
+	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
+		return (process_invalid_command(cmd, last_exit, tokens));
+	preprocess_heredocs(cmd);
+	set_last_arg_without_pipe_executed(tokens, cmd, env);
+	execute_parsed_commands(cmd, env, last_exit, tokens);
+	free_tokens(tokens);
 }
 
 int	main(int argc, char **argv, char **envp)
