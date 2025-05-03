@@ -85,10 +85,10 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 			return (NULL);
 		tokens = next_token;
 	}
+	parser.head->in_quotes = tokens_head->content->in_quotes;
 	if (parser.head && parser.was_expanded)
 	{
 		parser.head->was_expanded = TRUE;
-		parser.head->in_quotes = tokens_head->content->in_quotes;
 		update_cmd_args_when_expanded(parser.head, tokens_head);
 	}
 	return (parser.head);

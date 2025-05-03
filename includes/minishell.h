@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 18:59:39 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:41:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 # include <readline/readline.h>
 
 /* Main Utils */
+int			process_no_interactive_mode(char ***env);
 int			process_tokens(t_token **tokens, int *last_exit);
 void		process_input(char *input, char ***env, int *last_exit);
 void		execute_parent_builtin(

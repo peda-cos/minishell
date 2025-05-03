@@ -18,7 +18,7 @@ OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
 MAIN_SRCS = sources/main.c \
-	sources/utils.c sources/free.c sources/gay.c
+	sources/no_interactive.c sources/utils.c sources/free.c sources/gay.c
 PARSER_SRCS = sources/parser/main.c \
 	sources/parser/utils.c sources/parser/redirect.c sources/parser/cmd_utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
