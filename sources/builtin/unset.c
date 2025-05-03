@@ -33,7 +33,7 @@ int	builtin_unset(char **args, char ***env)
 		return (0);
 	if (args[1][0] == DASH_CHR)
 	{
-		print_invalid_option("unset", args[1], UNSET_OPTINS_CHARS);
+		print_invalid_option("unset", args[1], UNSET_OPTIONS_CHARS);
 		return (2);
 	}
 	i = 1;

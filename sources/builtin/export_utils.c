@@ -16,7 +16,7 @@ int	print_invalid_arg(char *arg)
 {
 	if (arg[0] == DASH_CHR)
 	{
-		print_invalid_option("export", arg, EXPORT_OPTINS_CHARS);
+		print_invalid_option("export", arg, EXPORT_OPTIONS_CHARS);
 		return (2);
 	}
 	ft_putstr_fd("Minishell: export: `", STDERR_FILENO);

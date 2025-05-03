@@ -15,8 +15,8 @@
 
 # include "minishell.h"
 
-# define EXPORT_OPTINS_CHARS	"afnp"
-# define UNSET_OPTINS_CHARS	"fnv"
+# define EXPORT_OPTIONS_CHARS	"afnp"
+# define UNSET_OPTIONS_CHARS	"fnv"
 
 /* Environment management */
 char	**copy_env(char **envp);
