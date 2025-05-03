@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:40:29 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 23:31:32 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,11 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 			return (NULL);
 		tokens = next_token;
 	}
-	if (parser.was_expanded)
-		update_cmd_args_when_expanded(parser.current, tokens_head);
+	if (parser.head && parser.was_expanded)
+	{
+		parser.head->was_expanded = TRUE;
+		parser.head->in_quotes = tokens_head->content->in_quotes;
+		update_cmd_args_when_expanded(parser.head, tokens_head);
+	}
 	return (parser.head);
 }

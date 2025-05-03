@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 18:58:43 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 23:32:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ void	process_invalid_command(t_command *cmd,
 {
 	if (cmd && cmd->args && *cmd->args[0] == '\0')
 	{
-		ft_putendl_fd("Minishell: Command  '' not found", STDERR_FILENO);
+		if (!cmd->was_expanded || cmd->in_quotes)
+			ft_putendl_fd("Minishell: Command  '' not found", STDERR_FILENO);
 		*last_exit = 127;
 	}
 	else

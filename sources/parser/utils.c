@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:34:14 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 23:25:55 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static t_command	*new_command(void)
 	cmd->output_file_list = malloc(sizeof(char *) * OUTPUT_FILES_MAX_SIZE);
 	cmd->output_file_list[0] = NULL;
 	cmd->amount_output_files = 0;
+	cmd->was_expanded = FALSE;
+	cmd->in_quotes = FALSE;
 	cmd->append = 0;
 	cmd->heredoc_delim = NULL;
 	cmd->heredoc_fd = -1;
