@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 21:07:42 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:13:11 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define BUILTIN_H
 
 # include "minishell.h"
+
+# define EXPORT_OPTINS_CHARS	"afnp"
 
 /* Environment management */
 char	**copy_env(char **envp);
@@ -31,7 +33,7 @@ int		builtin_exit(t_process_command_args	*param);
 
 /* Utility functions */
 int		is_valid_key(char *key);
-void	print_invalid_arg(char *arg);
+int		print_invalid_arg(char *arg);
 char	*get_env_value(char *key, char **envs);
 
 /* CD Utility functions */
