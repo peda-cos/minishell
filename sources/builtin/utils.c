@@ -38,4 +38,5 @@ void	print_invalid_option(char *builtin, char *arg, char *arg_options)
 	ft_putstr_fd(": -", STDERR_FILENO);
 	ft_putstr_fd(option_chr, STDERR_FILENO);
 	ft_putendl_fd(": invalid option", STDERR_FILENO);
+	free(option_chr);
 }

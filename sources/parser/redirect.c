@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 20:38:07 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 20:14:55 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
 		tmp_content = tmp_content->next;
 	}
 	cmd->heredoc_delim = ft_strdup(heredoc_delimiter);
+	free(heredoc_delimiter);
 }
 
 static int	create_output_file(char *filename, int append)
@@ -86,8 +87,7 @@ void	set_redirection_target(t_command *cmd,
 		set_output_redirect_file(filename, cmd, TRUE);
 	else if (token->type == HEREDOC)
 		process_heredoc_delim(content_params->content, cmd);
-	else
-		free(filename);
+	free(filename);
 }
 
 int	handle_redirection(t_command *cmd,
