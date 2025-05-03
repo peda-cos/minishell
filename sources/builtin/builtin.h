@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:15:36 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 15:48:03 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:55:05 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		builtin_cd(char **args, char ***env);
 int		builtin_pwd(void);
 int		builtin_export(char **args, char ***env);
 int		builtin_unset(char **args, char ***env);
-int		builtin_env(char **env);
+int		builtin_env(char **args, char **env);
 int		builtin_exit(t_process_command_args	*param);
 
 /* Utility functions */
