@@ -1,0 +1,6 @@
+a.out
+*.o
+*.exe
+objects
+*.a
+minishell
