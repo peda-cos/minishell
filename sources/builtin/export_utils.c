@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:32 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/18 16:42:48 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:15:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,16 @@ void	print_invalid_arg(char *arg)
 
 int	is_valid_key(char *key)
 {
-	if (!key || !*key || !ft_isalpha(*key))
+	int	index;
+
+	index = 0;
+	if (!key || !*key || (!ft_isalpha(*key) && *key != UNDERSCORE_CHR))
 		return (FALSE);
-	while (*key)
+	while (key[index])
 	{
-		if (!ft_isalnum(*key) && *key != '_')
+		if (!ft_isalnum(key[index]) && key[index] != UNDERSCORE_CHR)
 			return (FALSE);
-		key++;
+		index++;
 	}
 	return (TRUE);
 }
