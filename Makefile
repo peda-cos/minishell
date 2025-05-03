@@ -20,19 +20,20 @@ INCS_DIR = ./includes
 MAIN_SRCS = sources/main.c \
 	sources/utils.c sources/free.c sources/gay.c
 PARSER_SRCS = sources/parser/main.c \
-	sources/parser/utils.c sources/parser/cmd_utils.c
+	sources/parser/utils.c sources/parser/redirect.c sources/parser/cmd_utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
 BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
 	sources/builtin/cd.c sources/builtin/echo.c \
 	sources/builtin/pwd.c sources/builtin/unset.c \
 	sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c
-EXECUTOR_SRCS = sources/executor/main.c sources/executor/path_utils.c \
+EXECUTOR_SRCS = sources/executor/main.c \
+	sources/executor/process_utils.c sources/executor/path_utils.c \
 	sources/executor/redirection.c sources/executor/redirection_utils.c \
 	sources/executor/command_utils.c sources/executor/process.c \
-	sources/executor/process_utils.c sources/executor/heredoc.c 
-TOKENIZER_SRCS = sources/tokenizer/utils.c sources/tokenizer/main.c \
-	sources/tokenizer/word.c sources/tokenizer/redirect.c \
-	sources/tokenizer/token.c
+	sources/executor/heredoc.c sources/executor/heredoc_utils.c
+TOKENIZER_SRCS = sources/tokenizer/main.c \
+	sources/tokenizer/utils.c sources/tokenizer/redirect.c sources/tokenizer/token.c \
+	sources/tokenizer/word.c	sources/tokenizer/word_utils.c	sources/tokenizer/word_content.c
 EXPANSION_SRCS = sources/expansion/main.c sources/expansion/utils.c \
 	sources/expansion/advanced.c
 VALIDATOR_SRCS = sources/validator/main.c sources/validator/utils.c

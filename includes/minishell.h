@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 21:21:46 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:59:39 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void		execute_parent_builtin(
 				t_command *cmd, char ***env, int *last_exit, t_token *tokens);
 void		execute_parsed_commands(
 				t_command *cmd, char ***env, int *last_exit, t_token *tokens);
+void		set_last_arg_without_pipe_executed(
+				t_token *tokens, t_command *cmd, char ***envs);
+void		process_invalid_command(t_command *cmd,
+				int *last_exit, t_token *tokens);
 
 /* Environment management */
 void		set_underscore_arg_value(t_command *cmd, char ***envs);

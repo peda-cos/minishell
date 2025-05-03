@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:33:23 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 18:59:50 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:40:11 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 
 # define OUTPUT_FILES_MAX_SIZE 25
 # define SYNTAX_ERROR_MSG "minishell: syntax error near unexpected token\n"
-/*
-** Parser context structure to reduce parameter count in functions
-*/
+
 typedef struct s_parser_context
 {
 	t_command	*head;
@@ -29,30 +27,19 @@ typedef struct s_parser_context
 	int			was_expanded;
 }				t_parser_context;
 
-/*
-** Appends a new command to the end of the command chain
-** Returns the newly added command
-*/
-t_command		*append_command(t_command **head);
-
-/*
-** Processes a sequence of word tokens into command arguments
-** Returns the updated token pointer
-*/
-t_token			*process_word_tokens(t_command *cmd, t_token *token, char **env,
-					int last_exit);
-
-/*
-** Appends a single argument to a command's argument list
-** Returns 1 on success, 0 on failure
-*/
-int				append_argument(t_command *cmd, char *arg_value);
-
-/*				Other functions */
 void			free_commands(t_command *head);
 int				is_redirection(t_token_type type);
+t_command		*append_command(t_command **head);
+int				append_argument(t_command *cmd, char *arg_value);
+void			cleanup_parser_on_error(t_parser_context *parser);
 char			*get_token_content_value(t_content_params *params);
 void			update_cmd_args_when_expanded(t_command *cmd,
 					t_token *tokens_head);
+void			set_output_redirect_file(char *value,
+					t_command	*cmd, int is_append);
+void			set_redirection_target(t_command *cmd,
+					t_token *token, t_content_params *content_params);
+int				handle_redirection(t_command *cmd,
+					t_token **token_ptr, char **envs, int *last_exit);
 
 #endif

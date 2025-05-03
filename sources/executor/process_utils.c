@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:56:05 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:56:14 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:10:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,20 @@ int	setup_pipe(t_command *cmd, int pipefd[2])
 		pipefd[0] = -1;
 		pipefd[1] = -1;
 	}
+	return (0);
+}
+
+int	setup_child_io(t_process_command_args *arg)
+{
+	if (arg->cmd->next && arg->pipefd[1] > 0)
+	{
+		dup2(arg->pipefd[1], STDOUT_FILENO);
+		close(arg->pipefd[0]);
+		close(arg->pipefd[1]);
+	}
+	if (setup_output_redirection(arg) < 0)
+		return (-1);
+	if (setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0)
+		return (-1);
 	return (0);
 }

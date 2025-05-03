@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:31:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 18:47:30 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:34:14 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-int	is_redirection(t_token_type type)
-{
-	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND
-		|| type == HEREDOC);
-}
 
 static t_command	*new_command(void)
 {
@@ -38,6 +32,22 @@ static t_command	*new_command(void)
 	return (cmd);
 }
 
+int	is_redirection(t_token_type type)
+{
+	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == APPEND
+		|| type == HEREDOC);
+}
+
+void	cleanup_parser_on_error(t_parser_context *parser)
+{
+	if (parser && parser->head)
+	{
+		free_commands(parser->head);
+		parser->head = NULL;
+		parser->current = NULL;
+	}
+}
+
 t_command	*append_command(t_command **head)
 {
 	t_command	*new_cmd;
@@ -56,66 +66,6 @@ t_command	*append_command(t_command **head)
 		iter = iter->next;
 	iter->next = new_cmd;
 	return (new_cmd);
-}
-
-static int	count_word_tokens(t_token *token)
-{
-	int		count;
-	t_token	*tmp;
-
-	count = 0;
-	tmp = token;
-	while (tmp && tmp->type == WORD)
-	{
-		count++;
-		tmp = tmp->next;
-	}
-	return (count);
-}
-
-static void	free_commands_during_process_word_tokens(t_command *cmd)
-{
-	int	index;
-
-	index = 0;
-	while (cmd->args[index])
-	{
-		free(cmd->args[index]);
-		index++;
-	}
-	free(cmd->args);
-	cmd->args = NULL;
-}
-
-t_token	*process_word_tokens(t_command *cmd, t_token *token, char **env,
-		int last_exit)
-{
-	int					i;
-	int					count;
-	t_content_params	content_params;
-
-	count = count_word_tokens(token);
-	cmd->args = malloc(sizeof(char *) * (count + 1));
-	if (!cmd->args)
-		return (token);
-	i = 0;
-	while (i < count && token && token->type == WORD)
-	{
-		content_params.envs = env;
-		content_params.last_exit_code = &last_exit;
-		content_params.content = token->content;
-		cmd->args[i] = get_token_content_value(&content_params);
-		if (!cmd->args[i])
-		{
-			cmd->args[i] = NULL;
-			return (free_commands_during_process_word_tokens(cmd), NULL);
-		}
-		i++;
-		token = token->next;
-	}
-	cmd->args[i] = NULL;
-	cmd->argc = count;
-	return (token);
 }
 
 int	append_argument(t_command *cmd, char *arg_value)
