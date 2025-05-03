@@ -33,7 +33,7 @@ static t_token	*process_token_word(t_token *token,
 		cleanup_parser_on_error(parser);
 		return (NULL);
 	}
-	if (content_params.was_expanded)
+	if (parser->head->argc == 1 && content_params.was_expanded)
 		parser->was_expanded = TRUE;
 	return (token->next);
 }
