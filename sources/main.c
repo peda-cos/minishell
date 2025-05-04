@@ -6,72 +6,38 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 18:57:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 17:09:06 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_empty_string(const char *str)
+static int	process_empty_command(
+	t_command *cmd, t_token *tokens, int *last_exit)
 {
-	int		i;
+	int	index;
 
-	if (str == NULL)
-		return (FALSE);
-	i = 0;
-	while (str[i])
+	if (cmd && cmd->args && cmd->args[0][0] == NULL_CHR
+		&& cmd->args[1] == NULL && !cmd->in_quotes)
 	{
-		if (str[i] != ' ' && str[i] != '\t')
-			return (FALSE);
-		i++;
+		free_tokens(tokens);
+		free_commands(cmd);
+		*last_exit = 0;
+		return (1);
 	}
-	return (TRUE);
-}
-
-static char	*get_input_from_no_interactive_mode(void)
-{
-	char	*buffer;
-	ssize_t	bytes_read;
-
-	buffer = malloc(4096);
-	if (!buffer)
-		return (NULL);
-	bytes_read = read(STDIN_FILENO, buffer, 4095);
-	if (bytes_read < 0)
+	if (cmd && cmd->args && cmd->args[1] && !cmd->in_quotes)
 	{
-		free(buffer);
-		return (NULL);
+		index = 0;
+		free(cmd->args[0]);
+		while (cmd->args[index])
+		{
+			cmd->args[index] = cmd->args[index + 1];
+			index++;
+		}
+		return (0);
 	}
-	if (bytes_read > 0 && buffer[bytes_read - 1] == '\n')
-		buffer[bytes_read - 1] = '\0';
-	buffer[bytes_read] = '\0';
-	return (buffer);
-}
-
-static int	process_no_interactive_mode(char ***env)
-{
-	int		index;
-	char	*input;
-	char	**inputs;
-	int		exit_status;
-
-	exit_status = 0;
-	input = get_input_from_no_interactive_mode();
-	if (is_empty_string(input))
-		return (free_env(*env), free(input), 0);
-	index = 0;
-	inputs = ft_split(input, '\n');
-	while (inputs[index])
-	{
-		if (!is_empty_string(inputs[index]))
-			process_input(inputs[index], env, &exit_status);
-		free(inputs[index]);
-		index++;
-	}
-	free(inputs);
-	free(input);
-	free_env(*env);
-	return (exit_status);
+	process_invalid_command(cmd, last_exit, tokens);
+	return (1);
 }
 
 void	process_input(char *input, char ***env, int *last_exit)
@@ -88,8 +54,11 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (process_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
-	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == '\0')
-		return (process_invalid_command(cmd, last_exit, tokens));
+	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == NULL_CHR)
+	{
+		if (process_empty_command(cmd, tokens, last_exit))
+			return ;
+	}
 	preprocess_heredocs(cmd);
 	set_last_arg_without_pipe_executed(tokens, cmd, env);
 	execute_parsed_commands(cmd, env, last_exit, tokens);

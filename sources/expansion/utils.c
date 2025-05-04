@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:00:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 21:07:40 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:13:29 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,13 @@ char	*get_special_variable(char *str,
 		value = (ft_strdup("$ "));
 	else if (str[*index] == '\0')
 		value = (ft_strdup("$"));
+	else if (str[*index] == '/')
+		value = (ft_strdup("$/"));
 	else if (str[*index] == '?')
 		value = ft_itoa(last_exit);
 	else if (str[*index] == '0')
 		value = (ft_strdup("minishell"));
-	else if (str[*index] == '_')
+	else if (str[*index] == '_' && str[*index + 1] == '\0')
 		value = (get_underscore_arg_value(envs));
 	return (value);
 }

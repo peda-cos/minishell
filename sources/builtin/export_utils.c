@@ -6,28 +6,37 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:37:32 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/04/18 16:42:48 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:47:55 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-void	print_invalid_arg(char *arg)
+int	print_invalid_arg(char *arg)
 {
+	if (arg[0] == DASH_CHR)
+	{
+		print_invalid_option("export", arg, EXPORT_OPTIONS_CHARS);
+		return (2);
+	}
 	ft_putstr_fd("Minishell: export: `", STDERR_FILENO);
 	ft_putstr_fd(arg, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+	return (1);
 }
 
 int	is_valid_key(char *key)
 {
-	if (!key || !*key || !ft_isalpha(*key))
+	int	index;
+
+	index = 0;
+	if (!key || !*key || (!ft_isalpha(*key) && *key != UNDERSCORE_CHR))
 		return (FALSE);
-	while (*key)
+	while (key[index])
 	{
-		if (!ft_isalnum(*key) && *key != '_')
+		if (!ft_isalnum(key[index]) && key[index] != UNDERSCORE_CHR)
 			return (FALSE);
-		key++;
+		index++;
 	}
 	return (TRUE);
 }

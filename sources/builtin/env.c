@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:22:32 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/01 21:53:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 16:04:40 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,19 @@ int	find_env_index(char *key, char **env)
 	return (-1);
 }
 
-int	builtin_env(char **env)
+int	builtin_env(char **args, char **env)
 {
 	int	i;
 
 	i = 0;
-	if (!env)
+	if (!args || !env)
 		return (1);
+	if (args[1])
+	{
+		ft_putendl_fd(
+			"Minishell: Env with arguments not implemented", STDERR_FILENO);
+		return (127);
+	}
 	while (env[i])
 	{
 		ft_putendl_fd(env[i], STDOUT_FILENO);

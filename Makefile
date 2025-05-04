@@ -18,13 +18,13 @@ OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
 MAIN_SRCS = sources/main.c \
-	sources/utils.c sources/free.c sources/gay.c
+	sources/no_interactive.c sources/utils.c sources/free.c sources/gay.c
 PARSER_SRCS = sources/parser/main.c \
 	sources/parser/utils.c sources/parser/redirect.c sources/parser/cmd_utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
-BUILTIN_SRCS = sources/builtin/env.c sources/builtin/cd_utils.c \
-	sources/builtin/cd.c sources/builtin/echo.c \
-	sources/builtin/pwd.c sources/builtin/unset.c \
+BUILTIN_SRCS = sources/builtin/utils.c \
+	sources/builtin/env.c sources/builtin/pwd.c sources/builtin/unset.c \
+	sources/builtin/cd_utils.c sources/builtin/cd.c sources/builtin/echo.c \
 	sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c
 EXECUTOR_SRCS = sources/executor/main.c \
 	sources/executor/process_utils.c sources/executor/path_utils.c \

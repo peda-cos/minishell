@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 18:05:23 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:38:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define FALSE 0
 
 /* Tokenizer ------------ */
+# define NULL_CHR '\0'
 # define PIPE_CHR '|'
 # define BACKSLASH_CHR '\\'
 # define DOT_AND_COMA_CHR ';'
@@ -26,13 +27,18 @@
 # define BRACKET_OPEN_CHR '{'
 # define BRACKET_CLOSE_CHR '}'
 # define UNDERSCORE_CHR '_'
-# define DOUBLE_QUOTE_CHR '"'
+# define EQUAL_CHR '='
+# define DASH_CHR '-'
+# define SPACE_CHR ' '
+# define EMPTY_STR ""
+# define DASH_STR "-"
+# define EQUAL_STR "="
 # define PIPE_STR "|"
+# define DOUBLE_QUOTE_CHR '"'
 # define APPEND_STR ">>"
 # define HEREDOC_STR "<<"
 # define REDIRECT_IN_STR "<"
 # define REDIRECT_OUT_STR ">"
-# define SPACE_CHR ' '
 # define SINGLE_QUOTE_STR "'"
 # define DOUBLE_QUOTE_STR "\""
 /* ----------------------- */

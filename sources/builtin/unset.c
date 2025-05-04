@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:18:12 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/01 21:32:38 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:47:49 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	builtin_unset(char **args, char ***env)
 		return (1);
 	if (!args[1])
 		return (0);
+	if (args[1][0] == DASH_CHR)
+	{
+		print_invalid_option("unset", args[1], UNSET_OPTIONS_CHARS);
+		return (2);
+	}
 	i = 1;
 	while (args[i])
 	{

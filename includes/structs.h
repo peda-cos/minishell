@@ -63,6 +63,8 @@ typedef struct s_command
 	int						amount_output_files;
 	char					*heredoc_delim;
 	int						heredoc_fd;
+	int						was_expanded;
+	int						in_quotes;
 }							t_command;
 
 typedef struct s_process_command_args
