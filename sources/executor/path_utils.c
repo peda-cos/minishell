@@ -12,6 +12,12 @@
 
 #include "executor.h"
 
+/**
+ * @brief Frees the memory allocated for a NULL-terminated array of strings
+ * @param split The array of strings to be freed
+ * @return void
+ * @note Handles NULL input safely
+ */
 void	free_split(char **split)
 {
 	int	i;
@@ -27,6 +33,13 @@ void	free_split(char **split)
 	free(split);
 }
 
+/**
+	* @brief Joins a directory and a command into a full path
+	* @param dir The directory to join with the command
+	* @param cmd The command to join with the directory
+	* @return The full path as a dynamically allocated string, or NULL on failure
+	* @note Allocates memory for the full path and frees it after use
+	*/
 static char	*join_path(char *dir, char *cmd)
 {
 	char	*temp;
@@ -42,6 +55,13 @@ static char	*join_path(char *dir, char *cmd)
 	return (full);
 }
 
+/**
+	* @brief Searches for the command in the directories specified in PATH
+	* @param paths The array of directories to search in
+	* @param cmd The command to search for
+	* @return The full path of the command if found, or NULL if not found
+	* @note Frees the paths array after use
+	*/
 static char	*search_in_paths(char **paths, char *cmd)
 {
 	char	*full_path;

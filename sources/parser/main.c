@@ -12,6 +12,18 @@
 
 #include "parser.h"
 
+/**
+ * @brief Processes a word token and adds it to the current command's arguments
+ * @param token The token to process
+ * @param parser The parser context containing command information
+ * @param envs The environment variables for expansion
+ * @param last_exit Pointer to the last exit status for $? expansion
+ * @return The next token to process, or NULL on error
+ * @note Expands variables in the token content
+ *       Adds the processed content as an argument to the current command
+ *       Tracks if the first argument was expanded for later processing
+ *       Cleans up resources on error
+ */
 static t_token	*process_token_word(t_token *token,
 	t_parser_context *parser, char **envs, int *last_exit)
 {
@@ -38,6 +50,16 @@ static t_token	*process_token_word(t_token *token,
 	return (token->next);
 }
 
+/**
+	* @brief Processes a token based on its type and updates the parser context
+	* @param token The token to process
+	* @param parser The parser context containing command information
+	* @param envs The environment variables for expansion
+	* @param last_exit Pointer to the last exit status for $? expansion
+	* @return The next token to process, or NULL on error
+	* @note Handles pipe, redirection, and word tokens differently
+	*       Updates the current command in the parser context accordingly
+	*/
 static t_token	*process_token(t_token *token,
 	t_parser_context *parser, char **envs, int *last_exit)
 {
@@ -66,6 +88,15 @@ static t_token	*process_token(t_token *token,
 	return (token->next);
 }
 
+/**
+	* @brief Parses the tokens into a command structure
+	* @param tokens The list of tokens to parse
+	* @param env The environment variables for expansion
+	* @param last_exit Pointer to the last exit status for $? expansion
+	* @return The parsed command structure, or NULL on error
+	* @note Iterates through the tokens and processes each one
+	*       Updates the parser context with the current command
+	*/
 t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 {
 	t_parser_context	parser;

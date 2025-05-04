@@ -12,6 +12,14 @@
 
 #include "expansion.h"
 
+/**
+	* @brief Extracts the variable name from a string
+	* @param str The string to extract from
+	* @param index The index to start extracting from
+	* @return The extracted variable name, or NULL if an error occurs
+	* @note Increments the index to point to the char after the closing brace
+	*       Returns NULL if the closing brace is not found
+	*/
 static char	*extract_var_name(const char *str, int *index)
 {
 	int		start;
@@ -22,6 +30,13 @@ static char	*extract_var_name(const char *str, int *index)
 	return (ft_substr(str, start, *index - start));
 }
 
+/**
+	* @brief Extracts the environment variable value from a string
+	* @param str The string to extract from
+	* @param index The index to start extracting from
+	* @param exp The expansion context containing environment variables and flags
+	* @return The extracted variable value, or NULL if an error occurs
+	*/
 static char	*extract_env_value(
 	char *str, int *index, t_expansion_ctx *exp)
 {
@@ -52,6 +67,15 @@ static char	*extract_env_value(
 	return (value);
 }
 
+/**
+	* @brief Extracts the result from a partial
+	* string and appends it to the result
+	* @param partial The partial string to be extracted
+	* @param result The result string to which
+	* the partial string will be appended
+	* @return The updated result string
+	* @note Allocates memory for the new result string and frees the old one
+	*/
 static char	*extract_result(char *partial, char *result)
 {
 	char	*partial_temp;
@@ -75,6 +99,13 @@ static void	process_expansion(char **result, char **value,
 	*result = extract_result(*value, *result);
 }
 
+/**
+	* @brief Expands variables in a string
+	* @param str The string to be expanded
+	* @param exp The expansion context containing environment variables and flags
+	* @return The expanded string, or NULL if an error occurs
+	* @note Allocates memory for the new string and frees the old one
+	*/
 char	*expand_variable(char *str, t_expansion_ctx *exp)
 {
 	int		i;

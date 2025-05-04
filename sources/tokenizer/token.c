@@ -6,12 +6,20 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 20:44:52 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:08:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
+/**
+ * @brief Creates a new token content structure
+ * @param value The string value to store in the token content
+ * @param in_quotes Flag indicating if the content is in double quotes
+ * @param in_single_quotes Flag indicating if the content is in single quotes
+ * @return Pointer to the newly created token content, or NULL on failure
+ * @note Allocates memory for the token content structure
+	*/
 t_token_content	*new_token_content(char *value,
 	int in_quotes, int in_single_quotes)
 {
@@ -32,6 +40,13 @@ t_token_content	*new_token_content(char *value,
 	return (content);
 }
 
+/**
+	* @brief Appends a new token content to the end of the linked list
+	* @param content The current token content
+	* @param tkz The tokenizer structure containing the new token content
+	* @return Pointer to the updated token content
+	* @note Allocates memory for the new token content and links it to the list
+	*/
 static char	*get_segment_expanded(t_token_content *content,
 	t_content_params *params, int *has_error)
 {
@@ -45,6 +60,14 @@ static char	*get_segment_expanded(t_token_content *content,
 	return (expand_variable(content->value, &expansion_context));
 }
 
+/**
+	* @brief Appends the expanded value of the token content to the final value
+	* @param final_value The final value string to append to
+	* @param content The token content to process
+	* @param params The parameters for processing the content
+	* @return Pointer to the updated final value string, or NULL on error
+	* @note Allocates memory for the new string and frees the old one
+	*/
 static char	*append_to_final_value(char *final_value,
 	t_token_content *content, t_content_params *params)
 {
@@ -72,6 +95,14 @@ static char	*append_to_final_value(char *final_value,
 	return (final_value);
 }
 
+/**
+	* @brief Processes the final value of the token content
+	* @param final_value The final value string to append to
+	* @param params The parameters for processing the content
+	* @param content The token content to process
+	* @return Pointer to the updated final value string, or NULL on error
+	* @note Allocates memory for the new string and frees the old one
+	*/
 static char	*process_final_value(char *final_value,
 	t_content_params *params, t_token_content *content)
 {
@@ -86,6 +117,12 @@ static char	*process_final_value(char *final_value,
 	return (append_to_final_value(final_value, content, params));
 }
 
+/**
+	* @brief Processes the content of the token and returns the final value
+	* @param params The parameters for processing the content
+	* @return Pointer to the final value string, or NULL on error
+	* @note Allocates memory for the final value string
+	*/
 char	*get_token_content_value(t_content_params *params)
 {
 	t_token_content	*content;

@@ -12,6 +12,10 @@
 
 #include "signals.h"
 
+/**
+	* @brief Sets up signal handling for interactive mode (prompt)
+	* @note Sets the signal handler for SIGINT and SIGQUIT signals
+	*/
 void	reset_signals(void)
 {
 	struct sigaction	sa;
@@ -23,6 +27,11 @@ void	reset_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
+/**
+	* @brief Sets up signal handling for command execution mode
+	* @param param The command arguments and environment variables
+	* @note Sets the signal handler for SIGINT and SIGQUIT signals
+	*/
 int	handle_eof(char *input)
 {
 	if (!input)

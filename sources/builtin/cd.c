@@ -6,12 +6,20 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/19 16:52:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:44:04 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+/**
+	* @brief Changes the current working directory to the specified directory
+	* @param dir The directory to change to
+	* @param env A pointer to the environment variable array
+	* @param old_pwd The previous working directory to set as OLDPWD
+	* @return 0 on success, 1 on failure
+	* @note Uses chdir to change the directory and update PWD and OLDPWD
+	*/
 static int	exec_cd(char **args, char ***env, char *old_pwd)
 {
 	if (!args[1]
@@ -23,6 +31,13 @@ static int	exec_cd(char **args, char ***env, char *old_pwd)
 	return (change_directory(args[1], env, old_pwd));
 }
 
+/**
+	* @brief Changes the current working directory to the specified directory
+	* @param args The command-line arguments
+	* @param env A pointer to the environment variable array
+	* @return 0 on success, 1 on failure
+	* @note Handles the case of too many arguments and prints an error message
+	*/
 int	builtin_cd(char **args, char ***env)
 {
 	char	*old_pwd;

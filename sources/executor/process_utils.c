@@ -6,12 +6,19 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:56:05 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:10:06 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:54:23 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/**
+	* @brief Sets up a pipe for the command execution
+	* @param cmd The command structure to be executed
+	* @param pipefd The file descriptors for the pipe
+	* @return 0 on success, -1 on error
+	* @note Creates a pipe if the command has a next command in the chain
+	*/
 int	setup_pipe(t_command *cmd, int pipefd[2])
 {
 	if (!cmd)
@@ -32,6 +39,12 @@ int	setup_pipe(t_command *cmd, int pipefd[2])
 	return (0);
 }
 
+/**
+	* @brief Sets up the input and output redirection for the command
+	* @param arg The command arguments and environment variables
+	* @return 0 on success, -1 on error
+	* @note Redirects the standard input and output file descriptors as needed
+	*/
 int	setup_child_io(t_process_command_args *arg)
 {
 	if (arg->cmd->next && arg->pipefd[1] > 0)

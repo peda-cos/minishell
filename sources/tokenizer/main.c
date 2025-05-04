@@ -12,6 +12,16 @@
 
 #include "tokenizer.h"
 
+/**
+ * @brief Tokenizes an input string into a linked list of tokens
+ * @param input The input string to tokenize
+ * @return A linked list of tokens, or NULL if input is NULL
+ * @note Iterates through the input string and
+	* identifies tokens based on delimiters
+	* Handles spaces, quotes, and special characters (pipes, redirects)
+	* Returns a linked list of tokens, each containing the token type and content
+	* Caller is responsible for freeing the token list
+	*/
 t_token	*tokenize_input(char *input)
 {
 	int		index;

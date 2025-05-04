@@ -6,12 +6,19 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:01 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/29 20:06:34 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:28:29 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+/**
+	* @brief Checks if the argument is a valid -n option for echo
+	* @param arg The argument to check
+	* @return 1 if valid, 0 otherwise
+	* @note Validates that the argument starts
+	* with -n and contains only 'n' characters
+	*/
 static int	is_valid_n_option(char *arg)
 {
 	int	j;
@@ -30,6 +37,13 @@ static int	is_valid_n_option(char *arg)
 	return (0);
 }
 
+/**
+	* @brief Prints the arguments for the echo command
+	* @param args The arguments to print
+	* @param start_idx The index to start printing from
+	* @return void
+	* @note Prints each argument followed by a space, except for the last one
+	*/
 static void	print_echo_args(char **args, int start_idx)
 {
 	int	i;
@@ -44,6 +58,13 @@ static void	print_echo_args(char **args, int start_idx)
 	}
 }
 
+/**
+	* @brief Built-in echo command implementation
+	* @param args The command-line arguments
+	* @param last_exit Pointer to the last exit status
+	* @return 0 on success, 1 on failure
+	* @note Handles the -n option to suppress the trailing newline
+	*/
 int	builtin_echo(char **args, int *last_exit)
 {
 	int	i;

@@ -6,12 +6,22 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:02:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:40:54 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/**
+ * @brief Processes heredoc input content with variable expansion
+ * @param stripped_delim The delimiter string without quotes
+ * @param expand_vars Flag indicating whether to expand variables in the content
+ * @param envs Environment variables array for variable expansion
+ * @param last_exit Last command exit status for $? expansion
+ * @return Dynamically allocated string containing processed heredoc content
+ * @note The function reads lines from the user and appends them to a buffer.
+	*       It handles variable expansion and quoted delimiters.
+	*/
 static char	*process_heredoc_content(char *stripped_delim,
 	int expand_vars, char **envs, int last_exit)
 {
@@ -39,6 +49,13 @@ static char	*process_heredoc_content(char *stripped_delim,
 	}
 }
 
+/**
+	* @brief Reads heredoc content from
+	* the user until the delimiter is encountered
+	* @param delim The delimiter string
+	* @return Dynamically allocated string containing heredoc content
+	* @note The function reads lines from the user and appends them to a buffer.
+	*/
 static char	*read_heredoc_content_to_buffer(char *delim)
 {
 	char	*tmp;
@@ -65,6 +82,14 @@ static char	*read_heredoc_content_to_buffer(char *delim)
 	return (buffer);
 }
 
+/**
+	* @brief Reads heredoc content and processes it for variable expansion
+	* @param delim The delimiter string
+	* @param env Environment variables array
+	* @param last_exit Last command exit status for $? expansion
+	* @return Dynamically allocated string containing processed heredoc content
+	* @note The function handles quoted delimiters and variable expansion.
+	*/
 static char	*read_heredoc_content(char *delim, char **env, int last_exit)
 {
 	char	*content;
@@ -83,6 +108,14 @@ static char	*read_heredoc_content(char *delim, char **env, int last_exit)
 	return (content);
 }
 
+/**
+	* @brief Handles heredoc input and returns a file descriptor for reading
+	* @param delim The delimiter string
+	* @param env Environment variables array
+	* @param last_exit Last command exit status for $? expansion
+	* @return File descriptor for reading heredoc content, or -1 on error
+	* @note The function creates a pipe and writes the heredoc content to it.
+	*/
 int	handle_heredoc(char *delim, char **env, int last_exit)
 {
 	int		pipefd[2];
@@ -104,6 +137,13 @@ int	handle_heredoc(char *delim, char **env, int last_exit)
 	return (pipefd[0]);
 }
 
+/**
+	* @brief Preprocesses heredocs in the command list
+	* @param cmd_list Pointer to the command list
+	* @return void
+	* @note The function creates pipes
+	* for heredoc content and stores the file descriptor.
+	*/
 void	preprocess_heredocs(t_command *cmd_list)
 {
 	t_command	*cmd;

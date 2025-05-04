@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 01:33:23 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:40:11 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:48:43 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@
 # define OUTPUT_FILES_MAX_SIZE 25
 # define SYNTAX_ERROR_MSG "minishell: syntax error near unexpected token\n"
 
+/**
+ * @brief Structure maintaining the context for parsing commands
+ * @struct s_parser_context
+ * 
+ * Members:
+ * - head: Pointer to the first command in the command list
+ * - current: Pointer to the command currently being processed
+ * - env: Environment variables array used for variable expansion
+ * - last_exit: The exit status of the last executed command
+ * - was_expanded: Flag indicating if variable expansion occurred during parsing
+ * 
+ * @note Used to track parser state during the command parsing process
+ *       Provides central access to command list, 
+ *		 expansion state, and environment
+ */
 typedef struct s_parser_context
 {
 	t_command	*head;

@@ -6,12 +6,19 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 22:28:30 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:09:07 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 
+/**
+	* @brief Adds a new token content to the end of the linked list
+	* @param content The current token content
+	* @param tkz The tokenizer structure containing the new token content
+	* @return Pointer to the updated token content
+	* @note Allocates memory for the new token content and links it to the list
+	*/
 t_token_content	*add_only_content_word(t_token_content *content,
 	t_tokenizer *tkz)
 {
@@ -23,6 +30,13 @@ t_token_content	*add_only_content_word(t_token_content *content,
 	return (content);
 }
 
+/**
+	* @brief Creates a new token content based on the tokenizer state
+	* @param tkz The tokenizer structure containing the current state
+	* @return A new token content structure, or NULL on failure
+	* @note Allocates memory for the new token content and sets its value
+	*       based on the current word and quotes status
+	*/
 t_token_content	*get_new_token_content(t_tokenizer *tkz)
 {
 	char			*temp;
@@ -47,6 +61,13 @@ t_token_content	*get_new_token_content(t_tokenizer *tkz)
 	return (new_content);
 }
 
+/**
+	* @brief Appends a new token content to the end of the linked list
+	* @param content The current token content
+	* @param tkz The tokenizer structure containing the new token content
+	* @return Pointer to the updated token content
+	* @note Allocates memory for the new token content and links it to the list
+	*/
 t_token_content	*append_token_content(
 	t_token_content *content, t_tokenizer *tkz)
 {

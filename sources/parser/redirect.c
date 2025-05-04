@@ -12,6 +12,13 @@
 
 #include "parser.h"
 
+/**
+	* @brief Processes the heredoc delimiter by concatenating its values
+	* @param content The token content containing the heredoc delimiter values
+	* @param cmd The command structure to set the heredoc delimiter
+	* @note Allocates memory for the concatenated
+	* delimiter and sets it in the command structure
+	*/
 static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
 {
 	char			*temp;
@@ -31,6 +38,15 @@ static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
 	free(heredoc_delimiter);
 }
 
+/**
+	* @brief Creates an output file for redirection
+	* @param filename The name of the file to create
+	* @param append Flag indicating whether to append or truncate the file
+	* @return 1 on success, 0 on failure
+	* @note Opens the file with write-only and create flags
+	*       Sets the file permissions to 0644 
+	*		(read/write for owner, read for group/others)
+	*/
 static int	create_output_file(char *filename, int append)
 {
 	int	flags;
@@ -51,6 +67,14 @@ static int	create_output_file(char *filename, int append)
 	return (1);
 }
 
+/**
+	* @brief Sets the output redirect file in the command structure
+	* @param value The name of the output file to set
+	* @param cmd The command structure to update
+	* @param is_append Flag indicating whether to append or truncate the file
+	* @note Allocates memory for the output file
+	* name and sets it in the command structure
+	*/
 void	set_output_redirect_file(char *value,
 	t_command	*cmd, int is_append)
 {
@@ -68,6 +92,14 @@ void	set_output_redirect_file(char *value,
 	}
 }
 
+/**
+	* @brief Sets the redirection target in the command structure
+	* @param cmd The command structure to update
+	* @param token The token containing the redirection type
+	* @param content_params The parameters for processing the content
+	* @note Allocates memory for the input file name
+	* and sets it in the command structure
+	*/
 void	set_redirection_target(t_command *cmd,
 	t_token *token, t_content_params *content_params)
 {
@@ -90,6 +122,16 @@ void	set_redirection_target(t_command *cmd,
 	free(filename);
 }
 
+/**
+	* @brief Handles the redirection of
+	* input/output files in the command structure
+	* @param cmd The command structure to update
+	* @param token_ptr Pointer to the current token in the list
+	* @param envs The environment variables for expansion
+	* @param last_exit Pointer to the last exit status for $? expansion
+	* @return 1 on success, 0 on failure
+	* @note Updates the command structure with the redirection target and type
+	*/
 int	handle_redirection(t_command *cmd,
 	t_token **token_ptr, char **envs, int *last_exit)
 {

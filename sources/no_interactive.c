@@ -12,6 +12,15 @@
 
 #include "minishell.h"
 
+/**
+ * @brief Checks if a string contains only whitespace characters
+ * @param str The string to be checked
+ * @return TRUE if the string is empty or
+	* contains only spaces/tabs, FALSE otherwise
+ * @note Returns FALSE if str is NULL
+ * Iterates through each character
+	* to check for non-whitespace characters
+ */
 static int	is_empty_string(const char *str)
 {
 	int		i;
@@ -28,6 +37,15 @@ static int	is_empty_string(const char *str)
 	return (TRUE);
 }
 
+/**
+ * @brief Reads input from standard input in non-interactive mode
+ * @return A dynamically allocated string
+	* containing the input, or NULL on failure
+ * @note Allocates memory for the input buffer
+	* Reads from standard input until EOF or error
+	* Replaces the last newline character with a null terminator
+	* Cleans up allocated resources before returning
+ */
 static char	*get_input_from_no_interactive_mode(void)
 {
 	char	*buffer;
@@ -48,6 +66,15 @@ static char	*get_input_from_no_interactive_mode(void)
 	return (buffer);
 }
 
+/**
+	* @brief Processes input in non-interactive mode
+	* @param env Triple pointer to the environment variables
+	* @return The exit status of the last executed command
+	* @note Iterates through each line of input
+	* Calls process_input to handle each line
+	* Cleans up allocated resources after processing
+	* Frees the environment variables and input string
+	*/
 int	process_no_interactive_mode(char ***env)
 {
 	int		index;
