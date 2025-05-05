@@ -3,17 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:56:00 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:03:04 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:00:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "signals.h"
 
+/**
+	* Global signal flag to indicate which signal was received
+	* Used to communicate signal events between signal handlers and main code
+	*/
 volatile sig_atomic_t	g_signal_received = 0;
 
+/**
+ * @brief Handles the SIGINT signal in interactive mode
+ * @param signo The signal number
+ * @note Sets the global signal flag and writes a newline to stdout
+ *       Resets the readline line and redisplays the prompt
+ */
 static void	interactive_sigint_handler(int signo)
 {
 	(void)signo;
@@ -24,6 +34,12 @@ static void	interactive_sigint_handler(int signo)
 	rl_redisplay();
 }
 
+/**
+ * @brief Handles the SIGINT and SIGQUIT signals during command execution
+ * @param signo The signal number
+ * @note Sets the global signal flag and writes a message to stdout
+ *       Displays a newline for SIGINT and "Quit (core dumped)" for SIGQUIT
+ */
 static void	execution_signal_handler(int signo)
 {
 	g_signal_received = signo;
@@ -33,6 +49,12 @@ static void	execution_signal_handler(int signo)
 		write(STDOUT_FILENO, "Quit (core dumped)\n", 20);
 }
 
+/**
+ * @brief Sets up signal handlers for interactive mode
+ * @return void
+ * @note Configures SIGINT to be handled by interactive_sigint_handler
+ *       Configures SIGQUIT to be ignored in interactive mode
+ */
 void	setup_interactive_signals(void)
 {
 	struct sigaction	sa_int;
@@ -48,6 +70,12 @@ void	setup_interactive_signals(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
+/**
+ * @brief Sets up signal handlers for command execution
+ * @return void
+ * @note Configures both SIGINT and SIGQUIT
+	* to be handled by execution_signal_handler
+ */
 void	setup_execution_signals(void)
 {
 	struct sigaction	sa_int;

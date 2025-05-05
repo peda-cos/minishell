@@ -12,6 +12,14 @@
 
 #include "tokenizer.h"
 
+/**
+ * @brief Sets the parameters for the tokenizer structure
+ * @param tkz The tokenizer structure to set
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @return 1 on success, 0 on failure
+ * @note Allocates memory for the word and initializes the tokenizer structure
+ */
 int	set_word_param(
 	t_tokenizer *tkz, char *str, int *index)
 {
@@ -25,6 +33,13 @@ int	set_word_param(
 	return (1);
 }
 
+/**
+ * @brief Gets the word inside brackets from the input string
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @return A pointer to the word inside brackets, or NULL on failure
+ * @note Allocates memory for the word and checks for unclosed brackets
+ */
 char	*get_word_in_brackets(char *str, int *index)
 {
 	char	*word;
@@ -53,6 +68,14 @@ char	*get_word_in_brackets(char *str, int *index)
 	return (word);
 }
 
+/**
+ * @brief Gets the word inside quotes from the input string
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @param delimiter The quote delimiter (single or double quote)
+ * @return A pointer to the word inside quotes, or NULL on failure
+ * @note Allocates memory for the word and checks for unclosed quotes
+ */
 char	*get_word_in_quotes(char *str, int *index, char delimiter)
 {
 	char	*word;
@@ -81,6 +104,13 @@ char	*get_word_in_quotes(char *str, int *index, char delimiter)
 	return (word);
 }
 
+/**
+ * @brief Processes a word inside brackets and appends it to the token content
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the word and index
+ * @return A pointer to the updated token content, or NULL on failure
+ * @note Allocates memory for the new word and appends it to the content list
+ */
 t_token_content	*process_word_in_brackets(
 	t_token_content *content, t_tokenizer *tkz)
 {
@@ -105,6 +135,13 @@ t_token_content	*process_word_in_brackets(
 	return (content);
 }
 
+/**
+ * @brief Processes a word inside quotes and appends it to the token content
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the word and index
+ * @return A pointer to the updated token content, or NULL on failure
+ * @note Allocates memory for the new word and appends it to the content list
+ */
 t_token_content	*process_word_in_quotes(t_token_content *content,
 		t_tokenizer *tkz)
 {

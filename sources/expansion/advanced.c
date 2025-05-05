@@ -6,17 +6,31 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 21:50:10 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 20:13:39 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:31:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
+/**
+ * @brief Checks if the character is a valid variable name character
+ * @param chr The character to check
+ * @return 1 if valid, 0 otherwise
+ * @note Valid characters are alphanumeric characters and underscore
+ */
 static int	is_valid_var_char(char chr)
 {
 	return (ft_isalnum(chr) || chr == UNDERSCORE_CHR);
 }
 
+/**
+ * @brief Extracts the variable name from a string enclosed in braces
+ * @param str The string to extract from
+ * @param index The index to start extracting from
+ * @return The extracted variable name, or NULL if an error occurs
+ * @note Increments the index to point to the char after the closing brace
+ *       Returns NULL if the closing brace is not found
+ */
 static char	*extract_braced_var_name(char *str, int *index)
 {
 	int		start;
@@ -38,6 +52,14 @@ static char	*extract_braced_var_name(char *str, int *index)
 	return (bracket_content);
 }
 
+/**
+ * @brief Extracts the variable name from a string enclosed in braces
+ * @param str The string to extract from
+ * @param index The index to start extracting from
+ * @return The extracted variable name, or NULL if an error occurs
+ * @note Increments the index to point to the char after the closing brace
+ *       Returns NULL if empty variable name
+ */
 static char	*get_var_name(char *str, int *index)
 {
 	char	*var_name;
@@ -54,6 +76,14 @@ static char	*get_var_name(char *str, int *index)
 	return (var_name);
 }
 
+/**
+ * @brief Extracts and validates a variable name enclosed in brackets
+ * @param str The input string containing the variable reference
+ * @param index Pointer to the current position in the string
+ * @return The extracted variable name if valid, NULL otherwise
+ * @note Validates that the variable name contains only valid characters
+ *       (alphanumeric characters and underscores)
+ */
 char	*extract_var_name_in_brackets_entered(
 	char *str, int *index)
 {

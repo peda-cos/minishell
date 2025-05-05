@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:13:49 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/03/31 21:14:05 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:46:13 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
+/**
+ * @brief Prints the current working directory
+ * @return 0 on success, 1 on failure
+ * @note Uses getcwd to retrieve the current working directory
+ *       Prints the directory to standard output
+ */
 int	builtin_pwd(void)
 {
 	char	*cwd;

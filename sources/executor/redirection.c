@@ -6,12 +6,21 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:15:40 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 18:40:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:56:08 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/**
+ * @brief Sets up output redirection for a command
+ * @param param Pointer to the command arguments structure
+ * @return 0 on success, -1 on failure
+ * @note Determines appropriate file flags based on command properties:
+ *       - Uses O_APPEND flag for append redirections (>>)
+ *       - Uses O_TRUNC flag for standard redirections (>)
+ *       - Always includes O_WRONLY and O_CREAT flags
+ */
 int	setup_output_redirection(t_process_command_args *param)
 {
 	int	flags;

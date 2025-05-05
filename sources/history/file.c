@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:22:25 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/13 15:40:18 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:42:53 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "history.h"
 
+/**
+ * @brief Gets the full path to the history file
+ * @return Dynamically allocated string containing
+	* the path to the history file, or NULL on failure
+ * @note Allocates memory for the path string
+ */
 char	*get_history_file_path(void)
 {
 	char	*home;
@@ -30,6 +36,12 @@ char	*get_history_file_path(void)
 	return (path);
 }
 
+/**
+ * @brief Opens history file for reading
+ * @return File descriptor for the opened file, or -1 on error
+ * @note Opens the file in read-only mode
+ *       Returns -1 if path cannot be determined or file cannot be opened
+ */
 int	open_history_file_read(void)
 {
 	char	*path;
@@ -43,6 +55,12 @@ int	open_history_file_read(void)
 	return (fd);
 }
 
+/**
+ * @brief Opens history file for writing
+ * @return File descriptor for the opened file, or -1 on error
+ * @note Opens the file in write-only mode,
+	* creating it if it doesn't exist and appending to it if it does
+ */
 int	open_history_file_write(void)
 {
 	char	*path;

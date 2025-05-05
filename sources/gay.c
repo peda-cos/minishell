@@ -6,18 +6,34 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 09:57:59 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/26 23:15:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:42:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/**
+ * @brief Clears the prompt buffer and initializes it with the current color
+ * @param prompt The buffer to store the formatted prompt
+ * @param color_index Index of the current pastel color to use
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Zeroes out the entire prompt buffer before setting the initial color
+ */
 static void	reset_prompt(char *prompt, int color_index, char **pastel_colors)
 {
 	ft_memset(prompt, 0, MAX_PROMPT_LENGTH);
 	ft_strlcpy(prompt, pastel_colors[color_index], MAX_PROMPT_LENGTH);
 }
 
+/**
+ * @brief Adds the username to the prompt with decorative elements
+ * @param prompt The buffer to append the username information to
+ * @param color_index Index of the current pastel color
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Appends the username, a wizard emoji, and a fire emoji to the prompt
+ */
 static void	append_username_to_prompt(char *prompt,
 	int color_index, char **pastel_colors)
 {
@@ -36,6 +52,15 @@ static void	append_username_to_prompt(char *prompt,
 	}
 }
 
+/**
+ * @brief Appends the current directory to the prompt
+ * @param prompt The buffer to append the directory information to
+ * @param current_dir The current working directory
+ * @param color_index Index of the current pastel color
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Replaces the home directory with a tilde (~) if applicable
+ */
 static void	append_directory_to_prompt(char *prompt,
 	char *current_dir, int color_index, char **pastel_colors)
 {
@@ -54,6 +79,14 @@ static void	append_directory_to_prompt(char *prompt,
 	ft_strlcat(prompt, " ❯ ", MAX_PROMPT_LENGTH);
 }
 
+/**
+ * @brief Configures the prompt text with username and current directory
+ * @param prompt The buffer to store the formatted prompt
+ * @param color_index Index of the current pastel color
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Appends the username and current directory to the prompt buffer
+ */
 static void	config_prompt_text(char *prompt,
 	int color_index, char **pastel_colors)
 {
@@ -71,6 +104,12 @@ static void	config_prompt_text(char *prompt,
 		ft_strlcat(prompt, PROMPT_TEXT, MAX_PROMPT_LENGTH);
 }
 
+/**
+ * @brief Generates a colored prompt string with rotating pastel colors
+ * @return A pointer to the formatted prompt string
+ * @note The prompt includes the username, current directory, and emojis
+ *       The color changes each time the function is called
+ */
 char	*get_colored_prompt(void)
 {
 	static int	color_index = 0;

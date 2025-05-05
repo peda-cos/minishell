@@ -12,6 +12,13 @@
 
 #include "executor.h"
 
+/**
+	* @brief Validates if the given path is executable
+	* @param path The path to validate
+	* @return 0 if valid, 126 if not executable, 127 if not found
+	* @note Uses stat to check if the file exists 
+	* and access to check if it is executable
+ */
 static int	validates_executable(char *path)
 {
 	struct stat	path_stat;
@@ -41,6 +48,13 @@ static int	validates_executable(char *path)
 	return (126);
 }
 
+/**
+ * @brief Prints an error message for an invalid command
+ * @param command The command that caused the error
+ * @param err_msg The error message to print
+ * @return 2 if the command is ".", 127 otherwise
+ * @note Prints the error message to standard error output
+ */
 static int	invalid_command(char *command, char *err_msg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -52,6 +66,12 @@ static int	invalid_command(char *command, char *err_msg)
 	return (127);
 }
 
+/**
+ * @brief Checks if the command is a built-in command
+ * @param cmd The command to check
+ * @return 1 if it is a built-in command, 0 otherwise
+ * @note Compares the command with known built-in commands
+ */
 int	is_builtin(char *cmd)
 {
 	if (!cmd)
@@ -62,6 +82,13 @@ int	is_builtin(char *cmd)
 			"history"));
 }
 
+/**
+ * @brief Executes a built-in command
+ * @param arg The command arguments and environment variables
+ * @return 0 on success, 1 on failure
+ * @note Calls the appropriate built-in
+	* function based on the command name
+ */
 int	execute_builtin(t_process_command_args *arg)
 {
 	char	*command;
@@ -91,6 +118,14 @@ int	execute_builtin(t_process_command_args *arg)
 	return (1);
 }
 
+/**
+ * @brief Executes an external command
+ * @param cmd The command to execute
+ * @param env The environment variables
+ * @return 0 on success, 1 on failure
+ * @note Uses execve to execute the command
+	* with the given arguments and environment
+ */
 int	execute_external(t_command *cmd, char **env)
 {
 	char	*cmd_path;

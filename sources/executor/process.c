@@ -6,12 +6,19 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:10:23 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 18:54:54 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
+/**
+ * @brief Handles the case when the command is empty
+ * @param cmd The command structure to check
+ * @return 1 if the command is empty, 0 otherwise
+ * @note Reads from standard input and writes
+	* to standard output if the command is empty
+ */
 static int	handle_empty_command(t_command *cmd)
 {
 	char	buffer[4096];
@@ -33,6 +40,13 @@ static int	handle_empty_command(t_command *cmd)
 	return (0);
 }
 
+/**
+ * @brief Sets the standard input file descriptor for the command
+ * @param param The command arguments and environment variables
+ * @return void
+ * @note Closes the pipe file descriptors
+	* and duplicates the read end of the pipe to stdin
+ */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
 	if (param->cmd->next && param->pipefd[0] > 0)
@@ -43,6 +57,12 @@ static void	set_pipefd_stdin(t_process_command_args *param)
 	}
 }
 
+/**
+ * @brief Handles the execution in a child process
+ * @param param The command arguments and environment variables
+ * @return void
+ * @note Sets up signal handling, redirects I/O, and executes the command
+ */
 void	child_process(t_process_command_args *param)
 {
 	struct sigaction	sa;
@@ -65,6 +85,12 @@ void	child_process(t_process_command_args *param)
 		param->tokens);
 }
 
+/**
+ * @brief Handles the parent process after forking
+ * @param param The command arguments and environment variables
+ * @return void
+ * @note Waits for the child process to finish and handles signals
+ */
 void	parent_process(t_process_command_args *param)
 {
 	int	status;
@@ -91,6 +117,15 @@ void	parent_process(t_process_command_args *param)
 	}
 }
 
+/**
+ * @brief Processes the command and its arguments
+ * @param cmd The command structure to be executed
+ * @param envs Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return 0 on success, -1 on error
+ * @note Sets up pipes and forks a child process for command execution
+ */
 int	process_command(t_command *cmd, char ***envs, int *last_exit,
 		t_token *tokens)
 {

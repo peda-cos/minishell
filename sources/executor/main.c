@@ -6,15 +6,19 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/21 03:12:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:41:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 /**
- * @brief Validates inputs and creates a backup of standard input
- * @return File descriptor for the backup, or -1 on error/invalid input
+ * @brief Prepares for command execution by setting up necessary file descriptors
+ * @param cmd The command structure to be executed
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @return Backup file descriptor for stdin, or -1 on error
+ * @note Validates inputs and creates a backup of stdin for later restoration
  */
 static int	setup_command_execution(t_command *cmd, char **env, int *last_exit)
 {
@@ -32,8 +36,10 @@ static int	setup_command_execution(t_command *cmd, char **env, int *last_exit)
 }
 
 /**
- * @brief Determines if the command chain contains a pipeline
- * @return 1 if pipeline exists, 0 otherwise
+ * @brief Checks if the command has a pipeline (multiple commands)
+ * @param cmd The command structure to check
+ * @return 1 if a pipeline exists, 0 otherwise
+ * @note Checks if the command has a next command in the chain
  */
 static int	has_pipeline(t_command *cmd)
 {
@@ -43,8 +49,13 @@ static int	has_pipeline(t_command *cmd)
 }
 
 /**
- * @brief Iterates through and processes each command in the chain
- * @return 0 on success, -1 on failure
+ * @brief Processes a single command in the command chain
+ * @param cmd The command structure to be executed
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return 0 on success, -1 on error
+ * @note Handles the execution of a single command and its arguments
  */
 static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
@@ -62,7 +73,11 @@ static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
 }
 
 /**
- * @brief Waits for child processes and restores stdin if needed
+ * @brief Cleans up after command execution, restoring file descriptors
+ * @param pipeline_exists Flag indicating if a pipeline exists
+ * @param stdin_backup Backup file descriptor for stdin
+ * @return void
+ * @note Restores the original stdin and closes the backup file descriptor
  */
 static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
 {
@@ -75,10 +90,14 @@ static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
 }
 
 /**
- * @brief Executes a chain of commands with proper handling of pipelines
- *
- * This is the main coordination function that handles the entire execution
- * flow of commands, including pipeline handling and resource management.
+ * @brief Executes a command and handles redirection
+ * @param cmd The command structure to be executed
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return void
+ * @note Sets up signal handling and
+	* restores standard file descriptors after execution
  */
 void	execute_command(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
