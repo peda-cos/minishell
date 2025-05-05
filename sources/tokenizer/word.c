@@ -13,12 +13,13 @@
 #include "tokenizer.h"
 
 /**
-	* @brief Processes the word characters in brackets
-	* @param str The input string to tokenize
-	* @param index The current index in the input string
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the current state
-	* @return 1 on success, 0 on failure
+ * @brief Processes the word characters in brackets
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the current state
+ * @return 1 on success, 0 on failure, -1 on error
+ * @note Handles ${...} variable references
  */
 static int	process_with_brackets(char *str,
 	int *index, t_token_content **content, t_tokenizer *tkz)
@@ -38,13 +39,14 @@ static int	process_with_brackets(char *str,
 }
 
 /**
-	* @brief Processes the word characters in quotes
-	* @param str The input string to tokenize
-	* @param index The current index in the input string
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the current state
-	* @return 1 on success, 0 on failure
-	*/
+ * @brief Processes the word characters in quotes
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the current state
+ * @return 1 on success, 0 on failure, -1 on error
+ * @note Handles both single and double quoted strings
+ */
 static int	process_with_quotes(char *str,
 	int *index, t_token_content **content, t_tokenizer *tkz)
 {
@@ -62,13 +64,14 @@ static int	process_with_quotes(char *str,
 }
 
 /**
-	* @brief Processes the word characters in the input string
-	* @param str The input string to tokenize
-	* @param index The current index in the input string
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the current state
-	* @return 1 on success, 0 on failure
-	*/
+ * @brief Processes the word characters in the input string
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the current state
+ * @return 1 on success, 0 on failure
+ * @note Processes characters until a delimiter is encountered
+ */
 static int	process_word_chars(char *str,
 	int *index, t_token_content **content, t_tokenizer *tkz)
 {
@@ -96,13 +99,13 @@ static int	process_word_chars(char *str,
 }
 
 /**
-	* @brief Adds a new token to the list of tokens
-	* @param str The input string to tokenize
-	* @param index The current index in the input string
-	* @param tokens The list of tokens to add to
-	* @return void
-	* @note Allocates memory for the new token and appends it to the list
-	*/
+ * @brief Adds a new token to the list of tokens
+ * @param str The input string to tokenize
+ * @param index The current index in the input string
+ * @param tokens The list of tokens to add to
+ * @return void
+ * @note Allocates memory for the new token and appends it to the list
+ */
 void	add_token_word(char *str, int *index, t_token **tokens)
 {
 	t_tokenizer		tkz;

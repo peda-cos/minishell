@@ -59,12 +59,12 @@ static int	process_empty_command(
  * @param last_exit Pointer to the last command exit status
  * @return void
  * @note Handles the following steps:
-	*       1. Tokenizes the input string into a linked list of tokens
-	*       2. Processes the tokens to handle special 
-	*       3. Parses the tokens into a command structure
-	*       4. Preprocesses heredocs if present in the command structure
-	*       5. Sets the last argument without pipe executed
-	*       6. Executes the parsed commands
+ *       1. Tokenizes the input string into a linked list of tokens
+ *       2. Processes the tokens to handle special characters
+ *       3. Parses the tokens into a command structure
+ *       4. Preprocesses heredocs if present in the command structure
+ *       5. Sets the last argument without pipe executed
+ *       6. Executes the parsed commands
  */
 void	process_input(char *input, char ***env, int *last_exit)
 {
@@ -98,7 +98,8 @@ void	process_input(char *input, char ***env, int *last_exit)
  * @param envp Environment variables from the parent process
  * @return The exit status of the last executed command
  * @note The function initializes the shell environment,
-	* sets up signal handling, and enters the main loop for reading user input.
+ * sets up signal handling, and enters 
+	* the main loop for reading user input.
  */
 int	main(int argc, char **argv, char **envp)
 {

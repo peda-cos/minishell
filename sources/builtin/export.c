@@ -13,12 +13,12 @@
 #include "builtin.h"
 
 /**
-	* @brief Displays the environment variables
-	* @param env The environment variable array
-	* @return 0 on success
-	* @note Iterates through each string
-	* in the array and prints it to standard output
-	*/
+ * @brief Displays the environment variables in alphabetical order
+ * @param env The environment variable array
+ * @return 0 on success
+ * @note Iterates through each string in
+	* the array and prints it to standard output
+ */
 static int	display_environment(char **env)
 {
 	int	i;
@@ -33,12 +33,13 @@ static int	display_environment(char **env)
 }
 
 /**
-	* @brief Finds the index of an environment variable in the array
-	* @param key The name of the environment variable to search for
-	* @param env The environment variable array
-	* @return The index of the variable in the array, or -1 if not found
-	* @note Allocates memory for the key substring and frees it after use
-	*/
+ * @brief Updates an existing environment variable entry
+ * @param env Pointer to the environment variable array
+ * @param new_entry The new entry to replace the existing one
+ * @param idx The index of the entry to update
+ * @return 0 on success
+ * @note Frees the old entry and replaces it with the new one
+ */
 static int	update_existing_entry(char ***env, char *new_entry, int idx)
 {
 	free((*env)[idx]);
@@ -47,12 +48,12 @@ static int	update_existing_entry(char ***env, char *new_entry, int idx)
 }
 
 /**
-	* @brief Adds a new entry to the environment variable array
-	* @param env A pointer to the environment variable array
-	* @param new_entry The new entry to add
-	* @return 0 on success, 1 on failure
-	* @note Allocates memory for the new array and each string
-	*/
+ * @brief Adds a new entry to the environment variable array
+ * @param env A pointer to the environment variable array
+ * @param new_entry The new entry to add
+ * @return 0 on success, 1 on failure
+ * @note Reallocates memory for the expanded array
+ */
 static int	add_new_entry(char ***env, char *new_entry)
 {
 	char	**new_env;
@@ -79,14 +80,12 @@ static int	add_new_entry(char ***env, char *new_entry)
 }
 
 /**
-	* @brief Processes the export argument and
-	* updates the environment variable array
-	* @param env A pointer to the environment variable array
-	* @param arg The argument to process
-	* @return 0 on success, 1 on failure
-	* @note Validates the key and updates or
-	* adds the entry in the environment variable array
-	*/
+ * @brief Processes an export argument and updates the environment
+ * @param env A pointer to the environment variable array
+ * @param arg The argument to process
+ * @return 0 on success, error code on failure
+ * @note Validates key and updates or adds to environment
+ */
 static int	process_export_arg(char ***env, char *arg)
 {
 	int		idx;
@@ -116,12 +115,12 @@ static int	process_export_arg(char ***env, char *arg)
 }
 
 /**
-	* @brief Built-in export command implementation
-	* @param args The command-line arguments
-	* @param env A pointer to the environment variable array
-	* @return 0 on success, 1 on failure
-	* @note Processes each argument and updates the environment variable array
-	*/
+ * @brief Built-in export command implementation
+ * @param args The command-line arguments
+ * @param env A pointer to the environment variable array
+ * @return 0 on success, error code on failure
+ * @note Displays env if no args, otherwise processes each arg
+ */
 int	builtin_export(char **args, char ***env)
 {
 	int	i;

@@ -13,11 +13,11 @@
 #include "tokenizer.h"
 
 /**
-	* @brief Checks if the character is a metacharacter
-	* @param c The character to check
-	* @return 1 if it is a metacharacter, 0 otherwise
-	* @note Metacharacters include pipe, input redirect, and output redirect
-	*/
+ * @brief Checks if the character is a metacharacter
+ * @param c The character to check
+ * @return 1 if it is a metacharacter, 0 otherwise
+ * @note Metacharacters include pipe, input redirect, and output redirect
+ */
 int	is_metachar(char c)
 {
 	return (c == PIPE_CHR
@@ -26,11 +26,13 @@ int	is_metachar(char c)
 }
 
 /**
-	* @brief Checks if the character is a space
-	* @param c The character to check
-	* @return 1 if it is a space, 0 otherwise
-	* @note Spaces include space and tab characters
-	*/
+ * @brief Checks if the character is a quote delimiter
+ * @param str The string containing the character
+ * @param index Pointer to the current position in the string
+ * @param delimiter The quote delimiter to check for
+ * @return 1 if it is a quote delimiter, 0 otherwise
+ * @note Handles escaped quotes and checks for valid quote positions
+ */
 int	is_quote_delimiter(char *str, int *index, char delimiter)
 {
 	char	chr;
@@ -46,13 +48,12 @@ int	is_quote_delimiter(char *str, int *index, char delimiter)
 }
 
 /**
-	* @brief Creates a new token with the given content and type
-	* @param content The content of the token
-	* @param type The type of the token
-	* @return A pointer to the newly created token, or NULL on failure
-	* @note Allocates memory for the token and
-	* calculates its length based on the content's value
-	*/
+ * @brief Creates a new token with the given content and type
+ * @param content The content of the token
+ * @param type The type of the token
+ * @return A pointer to the newly created token, or NULL on failure
+ * @note Allocates memory for the token and calculates its length
+ */
 t_token	*new_token(t_token_content *content, t_token_type type)
 {
 	t_token			*token;
@@ -76,12 +77,13 @@ t_token	*new_token(t_token_content *content, t_token_type type)
 }
 
 /**
-	* @brief Adds a new token to the end of the token list
-	* @param tokens A pointer to the head of the token list
-	* @param new The new token to add
-	* @return void
-	* @note Allocates memory for the new token and links it to the list
-	*/
+ * @brief Adds a new token to the end of the token list
+ * @param tokens A pointer to the head of the token list
+ * @param new The new token to add
+ * @return void
+ * @note Handles empty lists and
+	* updates prev/next pointers appropriately
+ */
 void	add_token(t_token **tokens, t_token *new)
 {
 	t_token	*tmp;
@@ -99,11 +101,11 @@ void	add_token(t_token **tokens, t_token *new)
 }
 
 /**
-	* @brief Gets the last token in the token list
-	* @param tokens A pointer to the head of the token list
-	* @return A pointer to the last token, or NULL if the list is empty
-	* @note Iterates through the list to find the last token
-	*/
+ * @brief Gets the last token in the token list
+ * @param tokens A pointer to the head of the token list
+ * @return A pointer to the last token, or NULL if the list is empty
+ * @note Iterates through the list to find the last token
+ */
 t_token	*get_last_token(t_token **tokens)
 {
 	t_token	*tmp;

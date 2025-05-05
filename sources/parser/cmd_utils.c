@@ -17,7 +17,7 @@
  * @param cmd The command structure containing arguments to be processed
  * @return A newly allocated array of strings, or NULL on failure
  * @note Allocates memory for the new array based on the number of words
-	*/
+ */
 static char	**malloc_new_args(t_command *cmd)
 {
 	int	words;
@@ -36,14 +36,12 @@ static char	**malloc_new_args(t_command *cmd)
 }
 
 /**
-	* @brief Checks if the command should be updated
-	* @param cmd The command structure to check
-	* @param tokens_head The head of the token list
-	* @return TRUE if the command should be updated, FALSE otherwise
-	* @note Checks if the command is NULL or has no arguments
-	*       Checks if the first argument is "export"
-	*       Checks if any token in the list is quoted
-	*/
+ * @brief Checks if the command should be updated
+ * @param cmd The command structure to check
+ * @param tokens_head The head of the token list
+ * @return TRUE if the command should be updated, FALSE otherwise
+ * @note Checks if any token is quoted and the command isn't "export"
+ */
 static int	should_update_cmd(t_command *cmd, t_token	*tokens_head)
 {
 	char	*command;
@@ -67,13 +65,13 @@ static int	should_update_cmd(t_command *cmd, t_token	*tokens_head)
 }
 
 /**
-	* @brief Processes the split arguments and updates the new argument array
-	* @param new_args The new argument array to be updated
-	* @param new_idx The index to insert the new arguments
-	* @param arg_splited The split arguments to be processed
-	* @return TRUE on success, FALSE on failure
-	* @note Allocates memory for each new argument and updates the index
-	*/
+ * @brief Processes the split arguments and updates the new argument array
+ * @param new_args The new argument array to be updated
+ * @param new_idx The index to insert the new arguments
+ * @param arg_splited The split arguments to be processed
+ * @return TRUE on success, FALSE on failure
+ * @note Allocates memory for each new argument and updates the index
+ */
 static int	process_arg_split(char **new_args, int *new_idx, char **arg_splited)
 {
 	int	arg_idx;
@@ -92,14 +90,14 @@ static int	process_arg_split(char **new_args, int *new_idx, char **arg_splited)
 }
 
 /**
-	* @brief Processes a single command argument and
-	* updates the new argument array
-	* @param new_args The new argument array to be updated
-	* @param new_idx The index to insert the new arguments
-	* @param arg The command argument to be processed
-	* @return TRUE on success, FALSE on failure
-	* @note Splits the argument by spaces and processes each split part
-	*/
+ * @brief Processes a single command argument
+	* and updates the new argument array
+ * @param new_args The new argument array to be updated
+ * @param new_idx The index to insert the new arguments
+ * @param arg The command argument to be processed
+ * @return TRUE on success, FALSE on failure
+ * @note Splits the argument by spaces and processes each split part
+ */
 static int	process_command_arg(char **new_args, int *new_idx, char *arg)
 {
 	char	**arg_splited;
@@ -120,14 +118,12 @@ static int	process_command_arg(char **new_args, int *new_idx, char *arg)
 }
 
 /**
-	* @brief Updates the command arguments when expanded
-	* @param cmd The command structure to be updated
-	* @param tokens_head The head of the token list
-	* @return void
-	* @note Allocates memory for the new argument array
-	*       Processes each command argument and updates the new array
-	*       Frees the old argument array and assigns the new one
-	*/
+ * @brief Updates the command arguments when expanded
+ * @param cmd The command structure to be updated
+ * @param tokens_head The head of the token list
+ * @return void
+ * @note Allocates memory for the new array and processes each argument
+ */
 void	update_cmd_args_when_expanded(t_command *cmd,
 	t_token	*tokens_head)
 {

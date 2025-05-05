@@ -13,11 +13,11 @@
 #include "builtin.h"
 
 /**
-	* @brief Prints the current working directory
-	* @return 0 on success, 1 on failure
-	* @note Uses getcwd to retrieve the current working directory
-	*       Prints the directory to standard output
-	*/
+ * @brief Prints the current working directory
+ * @return 0 on success, 1 on failure
+ * @note Uses getcwd to retrieve the current working directory
+ *       Prints the directory to standard output
+ */
 int	builtin_pwd(void)
 {
 	char	*cwd;

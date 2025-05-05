@@ -53,14 +53,14 @@ static void	append_username_to_prompt(char *prompt,
 }
 
 /**
-	* @brief Appends the current directory to the prompt
-	* @param prompt The buffer to append the directory information to
-	* @param current_dir The current working directory
-	* @param color_index Index of the current pastel color
-	* @param pastel_colors Array of ANSI color code strings
-	* @return void
-	* @note Replaces the home directory with a tilde (~) if applicable
-	*/
+ * @brief Appends the current directory to the prompt
+ * @param prompt The buffer to append the directory information to
+ * @param current_dir The current working directory
+ * @param color_index Index of the current pastel color
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Replaces the home directory with a tilde (~) if applicable
+ */
 static void	append_directory_to_prompt(char *prompt,
 	char *current_dir, int color_index, char **pastel_colors)
 {
@@ -80,13 +80,13 @@ static void	append_directory_to_prompt(char *prompt,
 }
 
 /**
-	* @brief Configures the prompt text with username and current directory
-	* @param prompt The buffer to store the formatted prompt
-	* @param color_index Index of the current pastel color
-	* @param pastel_colors Array of ANSI color code strings
-	* @return void
-	* @note Appends the username and current directory to the prompt buffer
-	*/
+ * @brief Configures the prompt text with username and current directory
+ * @param prompt The buffer to store the formatted prompt
+ * @param color_index Index of the current pastel color
+ * @param pastel_colors Array of ANSI color code strings
+ * @return void
+ * @note Appends the username and current directory to the prompt buffer
+ */
 static void	config_prompt_text(char *prompt,
 	int color_index, char **pastel_colors)
 {
@@ -105,11 +105,11 @@ static void	config_prompt_text(char *prompt,
 }
 
 /**
-	* @brief Generates a colored prompt string with rotating pastel colors
-	* @return A pointer to the formatted prompt string
-	* @note The prompt includes the username, current directory, and emojis
-	*       The color changes each time the function is called
-	*/
+ * @brief Generates a colored prompt string with rotating pastel colors
+ * @return A pointer to the formatted prompt string
+ * @note The prompt includes the username, current directory, and emojis
+ *       The color changes each time the function is called
+ */
 char	*get_colored_prompt(void)
 {
 	static int	color_index = 0;

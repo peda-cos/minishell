@@ -13,9 +13,13 @@
 #include "signals.h"
 
 /**
-	* @brief Sets up signal handling for interactive mode (prompt)
-	* @note Sets the signal handler for SIGINT and SIGQUIT signals
-	*/
+ * @brief Resets signal handlers to their default behavior
+ * @return void
+ * @note Sets the signal handler for
+	* SIGINT and SIGQUIT signals to SIG_DFL
+ * Used to restore default signal handling
+	* after special handling periods
+ */
 void	reset_signals(void)
 {
 	struct sigaction	sa;
@@ -28,10 +32,12 @@ void	reset_signals(void)
 }
 
 /**
-	* @brief Sets up signal handling for command execution mode
-	* @param param The command arguments and environment variables
-	* @note Sets the signal handler for SIGINT and SIGQUIT signals
-	*/
+ * @brief Handles EOF (Ctrl+D) condition from input
+ * @param input The input string to check for NULL
+ * @return 1 if EOF detected, 0 otherwise
+ * @note Displays "exit" message if input is NULL and running in terminal
+ *       Used to detect end of input in interactive mode
+ */
 int	handle_eof(char *input)
 {
 	if (!input)

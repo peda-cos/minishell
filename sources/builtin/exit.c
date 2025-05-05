@@ -13,12 +13,12 @@
 #include "builtin.h"
 
 /**
-	* @brief Checks if the argument is a valid numeric string
-	* @param str The string to check
-	* @return 1 if valid, 0 otherwise
-	* @note Validates that the string contains
+ * @brief Checks if the argument is a valid numeric string
+ * @param str The string to check
+ * @return 1 if valid, 0 otherwise
+ * @note Validates that the string contains
 	* only digits, with optional leading '+' or '-'
-	*/
+ */
 static int	is_numeric_arg(char *str)
 {
 	int	i;
@@ -38,12 +38,12 @@ static int	is_numeric_arg(char *str)
 }
 
 /**
-	* @brief Handles the exit command in the shell
-	* @param param The command arguments and environment variables
-	* @return The exit code to be used for the shell
-	* @note Prints an error message if the argument is not a valid number
-	*       Returns 2 if the argument is not numeric, 1 if too many arguments
-	*/
+ * @brief Handles the exit command in the shell
+ * @param param The command arguments and environment variables
+ * @return The exit code to be used for the shell
+ * @note Prints an error message if the argument is not a valid number
+ *       Returns 2 if the argument is not numeric, 1 if too many arguments
+ */
 int	builtin_exit(t_process_command_args	*param)
 {
 	int	exit_code;
@@ -72,11 +72,11 @@ int	builtin_exit(t_process_command_args	*param)
 }
 
 /**
-	* @brief Checks if the command is a built-in command
-	* @param cmd The command to check
-	* @return 1 if it is a built-in command, 0 otherwise
-	* @note Checks for built-in commands: cd, export, unset, exit
-	*/
+ * @brief Checks if the command is a built-in command
+ * @param cmd The command to check
+ * @return 1 if it is a built-in command, 0 otherwise
+ * @note Checks for built-in commands: cd, export, unset, exit
+ */
 int	is_parent_builtin(char *cmd)
 {
 	if (!cmd)

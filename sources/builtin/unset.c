@@ -13,12 +13,13 @@
 #include "builtin.h"
 
 /**
-	* @brief Finds the index of an environment variable in the array
-	* @param key The name of the environment variable to search for
-	* @param env The environment variable array
-	* @return The index of the variable in the array, or -1 if not found
-	* @note Allocates memory for the key substring and frees it after use
-	*/
+ * @brief Removes an environment variable entry at the specified index
+ * @param env Triple pointer to the environment variables array
+ * @param idx The index of the entry to remove
+ * @return void
+ * @note Frees the memory of the removed
+	* entry and shifts all remaining entries
+ */
 static void	remove_env_entry(char ***env, int idx)
 {
 	free((*env)[idx]);
@@ -30,13 +31,13 @@ static void	remove_env_entry(char ***env, int idx)
 }
 
 /**
-	* @brief Removes environment variables from the environment array
-	* @param args The command-line arguments
-	* @param env A pointer to the environment variable array
-	* @return 0 on success, 1 on failure
-	* @note Iterates through each argument and
-	* removes the corresponding environment variable
-	*/
+ * @brief Removes environment variables from the environment array
+ * @param args The command-line arguments
+ * @param env A pointer to the environment variable array
+ * @return 0 on success, 1 on failure
+ * @note Iterates through each argument and
+	* removes the corresponding entry
+ */
 int	builtin_unset(char **args, char ***env)
 {
 	int	idx;

@@ -13,12 +13,12 @@
 #include "tokenizer.h"
 
 /**
-	* @brief Creates a new token for input redirection
-	* @param input The input string
-	* @param index The current index in the input string
-	* @return A new token for input redirection
-	* @note If the next character is also a redirect in character, it creates a
-	*       heredoc token instead. Otherwise, it creates a redirect in token.
+ * @brief Creates a new token for input redirection
+ * @param input The input string
+ * @param index The current index in the input string
+ * @return A new token for input redirection
+ * @note If the next character is also a redirect in character, it creates a
+ *       heredoc token instead. Otherwise, it creates a redirect in token.
  */
 static t_token	*get_redirect_in_token(char *input, int *index)
 {
@@ -35,13 +35,13 @@ static t_token	*get_redirect_in_token(char *input, int *index)
 }
 
 /**
-	* @brief Creates a new token for output redirection
-	* @param input The input string
-	* @param index The current index in the input string
-	* @return A new token for output redirection
-	* @note If the next character is also a redirect out character, it creates an
-	*       append token instead. Otherwise, it creates a redirect out token.
-	*/
+ * @brief Creates a new token for output redirection
+ * @param input The input string
+ * @param index The current index in the input string
+ * @return A new token for output redirection
+ * @note If the next character is also a redirect out character, it creates an
+ *       append token instead. Otherwise, it creates a redirect out token.
+ */
 static t_token	*get_redirect_out_token(char *input, int *index)
 {
 	t_token_content	*content;
@@ -57,11 +57,12 @@ static t_token	*get_redirect_out_token(char *input, int *index)
 }
 
 /**
-	* @brief Gets the appropriate redirect token based on the input character
-	* @param input The input string
-	* @param index The current index in the input string
-	* @return A new token for redirection
-	*/
+ * @brief Gets the appropriate redirect token based on the input character
+ * @param input The input string
+ * @param index The current index in the input string
+ * @return A new token for redirection
+ * @note Delegates to the specific function based on the input character
+ */
 static t_token	*get_redirect_token(char *input, int *index)
 {
 	if (input[*index] == REDIRECT_IN_CHR)
@@ -71,13 +72,14 @@ static t_token	*get_redirect_token(char *input, int *index)
 }
 
 /**
-	* @brief Adds a token for redirection to the token list
-	* @param input The input string
-	* @param index The current index in the input string
-	* @param tokens The token list to add the new token to
-	* @return void
-	* @note Increments the index after adding the token.
-	*/
+ * @brief Adds a token for redirection to the token list
+ * @param input The input string
+ * @param index The current index in the input string
+ * @param tokens The token list to add the new token to
+ * @return void
+ * @note Increments the index after adding the token
+ *       Handles pipe tokens and file descriptor detection
+ */
 void	add_token_redirect(char *input, int *index, t_token **tokens)
 {
 	char			chr;

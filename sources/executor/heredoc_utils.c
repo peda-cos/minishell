@@ -13,12 +13,12 @@
 #include "executor.h"
 
 /**
-	* @brief Appends a line to the buffer and adds a newline character.
-	* @param buffer The buffer to append to.
-	* @param line The line to append.
-	* @return The new buffer with the appended line and newline character.
-	* @note Frees the old buffer after appending.
-	*/
+ * @brief Appends a line to the buffer and adds a newline character
+ * @param buffer The buffer to append to
+ * @param line The line to append
+ * @return The new buffer with the appended line and newline character
+ * @note Frees the old buffer after appending
+ */
 char	*append_to_buffer(char *buffer, char *line)
 {
 	char	*temp;
@@ -36,11 +36,11 @@ char	*append_to_buffer(char *buffer, char *line)
 }
 
 /**
-	* @brief Checks if the delimiter is quoted.
-	* @param delim The delimiter to check.
-	* @return 1 if the delimiter is quoted, 0 otherwise.
-	* @note A quoted delimiter starts and ends with a single quote.
-	*/
+ * @brief Checks if the delimiter is quoted
+ * @param delim The delimiter to check
+ * @return 1 if the delimiter is quoted, 0 otherwise
+ * @note A quoted delimiter starts and ends with a single quote
+ */
 int	is_quoted_delimiter(char *delim)
 {
 	int	len;
@@ -50,14 +50,14 @@ int	is_quoted_delimiter(char *delim)
 }
 
 /**
-	* @brief Processes a line from the heredoc.
-	* @param line The line to process.
-	* @param env The environment variables.
-	* @param last_exit The last exit status.
-	* @param expand_vars Flag indicating whether to expand variables.
-	* @return The processed line with expanded variables.
-	* @note Uses the expand_variable function to expand variables in the line.
-	*/
+ * @brief Processes a line from the heredoc
+ * @param line The line to process
+ * @param env The environment variables
+ * @param last_exit The last exit status
+ * @param expand_vars Flag indicating whether to expand variables
+ * @return The processed line with expanded variables
+ * @note Uses the expand_variable function to expand variables in the line
+ */
 char	*process_heredoc_line(char *line, char **env, int last_exit,
 		int expand_vars)
 {
@@ -76,14 +76,12 @@ char	*process_heredoc_line(char *line, char **env, int last_exit,
 }
 
 /**
-	* @brief Strips the quotes from the delimiter if necessary.
-	* @param expand_vars Flag indicating whether to expand variables.
-	* @param delim The delimiter to strip.
-	* @return The stripped delimiter.
-	* @note If expand_vars is false and the delimiter is quoted,
-	* 						it removes the quotes. Otherwise, it returns 
-	*							a duplicate of the delimiter.
-	*/
+ * @brief Strips the quotes from the delimiter if necessary
+ * @param expand_vars Flag indicating whether to expand variables
+ * @param delim The delimiter to strip
+ * @return The stripped delimiter
+ * @note Removes quotes from quoted delimiters when expand_vars is false
+ */
 char	*get_stripped_delim(int expand_vars, char *delim)
 {
 	char	*stripped_delim;

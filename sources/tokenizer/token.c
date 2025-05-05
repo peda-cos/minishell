@@ -19,7 +19,7 @@
  * @param in_single_quotes Flag indicating if the content is in single quotes
  * @return Pointer to the newly created token content, or NULL on failure
  * @note Allocates memory for the token content structure
-	*/
+ */
 t_token_content	*new_token_content(char *value,
 	int in_quotes, int in_single_quotes)
 {
@@ -41,12 +41,13 @@ t_token_content	*new_token_content(char *value,
 }
 
 /**
-	* @brief Appends a new token content to the end of the linked list
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the new token content
-	* @return Pointer to the updated token content
-	* @note Allocates memory for the new token content and links it to the list
-	*/
+ * @brief Gets the expanded segment of a token content
+ * @param content The token content to expand
+ * @param params The parameters for processing the content
+ * @param has_error Pointer to the error flag
+ * @return The expanded segment, or NULL on error
+ * @note Handles variable expansion based on context
+ */
 static char	*get_segment_expanded(t_token_content *content,
 	t_content_params *params, int *has_error)
 {
@@ -61,13 +62,13 @@ static char	*get_segment_expanded(t_token_content *content,
 }
 
 /**
-	* @brief Appends the expanded value of the token content to the final value
-	* @param final_value The final value string to append to
-	* @param content The token content to process
-	* @param params The parameters for processing the content
-	* @return Pointer to the updated final value string, or NULL on error
-	* @note Allocates memory for the new string and frees the old one
-	*/
+ * @brief Appends the expanded value of the token content to the final value
+ * @param final_value The final value string to append to
+ * @param content The token content to process
+ * @param params The parameters for processing the content
+ * @return Pointer to the updated final value string, or NULL on error
+ * @note Allocates memory for the new string and frees the old one
+ */
 static char	*append_to_final_value(char *final_value,
 	t_token_content *content, t_content_params *params)
 {
@@ -96,13 +97,13 @@ static char	*append_to_final_value(char *final_value,
 }
 
 /**
-	* @brief Processes the final value of the token content
-	* @param final_value The final value string to append to
-	* @param params The parameters for processing the content
-	* @param content The token content to process
-	* @return Pointer to the updated final value string, or NULL on error
-	* @note Allocates memory for the new string and frees the old one
-	*/
+ * @brief Processes the final value of the token content
+ * @param final_value The final value string to append to
+ * @param params The parameters for processing the content
+ * @param content The token content to process
+ * @return Pointer to the updated final value string, or NULL on error
+ * @note Allocates memory for the new string and frees the old one
+ */
 static char	*process_final_value(char *final_value,
 	t_content_params *params, t_token_content *content)
 {
@@ -118,11 +119,11 @@ static char	*process_final_value(char *final_value,
 }
 
 /**
-	* @brief Processes the content of the token and returns the final value
-	* @param params The parameters for processing the content
-	* @return Pointer to the final value string, or NULL on error
-	* @note Allocates memory for the final value string
-	*/
+ * @brief Processes the content of the token and returns the final value
+ * @param params The parameters for processing the content
+ * @return Pointer to the final value string, or NULL on error
+ * @note Allocates memory for the final value string
+ */
 char	*get_token_content_value(t_content_params *params)
 {
 	t_token_content	*content;

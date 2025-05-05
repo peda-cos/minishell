@@ -13,22 +13,22 @@
 #include "validator.h"
 
 /**
-	* @brief Checks if the token type is a redirection
-	* @param type The token type to check
-	* @return 1 if it is a redirection, 0 otherwise
-	* @note Redirections include input and output redirections
-	*/
+ * @brief Checks if the token is a pipe
+ * @param token The token to check
+ * @return 1 if it is a pipe, 0 otherwise
+ * @note Compares the token type with the PIPE constant
+ */
 int	is_pipe(t_token *token)
 {
 	return (token->type == PIPE);
 }
 
 /**
-	* @brief Checks if the token type is a redirection
-	* @param type The token type to check
-	* @return 1 if it is a redirection, 0 otherwise
-	* @note Redirections include input and output redirections
-	*/
+ * @brief Checks if a pipe token is in a valid position
+ * @param token The pipe token to check
+ * @return 1 if the pipe position is valid, 0 otherwise
+ * @note Validates that a pipe has valid tokens before and after it
+ */
 int	is_valid_pipe_position(t_token *token)
 {
 	if (!token->prev || !token->next)
@@ -42,11 +42,11 @@ int	is_valid_pipe_position(t_token *token)
 }
 
 /**
-	* @brief Checks if the token type is a redirection
-	* @param type The token type to check
-	* @return 1 if it is a redirection, 0 otherwise
-	* @note Redirections include input and output redirections
-	*/
+ * @brief Checks if a redirection token is in a valid position
+ * @param token The redirection token to check
+ * @return 1 if the redirection position is valid, 0 otherwise
+ * @note Validates that a redirection is followed by a word token
+ */
 int	is_valid_redirection(t_token *token)
 {
 	if (!token->next || token->next->type != WORD)

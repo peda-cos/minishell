@@ -13,11 +13,11 @@
 #include "history.h"
 
 /**
-	* @brief Prints a line of history with its line number
-	* @param line_number The line number to print
-	* @param line The line content to print
-	* @note Prints the line number followed by two spaces and the line content
-	*/
+ * @brief Prints a line of history with its line number
+ * @param line_number The line number to print
+ * @param line The line content to print
+ * @note Prints the line number followed by two spaces and the line content
+ */
 void	print_history_line(int line_number, char *line)
 {
 	ft_putnbr_fd(line_number, STDOUT_FILENO);
@@ -26,11 +26,11 @@ void	print_history_line(int line_number, char *line)
 }
 
 /**
-	* @brief Displays the history entries from a file descriptor
-	* @param fd The file descriptor to read from
-	* @return int 0 on success, 1 on error
-	* @note Reads lines from the FD and prints them with line numbers
-	*/
+ * @brief Displays the history entries from a file descriptor
+ * @param fd The file descriptor to read from
+ * @return int 0 on success, 1 on error
+ * @note Reads lines from the FD and prints them with line numbers
+ */
 static int	display_history_entries(int fd)
 {
 	char	*line;
@@ -50,12 +50,12 @@ static int	display_history_entries(int fd)
 }
 
 /**
-	* @brief Displays the history entries from the history file
-	* @param args The command-line arguments
-	* @param last_exit The last exit status
-	* @return int 0 on success, 1 on error
-	* @note Opens the history file for reading and displays its contents
-	*/
+ * @brief Displays the history entries from the history file
+ * @param args The command-line arguments
+ * @param last_exit The last exit status
+ * @return int 0 on success, 1 on error
+ * @note Opens the history file for reading and displays its contents
+ */
 int	builtin_history(char **args, int *last_exit)
 {
 	char	*path;

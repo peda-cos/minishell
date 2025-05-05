@@ -34,12 +34,12 @@ void	free_split(char **split)
 }
 
 /**
-	* @brief Joins a directory and a command into a full path
-	* @param dir The directory to join with the command
-	* @param cmd The command to join with the directory
-	* @return The full path as a dynamically allocated string, or NULL on failure
-	* @note Allocates memory for the full path and frees it after use
-	*/
+ * @brief Joins a directory and a command into a full path
+ * @param dir The directory to join with the command
+ * @param cmd The command to join with the directory
+ * @return The full path as a dynamically allocated string, or NULL on failure
+ * @note Allocates memory for the full path and frees temporary resources
+ */
 static char	*join_path(char *dir, char *cmd)
 {
 	char	*temp;
@@ -56,12 +56,12 @@ static char	*join_path(char *dir, char *cmd)
 }
 
 /**
-	* @brief Searches for the command in the directories specified in PATH
-	* @param paths The array of directories to search in
-	* @param cmd The command to search for
-	* @return The full path of the command if found, or NULL if not found
-	* @note Frees the paths array after use
-	*/
+ * @brief Searches for the command in the directories specified in PATH
+ * @param paths The array of directories to search in
+ * @param cmd The command to search for
+ * @return The full path of the command if found, or NULL if not found
+ * @note Frees the paths array after use
+ */
 static char	*search_in_paths(char **paths, char *cmd)
 {
 	char	*full_path;
@@ -83,6 +83,12 @@ static char	*search_in_paths(char **paths, char *cmd)
 	return (NULL);
 }
 
+/**
+ * @brief Searches for a command in the current working directory
+ * @param cmd The command to search for
+ * @return The full path of the command if found, or NULL if not found
+ * @note Gets current directory with getcwd and checks if command is there
+ */
 static char	*search_in_current_dir(char *cmd)
 {
 	char	*current_dir;
@@ -99,6 +105,14 @@ static char	*search_in_current_dir(char *cmd)
 	return (NULL);
 }
 
+/**
+ * @brief Finds the executable path for a command
+ * @param cmd The command to find
+ * @param env The environment variables array
+ * @return The full path of the executable, or NULL if not found
+ * @note Handles absolute paths, relative paths,
+	* and PATH environment variable
+ */
 char	*find_executable(char *cmd, char **env)
 {
 	char	*path_env;

@@ -36,11 +36,11 @@ static int	setup_command_execution(t_command *cmd, char **env, int *last_exit)
 }
 
 /**
-	* @brief Checks if the command has a pipeline (multiple commands)
-	* @param cmd The command structure to check
-	* @return 1 if a pipeline exists, 0 otherwise
-	* @note Checks if the command has a next command in the chain
-	*/
+ * @brief Checks if the command has a pipeline (multiple commands)
+ * @param cmd The command structure to check
+ * @return 1 if a pipeline exists, 0 otherwise
+ * @note Checks if the command has a next command in the chain
+ */
 static int	has_pipeline(t_command *cmd)
 {
 	if (cmd && cmd->next)
@@ -49,14 +49,14 @@ static int	has_pipeline(t_command *cmd)
 }
 
 /**
-	* @brief Processes a single command in the command chain
-	* @param cmd The command structure to be executed
-	* @param env Array of environment variables
-	* @param last_exit Pointer to the last exit status
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return 0 on success, -1 on error
-	* @note Handles the execution of a single command and its arguments
-	*/
+ * @brief Processes a single command in the command chain
+ * @param cmd The command structure to be executed
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return 0 on success, -1 on error
+ * @note Handles the execution of a single command and its arguments
+ */
 static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
@@ -73,12 +73,12 @@ static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
 }
 
 /**
-	* @brief Cleans up after command execution, restoring file descriptors
-	* @param pipeline_exists Flag indicating if a pipeline exists
-	* @param stdin_backup Backup file descriptor for stdin
-	* @return void
-	* @note Restores the original stdin and closes the backup file descriptor
-	*/
+ * @brief Cleans up after command execution, restoring file descriptors
+ * @param pipeline_exists Flag indicating if a pipeline exists
+ * @param stdin_backup Backup file descriptor for stdin
+ * @return void
+ * @note Restores the original stdin and closes the backup file descriptor
+ */
 static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
 {
 	int	status;
@@ -90,15 +90,15 @@ static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
 }
 
 /**
-	* @brief Executes a command and handles redirection
-	* @param cmd The command structure to be executed
-	* @param env Array of environment variables
-	* @param last_exit Pointer to the last exit status
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return void
-	* @note Sets up signal handling and
-	* restores standard file descriptors after execution.
-	*/
+ * @brief Executes a command and handles redirection
+ * @param cmd The command structure to be executed
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return void
+ * @note Sets up signal handling and
+	* restores standard file descriptors after execution
+ */
 void	execute_command(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {

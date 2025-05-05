@@ -13,12 +13,12 @@
 #include "minishell.h"
 
 /**
-	* @brief Frees the memory allocated for the environment variables
-	* @param env Pointer to the environment variable array to be freed
-	* @return void
-	* @note Iterates through each string in the array and frees it
-	*       Finally, frees the array itself
-	*/
+ * @brief Frees the memory allocated for the environment variables
+ * @param env Pointer to the environment variable array to be freed
+ * @return void
+ * @note Iterates through each string in the array and frees it
+ *       Finally, frees the array itself
+ */
 void	free_env(char **env)
 {
 	int	i;
@@ -35,12 +35,12 @@ void	free_env(char **env)
 }
 
 /**
-	* @brief Frees the memory allocated for the token content
-	* @param content Pointer to the token content to be freed
-	* @return void
-	* @note Iterates through each token content and 
-	* frees its value and the content itself
-	*/
+ * @brief Frees the memory allocated for the token content
+ * @param content Pointer to the token content to be freed
+ * @return void
+ * @note Iterates through each token content
+	* and frees its value and the content itself
+ */
 void	free_token_content(t_token_content *content)
 {
 	t_token_content	*tmp;
@@ -55,12 +55,12 @@ void	free_token_content(t_token_content *content)
 }
 
 /**
-	* @brief Frees the memory allocated for the token list
-	* @param tokens Pointer to the token list to be freed
-	* @return void
-	* @note Iterates through each token and 
+ * @brief Frees the memory allocated for the token list
+ * @param tokens Pointer to the token list to be freed
+ * @return void
+ * @note Iterates through each token and
 	* frees its content and the token itself
-	*/
+ */
 void	free_tokens(t_token *tokens)
 {
 	t_token	*tmp;
@@ -75,13 +75,13 @@ void	free_tokens(t_token *tokens)
 }
 
 /**
-	* @brief Frees the memory allocated for the command list
-	* @param cmd Pointer to the command list to be freed
-	* @return void
-	* @note Iterates through each command and
+ * @brief Frees the memory allocated for the command list
+ * @param cmd Pointer to the command list to be freed
+ * @return void
+ * @note Iterates through each command and
 	* frees its arguments, input/output files,
-	* heredoc delimiters, and the command itself
-	*/
+ * heredoc delimiters, and the command itself
+ */
 void	free_commands(t_command *cmd)
 {
 	int			i;
@@ -111,15 +111,14 @@ void	free_commands(t_command *cmd)
 }
 
 /**
-	* @brief Frees the memory allocated for the environment variables, 
-	* commands, and tokens, and exits the program with the specified signal
-	* @param signal The exit signal
-	* @param envs Pointer to the environment variable array to be freed
-	* @param cmds Pointer to the command list to be freed
-	* @param tokens Pointer to the token list to be freed
-	* @return void
-	* @note Cleans up all allocated resources before exiting
-	*/
+ * @brief Frees memory and exits program with specified signal
+ * @param signal The exit signal
+ * @param envs Pointer to the environment variable array to be freed
+ * @param cmds Pointer to the command list to be freed
+ * @param tokens Pointer to the token list to be freed
+ * @return void
+ * @note Cleans up all allocated resources before exiting
+ */
 void	exit_free(int signal, char ***envs, t_command *cmds, t_token *tokens)
 {
 	if (envs)

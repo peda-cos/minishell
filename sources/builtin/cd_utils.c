@@ -13,13 +13,14 @@
 #include "builtin.h"
 
 /**
-	* @brief Updates the value of an environment variable
-	* @param key The name of the environment variable to update
-	* @param value The new value to set for the environment variable
-	* @param env A pointer to the environment variable array
-	* @return void
-	* @note Iterates through the environment variable array
-	*       and updates the value if the key is found
+ * @brief Updates an environment variable with a new value
+ * @param key The name of the environment variable to update
+ * @param value The new value to set
+ * @param env Triple pointer to the environment variables array
+ * @return void
+ * @note Searches for the variable by key and replaces its value
+ *       Creates proper "key=value" format for the environment entry
+ *       Frees old value and allocates memory for the new one
  */
 void	update_env_variable(char *key, char *value, char ***env)
 {
@@ -47,12 +48,16 @@ void	update_env_variable(char *key, char *value, char ***env)
 }
 
 /**
-	* @brief Updates the PWD and OLDPWD environment variables
-	* @param old_pwd The previous working directory to set as OLDPWD
-	* @param env A pointer to the environment variable array
-	* @return void
-	* @note Uses getcwd to retrieve the current working directory
-	*/
+ * @brief Updates PWD and OLDPWD environment
+	* variables after a directory change
+ * @param old_pwd The previous working directory path
+ * @param env Triple pointer to the environment variables array
+ * @return void
+ * @note Gets current directory with getcwd and
+	* updates both environment variables
+ * Handles error if current directory cannot be determined
+ * Frees allocated memory for the new PWD value
+ */
 void	update_pwd_env(char *old_pwd, char ***env)
 {
 	char	*new_pwd;
@@ -69,14 +74,14 @@ void	update_pwd_env(char *old_pwd, char ***env)
 }
 
 /**
-	* @brief Changes the current working directory to the previous one
-	* @param env A pointer to the environment variable array
-	* @param old_pwd The previous working directory to set as OLDPWD
-	* @return 0 on success, 1 on failure
-	* @note Uses get_env_value to retrieve 
-	* the value of OLDPWD from the environment
-	* If OLDPWD is not set, prints an error message and returns 1
-	*/
+ * @brief Changes the current working directory to the previous one
+ * @param env A pointer to the environment variable array
+ * @param old_pwd The previous working directory to set as OLDPWD
+ * @return 0 on success, 1 on failure
+ * @note Uses get_env_value to retrieve the value of OLDPWD from the env
+ *       If OLDPWD is not set, prints an error message and returns 1
+ *       Displays the previous directory path on success
+ */
 int	change_to_previous(char ***env, char *old_pwd)
 {
 	char	*prev_pwd;
@@ -100,14 +105,15 @@ int	change_to_previous(char ***env, char *old_pwd)
 }
 
 /**
-	* @brief Changes the current working directory to the home directory
-	* @param env A pointer to the environment variable array
-	* @param old_pwd The previous working directory to set as OLDPWD
-	* @return 0 on success, 1 on failure
-	* @note Uses get_env_value to retrieve
+ * @brief Changes the current working directory to the home directory
+ * @param env A pointer to the environment variable array
+ * @param old_pwd The previous working directory to set as OLDPWD
+ * @return 0 on success, 1 on failure
+ * @note Uses get_env_value to retrieve
 	* the value of HOME from the environment
-	* If HOME is not set, prints an error message and returns 1
-	*/
+ * If HOME is not set, prints an error message and returns 1
+ * Updates PWD and OLDPWD environment variables on success
+ */
 int	change_to_home(char ***env, char *old_pwd)
 {
 	char	*home;
@@ -130,13 +136,15 @@ int	change_to_home(char ***env, char *old_pwd)
 }
 
 /**
-	* @brief Changes the current working directory to the specified directory
-	* @param dir The directory to change to
-	* @param env A pointer to the environment variable array
-	* @param old_pwd The previous working directory to set as OLDPWD
-	* @return 0 on success, 1 on failure
-	* @note Uses chdir to change the current working directory
-	*/
+ * @brief Changes the current working directory to the specified directory
+ * @param dir The directory to change to
+ * @param env A pointer to the environment variable array
+ * @param old_pwd The previous working directory to set as OLDPWD
+ * @return 0 on success, 1 on failure
+ * @note Uses chdir to change the current working directory
+ *       Updates environment variables on success via update_pwd_env
+ *       Prints error message with perror on failure
+ */
 int	change_directory(char *dir, char ***env, char *old_pwd)
 {
 	if (chdir(dir) != 0)

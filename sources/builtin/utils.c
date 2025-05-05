@@ -13,13 +13,13 @@
 #include "builtin.h"
 
 /**
-	* @brief Prints an error message for an invalid option in a builtin command
-	* @param builtin The name of the builtin command
-	* @param arg The invalid argument
-	* @param arg_options The valid options for the command
-	* @return void
-	* @note Prints the error message to standard error output
-	*/
+ * @brief Prints an error message for an invalid option in a builtin command
+ * @param builtin The name of the builtin command
+ * @param arg The invalid argument
+ * @param arg_options The valid options for the command
+ * @return void
+ * @note Prints the error message to standard error output
+ */
 void	print_invalid_option(char *builtin, char *arg, char *arg_options)
 {
 	int		index;

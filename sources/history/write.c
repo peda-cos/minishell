@@ -13,9 +13,12 @@
 #include "history.h"
 
 /**
-	* @brief Opens the history file for writing
-	* @return int File descriptor for the opened file, or -1 on error
-	* @note Creates the file if it doesn't exist, and truncates it if it does
+ * @brief Saves a command to the history file
+ * @param cmd The command to save
+ * @return int 0 on success, 1 on error
+ * @note Opens the history file for writing, 
+	* appends the command, and closes the file
+ * Returns 1 if the command is empty or the file cannot be opened
  */
 int	save_command_to_history(char *cmd)
 {

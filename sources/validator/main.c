@@ -13,10 +13,10 @@
 #include "validator.h"
 
 /**
-	* @brief Prints a syntax error message for an invalid token
-	* @param token_value The value of the invalid token
-	* @return 1 if the error is printed, 0 otherwise
-	* @note Prints the error message to standard error output
+ * @brief Prints a syntax error message for an invalid token
+ * @param token_value The value of the invalid token
+ * @return 1 if the error is printed, 0 otherwise
+ * @note Prints the error message to standard error output
  */
 static int	print_syntax_error(char *token_value)
 {
@@ -28,12 +28,12 @@ static int	print_syntax_error(char *token_value)
 }
 
 /**
-	* @brief Validates the tokens in the linked list
-	* @param tokens The head of the token list
-	* @return 1 if there is a syntax error, 0 otherwise
-	* @note Iterates through each token and
-	* checks for invalid pipe and redirection positions
-	*/
+ * @brief Validates the tokens in the linked list
+ * @param tokens The head of the token list
+ * @return 1 if there is a syntax error, 0 otherwise
+ * @note Iterates through each token and checks for 
+	* invalid pipe and redirection positions
+ */
 int	validate_tokens(t_token **tokens)
 {
 	t_token	*token;

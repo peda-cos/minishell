@@ -16,7 +16,7 @@
  * @brief Gets the full path to the history file
  * @return Dynamically allocated string containing
 	* the path to the history file, or NULL on failure
- * @note Allocates memory for the path	string
+ * @note Allocates memory for the path string
  */
 char	*get_history_file_path(void)
 {
@@ -37,13 +37,11 @@ char	*get_history_file_path(void)
 }
 
 /**
-	* @brief Reads a line from a file descriptor
-	* @param fd File descriptor to read from
-	* @return Dynamically allocated string
-	* containing the line read, or NULL on error/EOF
-	* @note Allocates memory for the line and returns a pointer to it
-	*       Caller is responsible for freeing the returned string
-	*/
+ * @brief Opens history file for reading
+ * @return File descriptor for the opened file, or -1 on error
+ * @note Opens the file in read-only mode
+ *       Returns -1 if path cannot be determined or file cannot be opened
+ */
 int	open_history_file_read(void)
 {
 	char	*path;
@@ -58,12 +56,11 @@ int	open_history_file_read(void)
 }
 
 /**
-	* @brief Opens history file for writing
-	* @return File descriptor for the opened file, or -1 on error
-	* @note Opens the file in write-only mode,
-	* creating it if it doesn't exist
-	* and appending to it if it does
-	*/
+ * @brief Opens history file for writing
+ * @return File descriptor for the opened file, or -1 on error
+ * @note Opens the file in write-only mode,
+	* creating it if it doesn't exist and appending to it if it does
+ */
 int	open_history_file_write(void)
 {
 	char	*path;

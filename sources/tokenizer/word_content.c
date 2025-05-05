@@ -13,12 +13,12 @@
 #include "tokenizer.h"
 
 /**
-	* @brief Adds a new token content to the end of the linked list
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the new token content
-	* @return Pointer to the updated token content
-	* @note Allocates memory for the new token content and links it to the list
-	*/
+ * @brief Adds a new token content to the end of the linked list
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the new token content
+ * @return Pointer to the updated token content
+ * @note Allocates memory for the new token content and links it to the list
+ */
 t_token_content	*add_only_content_word(t_token_content *content,
 	t_tokenizer *tkz)
 {
@@ -31,12 +31,12 @@ t_token_content	*add_only_content_word(t_token_content *content,
 }
 
 /**
-	* @brief Creates a new token content based on the tokenizer state
-	* @param tkz The tokenizer structure containing the current state
-	* @return A new token content structure, or NULL on failure
-	* @note Allocates memory for the new token content and sets its value
-	*       based on the current word and quotes status
-	*/
+ * @brief Creates a new token content based on the tokenizer state
+ * @param tkz The tokenizer structure containing the current state
+ * @return A new token content structure, or NULL on failure
+ * @note Allocates memory for the new token content and sets its value
+ *       based on the current word and quotes status
+ */
 t_token_content	*get_new_token_content(t_tokenizer *tkz)
 {
 	char			*temp;
@@ -62,12 +62,12 @@ t_token_content	*get_new_token_content(t_tokenizer *tkz)
 }
 
 /**
-	* @brief Appends a new token content to the end of the linked list
-	* @param content The current token content
-	* @param tkz The tokenizer structure containing the new token content
-	* @return Pointer to the updated token content
-	* @note Allocates memory for the new token content and links it to the list
-	*/
+ * @brief Appends a new token content to the end of the linked list
+ * @param content The current token content
+ * @param tkz The tokenizer structure containing the new token content
+ * @return Pointer to the updated token content
+ * @note Allocates memory for the new token content and links it to the list
+ */
 t_token_content	*append_token_content(
 	t_token_content *content, t_tokenizer *tkz)
 {

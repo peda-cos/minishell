@@ -13,13 +13,13 @@
 #include "minishell.h"
 
 /**
-	* @brief Sets the value of the underscore argument in the command structure
-	* @param cmd Pointer to the command structure
-	* @param envs Triple pointer to the environment variables
-	* @return void
-	* @note Sets the value of the underscore argument
-	* to the last command's exit status
-	*/
+ * @brief Sets the value of the underscore argument in the command structure
+ * @param cmd Pointer to the command structure
+ * @param envs Triple pointer to the environment variables
+ * @return void
+ * @note Sets the value of the underscore
+	* argument to the last command's exit status
+ */
 void	set_last_arg_without_pipe_executed(
 	t_token *tokens, t_command *cmd, char ***envs)
 {
@@ -36,15 +36,14 @@ void	set_last_arg_without_pipe_executed(
 }
 
 /**
-	* @brief Executes built-in commands in the parent process
-	* @param cmd Pointer to the command structure to be executed
-	* @param env Triple pointer to the environment variables
-	* @param last_exit Pointer to the last exit status to be updated
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return void
-	* @note Handles built-in commands like cd, export, unset, and exit.
-	*       Sets up output redirection if necessary.
-	*/
+ * @brief Executes built-in commands in the parent process
+ * @param cmd Pointer to the command structure to be executed
+ * @param env Triple pointer to the environment variables
+ * @param last_exit Pointer to the last exit status to be updated
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return void
+ * @note Handles built-in commands like cd, export, unset, and exit
+ */
 void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
@@ -75,13 +74,13 @@ void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 }
 
 /**
-	* @brief Processes the tokens and validates them
-	* @param tokens Pointer to the token list to be processed
-	* @param last_exit Pointer to the last exit status to be updated
-	* @return int Returns 1 if there are errors, 0 otherwise
-	* @note Validates the tokens for syntax errors
-	* and sets the last exit status
-	*/	
+ * @brief Processes the tokens and validates them
+ * @param tokens Pointer to the token list to be processed
+ * @param last_exit Pointer to the last exit status to be updated
+ * @return int Returns 1 if there are errors, 0 otherwise
+ * @note Validates the tokens for
+	* syntax errors and sets the last exit status
+ */
 int	process_tokens(t_token **tokens, int *last_exit)
 {
 	if (!*tokens)
@@ -96,15 +95,15 @@ int	process_tokens(t_token **tokens, int *last_exit)
 }
 
 /**
-	* @brief Executes the parsed commands and handles redirection
-	* @param cmd Pointer to the command structure to be executed
-	* @param env Triple pointer to the environment variables
-	* @param last_exit Pointer to the last exit status to be updated
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return void
-	* @note Sets up signal handling and
-	* restores standard file descriptors after execution.
-	*/
+ * @brief Executes the parsed commands and handles redirection
+ * @param cmd Pointer to the command structure to be executed
+ * @param env Triple pointer to the environment variables
+ * @param last_exit Pointer to the last exit status to be updated
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return void
+ * @note Sets up signal handling and restores
+	* standard file descriptors after execution
+ */
 void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
@@ -133,13 +132,13 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 }
 
 /**
-	* @brief Processes invalid commands and sets the last exit status
-	* @param cmd Pointer to the command structure to be processed
-	* @param last_exit Pointer to the last exit status to be updated
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return void
-	* @note Handles cases where the command is empty or invalid.
-	*/
+ * @brief Processes invalid commands and sets the last exit status
+ * @param cmd Pointer to the command structure to be processed
+ * @param last_exit Pointer to the last exit status to be updated
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return void
+ * @note Handles cases where the command is empty or invalid
+ */
 void	process_invalid_command(t_command *cmd,
 	int *last_exit, t_token *tokens)
 {
