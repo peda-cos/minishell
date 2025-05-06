@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 19:08:27 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/05 22:36:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,28 +97,6 @@ static char	*append_to_final_value(char *final_value,
 }
 
 /**
- * @brief Processes the final value of the token content
- * @param final_value The final value string to append to
- * @param params The parameters for processing the content
- * @param content The token content to process
- * @return Pointer to the updated final value string, or NULL on error
- * @note Allocates memory for the new string and frees the old one
- */
-static char	*process_final_value(char *final_value,
-	t_content_params *params, t_token_content *content)
-{
-	char	*temp;
-
-	if (content->value[0] == '~' && content->value[1] == '\0')
-	{
-		temp = content->value;
-		content->value = get_env_value("HOME", params->envs);
-		free(temp);
-	}
-	return (append_to_final_value(final_value, content, params));
-}
-
-/**
  * @brief Processes the content of the token and returns the final value
  * @param params The parameters for processing the content
  * @return Pointer to the final value string, or NULL on error
@@ -144,7 +122,7 @@ char	*get_token_content_value(t_content_params *params)
 			content = content->next;
 			continue ;
 		}
-		final_value = process_final_value(final_value, params, content);
+		final_value = append_to_final_value(final_value, content, params);
 		if (!final_value)
 			return (NULL);
 		content = content->next;

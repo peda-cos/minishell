@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/04/28 21:55:56 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/05 23:38:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,41 @@ static char	*extract_result(char *partial, char *result)
 	return (result);
 }
 
-static void	process_expansion(char **result, char **value,
-	int *has_error_flag_control)
+/**
+	* @brief Processes specific expansions in a string
+	* @param str The string to be processed
+	* @param index The index to start processing from
+	* @param exp The expansion context containing
+	* environment variables and flags
+	* @param result The result string to which the processed value will be appended
+	* @return void
+	* @note Handles $ and ~ expansions
+	*/
+static char	*process_expansion(char *str, int *index,
+	t_expansion_ctx *exp, char **result)
 {
-	if (!*value)
-		*has_error_flag_control = TRUE;
-	*result = extract_result(*value, *result);
+	char	*value;
+
+	if (str[*index] == '$')
+	{
+		(*index)++;
+		value = extract_env_value(str, index, exp);
+		if (!value)
+			*exp->has_error_flag_control = TRUE;
+		return (extract_result(value, *result));
+	}
+	if (str[*index] == '~' && !exp->content->in_quotes
+		&& (str[*index + 1] == '/' || str[*index + 1] == '\0'))
+	{
+		(*index)++;
+		value = get_env_value("HOME", exp->envs);
+		if (!value)
+			*exp->has_error_flag_control = TRUE;
+		return (extract_result(value, *result));
+	}
+	(*index)++;
+	value = ft_substr(str, *index - 1, 1);
+	return (extract_result(value, *result));
 }
 
 /**
@@ -113,7 +142,6 @@ char	*expand_variable(char *str, t_expansion_ctx *exp)
 {
 	int		i;
 	int		start;
-	char	*value;
 	char	*result;
 	int		str_len;
 
@@ -125,15 +153,10 @@ char	*expand_variable(char *str, t_expansion_ctx *exp)
 	while (str[i] && i < str_len)
 	{
 		start = i;
-		while (str[i] && str[i] != '$')
+		while (str[i] && str[i] != '$' && str[i] != '~')
 			i++;
 		result = extract_result(ft_substr(str, start, i - start), result);
-		if (str[i] == '$')
-		{
-			i++;
-			value = extract_env_value(str, &i, exp);
-			process_expansion(&result, &value, exp->has_error_flag_control);
-		}
+		result = process_expansion(str, &i, exp, &result);
 	}
 	return (result);
 }
