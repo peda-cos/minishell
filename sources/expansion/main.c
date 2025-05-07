@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:50:10 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/05 23:38:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/07 00:48:04 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ static char	*extract_result(char *partial, char *result)
 	* @param index The index to start processing from
 	* @param exp The expansion context containing
 	* environment variables and flags
-	* @param result The result string to which the processed value will be appended
+	* @param result The result string to which
+	* the processed value will be appended
 	* @return void
 	* @note Handles $ and ~ expansions
 	*/
@@ -150,13 +151,16 @@ char	*expand_variable(char *str, t_expansion_ctx *exp)
 		return (NULL);
 	result = ft_strdup("");
 	str_len = ft_strlen(str);
-	while (str[i] && i < str_len)
+	while (i < str_len && str[i])
 	{
 		start = i;
 		while (str[i] && str[i] != '$' && str[i] != '~')
 			i++;
 		result = extract_result(ft_substr(str, start, i - start), result);
-		result = process_expansion(str, &i, exp, &result);
+		if (i < str_len)
+			result = process_expansion(str, &i, exp, &result);
+		else
+			break ;
 	}
 	return (result);
 }
