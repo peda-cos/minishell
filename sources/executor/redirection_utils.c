@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 08:15:40 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 18:56:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:05:12 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param input_file The name of the input file
  * @return 0 on success, -1 on error
  * @note Opens the file in read-only
-	* mode and duplicates the file descriptor
+ * mode and duplicates the file descriptor
  */
 int	setup_file_input(char *input_file)
 {
@@ -42,7 +42,7 @@ int	setup_file_input(char *input_file)
  * @return 0 on success, -1 on error
  * @note Handles existing heredoc fd, heredoc delimiter, or input file
  */
-int	setup_input_redirection(t_command *cmd, char **env, int last_exit)
+int	setup_file_input_redirection(t_command *cmd, char **env, int last_exit)
 {
 	if (!cmd)
 		return (-1);
@@ -98,7 +98,7 @@ t_token	*get_fd_redirect_token(char *target_file, t_token *tokens)
  * @param arg The command arguments
  * @return 0 on success, -1 on error
  * @note Checks if the file descriptor
-	* is for standard error and duplicates accordingly
+ * is for standard error and duplicates accordingly
  */
 int	dup_fd_std(int fd, char *filename, t_process_command_args *arg)
 {
@@ -117,7 +117,7 @@ int	dup_fd_std(int fd, char *filename, t_process_command_args *arg)
  * @param flags The flags for opening the file
  * @return 0 on success, -1 on error
  * @note Opens the files in the specified mode
-	* and duplicates the file descriptor
+ * and duplicates the file descriptor
  */
 int	set_redirection_to_files(t_process_command_args *arg, int *flags)
 {
