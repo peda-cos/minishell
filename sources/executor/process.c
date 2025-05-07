@@ -3,36 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 18:54:54 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:05:02 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 /**
- * @brief Handles the case when the command is empty
+ * @brief Handles the case when the command is empty (no arguments)
  * @param cmd The command structure to check
- * @return 1 if the command is empty, 0 otherwise
- * @note Reads from standard input and writes
-	* to standard output if the command is empty
+ * @return 1 if the command was empty and processed successfully,
+ *         -1 if an error occurred during processing,
+ *         0 if the command was not empty (had arguments).
+ * @note If argc <= 0, this function reads from STDIN_FILENO and writes to
+ *       STDOUT_FILENO, mimicking 'cat' behavior. Errors during read/write
+ *       are reported via perror.
  */
 static int	handle_empty_command(t_command *cmd)
 {
 	char	buffer[4096];
 	ssize_t	bytes_read;
+	ssize_t	bytes_written;
 
 	if (cmd->argc <= 0)
 	{
-		if (cmd->output_file_list[0] != NULL)
+		while (TRUE)
 		{
 			bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
-			while (bytes_read > 0)
+			if (bytes_read < 0)
 			{
-				write(STDOUT_FILENO, buffer, bytes_read);
-				bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
+				perror("minishell: read error in empty command segment");
+				return (-1);
+			}
+			if (bytes_read == 0)
+				break ;
+			bytes_written = write(STDOUT_FILENO, buffer, bytes_read);
+			if (bytes_written < 0)
+			{
+				perror("minishell: write error in empty command segment");
+				return (-1);
 			}
 		}
 		return (1);
@@ -45,7 +57,7 @@ static int	handle_empty_command(t_command *cmd)
  * @param param The command arguments and environment variables
  * @return void
  * @note Closes the pipe file descriptors
-	* and duplicates the read end of the pipe to stdin
+ * and duplicates the read end of the pipe to stdin
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
@@ -58,6 +70,54 @@ static void	set_pipefd_stdin(t_process_command_args *param)
 }
 
 /**
+ * @brief Sets up input and output file descriptors for a child process.
+ * @param arg Structure containing command, environment, pipe FDs, etc.
+ * @return 0 on success, -1 on failure.
+ * @note This function handles:
+
+	*         1. Input redirection (from file or heredoc) via setup_file_input_redirection.
+ *         2. Output redirection (to file) via setup_output_redirection.
+ *         3. Output to a pipe if cmd->next exists and no file output occurred.
+ *         4. Closing of all used/duplicated pipe FDs in the child.
+ */
+int	setup_child_io(t_process_command_args *arg)
+{
+	int	file_output_redirected_status;
+
+	if (!arg || !arg->cmd)
+		return (-1);
+	if (setup_file_input_redirection(arg->cmd, *(arg->env), *(arg->last_exit)) < 0)
+	{
+		perror("minishell: input redirection setup failed");
+		return (-1);
+	}
+	file_output_redirected_status = setup_output_redirection(arg);
+	if (file_output_redirected_status < 0)
+	{
+		perror("minishell: output redirection setup failed");
+		return (-1);
+	}
+	if (arg->cmd->next && file_output_redirected_status == 0)
+	{
+		if (arg->pipefd[1] < 0)
+		{
+			ft_putstr_fd("minishell: invalid pipe for output\n", STDERR_FILENO);
+			return (-1);
+		}
+		if (dup2(arg->pipefd[1], STDOUT_FILENO) < 0)
+		{
+			perror("minishell: dup2 for pipe STDOUT failed");
+			return (-1);
+		}
+	}
+	if (arg->pipefd[0] >= 0)
+		close(arg->pipefd[0]);
+	if (arg->pipefd[1] >= 0)
+		close(arg->pipefd[1]);
+	return (0);
+}
+
+/**
  * @brief Handles the execution in a child process
  * @param param The command arguments and environment variables
  * @return void
@@ -66,6 +126,7 @@ static void	set_pipefd_stdin(t_process_command_args *param)
 void	child_process(t_process_command_args *param)
 {
 	struct sigaction	sa;
+	int					empty_cmd_status;
 
 	if (!param->cmd || !param->env || !(param->last_exit))
 		exit_free(1, param->env, param->cmd, param->tokens);
@@ -76,8 +137,11 @@ void	child_process(t_process_command_args *param)
 	sigaction(SIGQUIT, &sa, NULL);
 	if (setup_child_io(param) < 0)
 		exit_free(1, param->env, param->cmd, param->tokens);
-	if (handle_empty_command(param->cmd))
+	empty_cmd_status = handle_empty_command(param->cmd);
+	if (empty_cmd_status == 1)
 		exit_free(0, param->env, param->cmd, param->tokens);
+	else if (empty_cmd_status == -1)
+		exit_free(1, param->env, param->cmd, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
 		exit_free(execute_builtin(param), param->env, param->cmd,
 			param->tokens);
