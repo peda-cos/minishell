@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:41:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 01:06:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	setup_command_execution(t_command *cmd, char **env, int *last_exit)
 		perror("dup");
 		return (-1);
 	}
+	manager_file_descriptors(ADD, backup_fd);
 	return (backup_fd);
 }
 

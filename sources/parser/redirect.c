@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/05 23:58:12 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:33:52 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	create_output_file(char *filename, int append)
 		perror(filename);
 		return (0);
 	}
+	manager_file_descriptors(ADD, fd);
 	close(fd);
 	return (1);
 }

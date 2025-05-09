@@ -6,12 +6,22 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 19:47:07 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:52:32 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+/**
+ * @brief Enumeration of file descriptor management options
+ * @enum t_manager_fd
+ */
+typedef enum e_manager_fd
+{
+	ADD,
+	FREE,
+}	t_manager_fd;
 
 /**
  * @brief Enumeration of token types supported by the minishell parser

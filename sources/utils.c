@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:18:52 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 22:02:49 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,6 @@ int	process_tokens(t_token **tokens, int *last_exit)
 void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-	int	saved_stderr;
-
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stderr = dup(STDERR_FILENO);
 	setup_execution_signals();
 	if (!cmd)
 		return ;
@@ -122,12 +115,6 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 	else
 		execute_command(cmd, env, last_exit, tokens);
 	setup_interactive_signals();
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stderr, STDERR_FILENO);
-	close(saved_stdout);
-	close(saved_stderr);
-	close(saved_stdin);
 	free_commands(cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 17:09:06 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:34:57 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	set_last_arg_without_pipe_executed(tokens, cmd, env);
 	execute_parsed_commands(cmd, env, last_exit, tokens);
 	free_tokens(tokens);
+	manager_file_descriptors(FREE, -1);
 }
 
 /**

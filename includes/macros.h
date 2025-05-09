@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 15:38:42 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:09:40 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # define TRUE 1
 # define FALSE 0
 
-/* Tokenizer ------------ */
 # define NULL_CHR '\0'
 # define PIPE_CHR '|'
 # define BACKSLASH_CHR '\\'
@@ -41,7 +40,7 @@
 # define REDIRECT_OUT_STR ">"
 # define SINGLE_QUOTE_STR "'"
 # define DOUBLE_QUOTE_STR "\""
-/* ----------------------- */
+# define FD_LIST_SIZE 42
 
 /* Prompt ---------------- */
 # define MAX_PROMPT_LENGTH 1024
