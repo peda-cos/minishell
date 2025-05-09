@@ -152,4 +152,13 @@ re:
 	@rm -f .header_lock
 	@$(MAKE) --no-print-directory -s fclean all
 
+valgrind: all
+	@valgrind --leak-check=full \
+	--show-reachable=yes \
+	--track-fds=yes \
+	--show-leak-kinds=all -s \
+	--track-origins=yes \
+	--suppressions=./leaks.supp \
+	./$(NAME)
+
 .PHONY: all clean fclean re header
