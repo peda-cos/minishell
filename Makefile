@@ -128,7 +128,6 @@ $(OBJS_DIR)/%.o: %.c
 		printf "$(YELLOW)$(BOLD)🔄  $(RESET)$(YELLOW)%s$(RESET) \n" "$(shell printf '▓%.0s' $$(seq 1 $(FILLED)))"; \
 	fi
 
-# Modificar os alvos clean e fclean para remover o lock file
 clean: header
 	@printf "$(MAGENTA)$(BOLD)🗑️   Limpando arquivos objeto $(RESET)"
 	@rm -rf $(OBJS_DIR)
@@ -153,6 +152,7 @@ re:
 	@$(MAKE) --no-print-directory -s fclean all
 
 valgrind: all
+	@rm	-f .header_lock
 	@valgrind --leak-check=full \
 	--show-reachable=yes \
 	--track-fds=yes \
