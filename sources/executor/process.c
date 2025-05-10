@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 21:32:28 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:46:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,11 +119,9 @@ void	parent_process(t_process_command_args *param)
 }
 
 /**
- * @brief Processes the command and its arguments
+ * @brief Sets up the command for execution
  * @param cmd The command structure to be executed
- * @param envs Array of environment variables
- * @param last_exit Pointer to the last exit status
- * @param tokens Pointer to the token list for cleanup during exit
+ * @param args The command arguments and environment variables
  * @return 0 on success, -1 on error
  * @note Sets up pipes and forks a child process for command execution
  */

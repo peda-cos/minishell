@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 21:21:45 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:45:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ static int	has_pipeline(t_command *cmd)
 }
 
 /**
- * @brief Processes a single command in the command chain
- * @param cmd The command structure to be executed
- * @param env Array of environment variables
- * @param last_exit Pointer to the last exit status
- * @param tokens Pointer to the token list for cleanup during exit
- * @return 0 on success, -1 on error
- * @note Handles the execution of a single command and its arguments
- */
+	* @brief Processes a chain of commands
+	* @param cmd_head The head of the command list
+	* @param env Array of environment variables
+	* @param last_exit Pointer to the last exit status
+	* @param tokens Pointer to the token list for cleanup during exit
+	* @return 0 on success, -1 on error
+	* @note Iterates through the command list and processes each command
+	*/
 static int	process_command_chain(t_command *cmd_head,
 	char ***env, int *last_exit, t_token *tokens)
 {
