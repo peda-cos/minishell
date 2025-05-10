@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 20:10:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:43:26 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int		setup_pipe(t_command *cmd, int pipefd[2]);
 int		setup_child_io(t_process_command_args *arg);
 void	child_process(t_process_command_args *param);
 void	parent_process(t_process_command_args *param);
-int		process_command(t_command *cmd, char ***envs, int *last_exit,
-			t_token *tokens);
+int		process_command(t_command *cmd, t_process_command_args *args);
 
 int		setup_file_input(char *input_file);
 t_token	*get_fd_redirect_token(char *target_file, t_token *tokens);

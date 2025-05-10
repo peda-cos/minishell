@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:41:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:45:17 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static int	setup_command_execution(t_command *cmd, char **env, int *last_exit)
 		perror("dup");
 		return (-1);
 	}
+	manager_file_descriptors(ADD, backup_fd);
 	return (backup_fd);
 }
 
@@ -49,22 +50,29 @@ static int	has_pipeline(t_command *cmd)
 }
 
 /**
- * @brief Processes a single command in the command chain
- * @param cmd The command structure to be executed
- * @param env Array of environment variables
- * @param last_exit Pointer to the last exit status
- * @param tokens Pointer to the token list for cleanup during exit
- * @return 0 on success, -1 on error
- * @note Handles the execution of a single command and its arguments
- */
-static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
-		t_token *tokens)
+	* @brief Processes a chain of commands
+	* @param cmd_head The head of the command list
+	* @param env Array of environment variables
+	* @param last_exit Pointer to the last exit status
+	* @param tokens Pointer to the token list for cleanup during exit
+	* @return 0 on success, -1 on error
+	* @note Iterates through the command list and processes each command
+	*/
+static int	process_command_chain(t_command *cmd_head,
+	char ***env, int *last_exit, t_token *tokens)
 {
-	int	result;
+	t_command				*cmd;
+	t_process_command_args	args;
+	int						result;
 
+	cmd = cmd_head;
+	args.env = env;
+	args.head = cmd_head;
+	args.tokens = tokens;
+	args.last_exit = last_exit;
 	while (cmd)
 	{
-		result = process_command(cmd, env, last_exit, tokens);
+		result = process_command(cmd, &args);
 		if (result < 0)
 			return (-1);
 		cmd = cmd->next;

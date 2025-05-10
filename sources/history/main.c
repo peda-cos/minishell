@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 11:59:20 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:41:38 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:29:49 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	builtin_history(char **args, int *last_exit)
 	free(path);
 	if (fd < 0)
 		return (1);
+	manager_file_descriptors(ADD, fd);
 	display_history_entries(fd);
 	close(fd);
 	return (0);

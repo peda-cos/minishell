@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 18:54:54 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:46:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,15 @@ void	child_process(t_process_command_args *param)
 	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	if (setup_child_io(param) < 0)
-		exit_free(1, param->env, param->cmd, param->tokens);
+		exit_free(1, param->env, param->head, param->tokens);
 	if (handle_empty_command(param->cmd))
-		exit_free(0, param->env, param->cmd, param->tokens);
+		exit_free(0, param->env, param->head, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param), param->env, param->cmd,
-			param->tokens);
-	exit_free(execute_external(param->cmd, *param->env), param->env, param->cmd,
-		param->tokens);
+		exit_free(execute_builtin(param),
+			param->env, param->head, param->tokens);
+	else
+		exit_free(execute_external(param->cmd, *param->env),
+			param->env, param->head, param->tokens);
 }
 
 /**
@@ -118,40 +119,33 @@ void	parent_process(t_process_command_args *param)
 }
 
 /**
- * @brief Processes the command and its arguments
+ * @brief Sets up the command for execution
  * @param cmd The command structure to be executed
- * @param envs Array of environment variables
- * @param last_exit Pointer to the last exit status
- * @param tokens Pointer to the token list for cleanup during exit
+ * @param args The command arguments and environment variables
  * @return 0 on success, -1 on error
  * @note Sets up pipes and forks a child process for command execution
  */
-int	process_command(t_command *cmd, char ***envs, int *last_exit,
-		t_token *tokens)
+int	process_command(t_command *cmd, t_process_command_args *args)
 {
 	int						pipefd[2];
-	t_process_command_args	args;
 
-	if (!cmd || !envs || !last_exit)
+	if (!cmd || !args->env || !args->last_exit)
 		return (-1);
 	if (setup_pipe(cmd, pipefd) < 0)
 		return (-1);
-	args.cmd = cmd;
-	args.env = envs;
-	args.tokens = tokens;
-	args.last_exit = last_exit;
-	args.pid = fork();
-	args.pipefd[0] = pipefd[0];
-	args.pipefd[1] = pipefd[1];
-	args.has_fd_redirect_to_stderr = FALSE;
-	if (args.pid < 0)
+	args->cmd = cmd;
+	args->pid = fork();
+	args->pipefd[0] = pipefd[0];
+	args->pipefd[1] = pipefd[1];
+	args->has_fd_redirect_to_stderr = FALSE;
+	if (args->pid < 0)
 	{
 		perror("fork");
 		return (-1);
 	}
-	else if (args.pid == 0)
-		child_process(&args);
+	else if (args->pid == 0)
+		child_process(args);
 	else
-		parent_process(&args);
+		parent_process(args);
 	return (0);
 }

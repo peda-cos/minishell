@@ -10,3 +10,15 @@
    ...
    obj:*/libtinfo.so*
 }
+{
+   <VSCode FD Engine>
+   Memcheck:Leak
+   ...
+   obj:*/code/v8*
+}
+{
+   <VSCode FD Events>
+   Memcheck:Leak
+   ...
+   obj:*/Code/logs/*
+}
