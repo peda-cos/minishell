@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 01:06:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:21:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,21 @@ static int	has_pipeline(t_command *cmd)
  * @return 0 on success, -1 on error
  * @note Handles the execution of a single command and its arguments
  */
-static int	process_command_chain(t_command *cmd, char ***env, int *last_exit,
-		t_token *tokens)
+static int	process_command_chain(t_command *cmd_head,
+	char ***env, int *last_exit, t_token *tokens)
 {
-	int	result;
+	t_command				*cmd;
+	t_process_command_args	args;
+	int						result;
 
+	cmd = cmd_head;
+	args.env = env;
+	args.head = cmd_head;
+	args.tokens = tokens;
+	args.last_exit = last_exit;
 	while (cmd)
 	{
-		result = process_command(cmd, env, last_exit, tokens);
+		result = process_command(cmd, &args);
 		if (result < 0)
 			return (-1);
 		cmd = cmd->next;

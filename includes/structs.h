@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/08 23:52:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:37:10 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ typedef struct s_process_command_args
 	int						pid;
 	char					***env;
 	t_command				*cmd;
+	t_command				*head;
 	int						pipefd[2];
 	int						*last_exit;
 	t_token					*tokens;

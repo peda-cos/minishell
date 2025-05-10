@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 22:28:30 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:13:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,10 @@ char	*get_word_in_quotes(char *str, int *index, char delimiter)
 t_token_content	*process_word_in_brackets(
 	t_token_content *content, t_tokenizer *tkz)
 {
-	int		malloc_word_len;
-
-	malloc_word_len = ft_strlen(tkz->str + *tkz->str_index);
 	content = add_only_content_word(content, tkz);
 	if (!content && tkz->word_index > 0)
 		return (NULL);
 	free(tkz->word);
-	tkz->word = (char *)malloc(sizeof(char) * (malloc_word_len + 1));
-	if (!tkz->word)
-		return (NULL);
 	tkz->word_index = 0;
 	tkz->word = get_word_in_brackets(tkz->str, tkz->str_index);
 	if (!tkz->word)

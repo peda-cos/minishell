@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/08 23:33:52 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:03:21 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @note Allocates memory for the concatenated
  * delimiter and sets it in the command structure
  */
-static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
+static void	set_heredoc_delimiter(t_token_content *content, t_command	*cmd)
 {
 	char			*temp;
 	char			*heredoc_delimiter;
@@ -34,6 +34,8 @@ static void	process_heredoc_delim(t_token_content *content, t_command	*cmd)
 		free(temp);
 		tmp_content = tmp_content->next;
 	}
+	if (cmd->heredoc_delim)
+		free(cmd->heredoc_delim);
 	cmd->heredoc_delim = ft_strdup(heredoc_delimiter);
 	free(heredoc_delimiter);
 }
@@ -116,7 +118,10 @@ void	set_redirection_target(t_command *cmd,
 	else if (token->type == APPEND)
 		set_output_redirect_file(filename, cmd, TRUE);
 	else if (token->type == HEREDOC)
-		process_heredoc_delim(content_params->content, cmd);
+	{
+		free(filename);
+		set_heredoc_delimiter(content_params->content, cmd);
+	}
 	else
 		free(filename);
 }
