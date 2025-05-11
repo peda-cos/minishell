@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 21:45:17 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:24:24 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 /**
- * @brief Prepares for command execution by setting up necessary file descriptors
+
+	* @brief Prepares for command execution by setting up necessary file descriptors
  * @param cmd The command structure to be executed
  * @param env Array of environment variables
  * @param last_exit Pointer to the last exit status
@@ -50,22 +51,24 @@ static int	has_pipeline(t_command *cmd)
 }
 
 /**
-	* @brief Processes a chain of commands
-	* @param cmd_head The head of the command list
-	* @param env Array of environment variables
-	* @param last_exit Pointer to the last exit status
-	* @param tokens Pointer to the token list for cleanup during exit
-	* @return 0 on success, -1 on error
-	* @note Iterates through the command list and processes each command
-	*/
-static int	process_command_chain(t_command *cmd_head,
-	char ***env, int *last_exit, t_token *tokens)
+ * @brief Processes a chain of commands
+ * @param cmd_head The head of the command list
+ * @param env Array of environment variables
+ * @param last_exit Pointer to the last exit status
+ * @param tokens Pointer to the token list for cleanup during exit
+ * @return 0 on success, -1 on error
+ * @note Iterates through the command list and processes each command
+ */
+static int	process_command_chain(t_command *cmd_head, char ***env,
+		int *last_exit, t_token *tokens)
 {
 	t_command				*cmd;
 	t_process_command_args	args;
 	int						result;
+	int						pid_count;
 
 	cmd = cmd_head;
+	pid_count = 0;
 	args.env = env;
 	args.head = cmd_head;
 	args.tokens = tokens;
@@ -75,6 +78,8 @@ static int	process_command_chain(t_command *cmd_head,
 		result = process_command(cmd, &args);
 		if (result < 0)
 			return (-1);
+		if (args.pid > 0)
+			pid_count++;
 		cmd = cmd->next;
 	}
 	return (0);
@@ -90,11 +95,22 @@ static int	process_command_chain(t_command *cmd_head,
 static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
 {
 	int	status;
+	int	exit_status;
 
 	if (pipeline_exists)
+	{
 		while (waitpid(-1, &status, 0) > 0)
+		{
+			if (WIFSIGNALED(status))
+				exit_status = WTERMSIG(status) + 128;
+			else if (WIFEXITED(status))
+				exit_status = WEXITSTATUS(status);
+		}
+		if (stdin_backup >= 0)
 			dup2(stdin_backup, STDIN_FILENO);
-	close(stdin_backup);
+	}
+	if (stdin_backup >= 0)
+		close(stdin_backup);
 }
 
 /**
@@ -105,7 +121,7 @@ static void	cleanup_command_execution(int pipeline_exists, int stdin_backup)
  * @param tokens Pointer to the token list for cleanup during exit
  * @return void
  * @note Sets up signal handling and
-	* restores standard file descriptors after execution
+ * restores standard file descriptors after execution
  */
 void	execute_command(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
