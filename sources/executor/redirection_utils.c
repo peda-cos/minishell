@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 08:15:40 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 18:56:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:31:35 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	setup_file_input(char *input_file)
 		perror(input_file);
 		return (-1);
 	}
+	manager_file_descriptors(ADD, fd);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
@@ -135,6 +136,7 @@ int	set_redirection_to_files(t_process_command_args *arg, int *flags)
 			perror(output_file_list[index]);
 			return (-1);
 		}
+		manager_file_descriptors(ADD, fd);
 		if (dup_fd_std(fd, output_file_list[index], arg) < 0)
 		{
 			close(fd);

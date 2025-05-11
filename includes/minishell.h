@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 16:41:39 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 23:28:46 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			setup_output_redirection(t_process_command_args *param);
 /* Memory cleanup */
 void		free_tokens(t_token *tokens);
 void		free_commands(t_command *cmd);
-void		free_token_content(t_token_content *content);
+void		manager_file_descriptors(t_manager_fd fd_type, int fd);
 
 /* Utility for variable expansion */
 char		*expand_variable(char *str, t_expansion_ctx *exp);

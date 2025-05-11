@@ -6,12 +6,22 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 19:47:07 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/09 20:37:10 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
+
+/**
+ * @brief Enumeration of file descriptor management options
+ * @enum t_manager_fd
+ */
+typedef enum e_manager_fd
+{
+	ADD,
+	FREE,
+}	t_manager_fd;
 
 /**
  * @brief Enumeration of token types supported by the minishell parser
@@ -133,6 +143,7 @@ typedef struct s_process_command_args
 	int						pid;
 	char					***env;
 	t_command				*cmd;
+	t_command				*head;
 	int						pipefd[2];
 	int						*last_exit;
 	t_token					*tokens;
