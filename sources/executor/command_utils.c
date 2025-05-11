@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 16:02:30 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:24:27 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 /**
-	* @brief Validates if the given path is executable
-	* @param path The path to validate
-	* @return 0 if valid, 126 if not executable, 127 if not found
-	* @note Uses stat to check if the file exists 
-	* and access to check if it is executable
+ * @brief Validates if the given path is executable
+ * @param path The path to validate
+ * @return 0 if valid, 126 if not executable, 127 if not found
+ * @note Uses stat to check if the file exists
+ * and access to check if it is executable
  */
 static int	validates_executable(char *path)
 {
@@ -87,7 +87,7 @@ int	is_builtin(char *cmd)
  * @param arg The command arguments and environment variables
  * @return 0 on success, 1 on failure
  * @note Calls the appropriate built-in
-	* function based on the command name
+ * function based on the command name
  */
 int	execute_builtin(t_process_command_args *arg)
 {
@@ -96,8 +96,8 @@ int	execute_builtin(t_process_command_args *arg)
 
 	command = arg->cmd->args[0];
 	command_with_args = arg->cmd->args;
-	if (!arg->cmd || !command_with_args
-		|| !command || !arg->env || !arg->last_exit)
+	if (!arg->cmd || !command_with_args || !command || !arg->env
+		|| !arg->last_exit)
 		return (1);
 	if (!ft_strcmp(command, "echo"))
 		return (builtin_echo(command_with_args, arg->last_exit));
@@ -124,7 +124,7 @@ int	execute_builtin(t_process_command_args *arg)
  * @param env The environment variables
  * @return 0 on success, 1 on failure
  * @note Uses execve to execute the command
-	* with the given arguments and environment
+ * with the given arguments and environment
  */
 int	execute_external(t_command *cmd, char **env)
 {
