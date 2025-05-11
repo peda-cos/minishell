@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 21:46:27 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/11 19:24:29 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param cmd The command structure to check
  * @return 1 if the command is empty, 0 otherwise
  * @note Reads from standard input and writes
-	* to standard output if the command is empty
+ * to standard output if the command is empty
  */
 static int	handle_empty_command(t_command *cmd)
 {
@@ -45,7 +45,7 @@ static int	handle_empty_command(t_command *cmd)
  * @param param The command arguments and environment variables
  * @return void
  * @note Closes the pipe file descriptors
-	* and duplicates the read end of the pipe to stdin
+ * and duplicates the read end of the pipe to stdin
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
@@ -79,11 +79,11 @@ void	child_process(t_process_command_args *param)
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->head, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param),
-			param->env, param->head, param->tokens);
+		exit_free(execute_builtin(param), param->env, param->head,
+			param->tokens);
 	else
-		exit_free(execute_external(param->cmd, *param->env),
-			param->env, param->head, param->tokens);
+		exit_free(execute_external(param->cmd, *param->env), param->env,
+			param->head, param->tokens);
 }
 
 /**
@@ -127,7 +127,7 @@ void	parent_process(t_process_command_args *param)
  */
 int	process_command(t_command *cmd, t_process_command_args *args)
 {
-	int						pipefd[2];
+	int	pipefd[2];
 
 	if (!cmd || !args->env || !args->last_exit)
 		return (-1);
