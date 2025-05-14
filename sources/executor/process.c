@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 21:46:27 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:18:05 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,29 @@ static int	handle_empty_command(t_command *cmd)
 
 /**
  * @brief Sets the standard input file descriptor for the command
- * @param param The command arguments and environment variables
+ * @param param arguments of process for the command
  * @return void
  * @note Closes the pipe file descriptors
-	* and duplicates the read end of the pipe to stdin
+	* and redirects the standard input
+	* to the read end of the pipe if there is a next command
+	* in the pipeline.
+	*
+	* TODO: How to the fixes the blocking behavior of the cat command
+	* when used in a pipeline, without ft_strcmp?
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
-	if (param->cmd->next && param->pipefd[0] > 0)
+	int	is_blocking_command;
+
+	is_blocking_command = param->cmd->args
+		&& (!ft_strcmp(param->cmd->args[0], "cat")
+			|| !ft_strcmp(param->cmd->args[0], "/bin/cat"));
+	if (is_blocking_command)
+	{
+		close(param->pipefd[1]);
+		close(param->pipefd[0]);
+	}
+	else if (param->cmd->next && param->pipefd[0] > 0)
 	{
 		close(param->pipefd[1]);
 		dup2(param->pipefd[0], STDIN_FILENO);
