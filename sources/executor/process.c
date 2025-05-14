@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/14 00:18:05 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/14 01:18:05 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,17 @@ static int	handle_empty_command(t_command *cmd)
 	* to the read end of the pipe if there is a next command
 	* in the pipeline.
 	*
-	* TODO: How to the fixes the blocking behavior of the cat command
-	* when used in a pipeline, without ft_strcmp?
+	* TODO: Removing this cat treatment before pipe without
+	* relying on ft_strcmp' will be more elegant.
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
-	int	is_blocking_command;
+	int	is_cat_command;
 
-	is_blocking_command = param->cmd->args
+	is_cat_command = param->cmd->args
 		&& (!ft_strcmp(param->cmd->args[0], "cat")
 			|| !ft_strcmp(param->cmd->args[0], "/bin/cat"));
-	if (is_blocking_command)
+	if (is_cat_command)
 	{
 		close(param->pipefd[1]);
 		close(param->pipefd[0]);
