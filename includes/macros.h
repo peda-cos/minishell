@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/08 23:09:40 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/14 00:27:44 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@
 # define COLOR_PASTEL_YELLOW "\001\033[38;5;229m\002"
 # define COLOR_PASTEL_BLUE "\001\033[38;5;153m\002"
 # define COLOR_RESET "\001\033[0m\002"
-# define PROMPT_TEXT "🧙 Minishell ❯ "
+# define PROMPT_TEXT "Minishell"
 /* ----------------------- */
 #endif

@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:21:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:28:47 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:12:19 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	builtin_exit(t_process_command_args	*param)
 	if (param->cmd->args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+		param->has_error_flag_control = TRUE;
 		return (1);
 	}
 	return (exit_code % 256);

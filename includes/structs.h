@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/09 20:37:10 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/14 22:10:44 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_process_command_args
 	int						*last_exit;
 	t_token					*tokens;
 	int						has_fd_redirect_to_stderr;
+	int						has_error_flag_control;
 }							t_process_command_args;
 
 /**
