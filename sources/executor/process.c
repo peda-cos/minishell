@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/15 19:40:24 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/15 20:14:34 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,19 @@ static int	handle_empty_command(t_command *cmd)
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
-	int	is_cat_args;
-	int	is_cat_command_path;
-	int	is_cat_command_absolute;
+	char	**is_cat_args;
+	int		is_cat_command_path;
+	int		is_cat_command_absolute;
 
-	is_cat_args = param->cmd->argc;
-	is_cat_command_path = !ft_strcmp(param->cmd->args[0], "cat");
-	is_cat_command_absolute = !ft_strcmp(param->cmd->args[0], "/bin/cat");
-	if (is_cat_args && is_cat_command_path && is_cat_command_absolute)
+	is_cat_args = param->cmd->args;
+	is_cat_command_path = FALSE;
+	is_cat_command_absolute = FALSE;
+	if (is_cat_args)
+	{
+		is_cat_command_path = !ft_strcmp(param->cmd->args[0], "cat");
+		is_cat_command_absolute = !ft_strcmp(param->cmd->args[0], "/bin/cat");
+	}
+	if (is_cat_args && (is_cat_command_path || is_cat_command_absolute))
 	{
 		close(param->pipefd[1]);
 		close(param->pipefd[0]);
