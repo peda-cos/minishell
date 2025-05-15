@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:21:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/13 19:49:48 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/04 19:28:47 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	is_numeric_arg(char *str)
  * @note Prints an error message if the argument is not a valid number
  *       Returns 2 if the argument is not numeric, 1 if too many arguments
  */
-void	builtin_exit(t_process_command_args	*param)
+int	builtin_exit(t_process_command_args	*param)
 {
 	int	exit_code;
 
@@ -54,22 +54,21 @@ void	builtin_exit(t_process_command_args	*param)
 		ft_putendl_fd("exit", STDOUT_FILENO);
 	exit_code = 0;
 	if (param->cmd->args[1] == NULL)
-		exit_free(exit_code, param->env, param->cmd, param->tokens);
+		return (exit_code);
 	if (!is_numeric_arg(param->cmd->args[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(param->cmd->args[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		exit_free(2, param->env, param->cmd, param->tokens);
+		return (2);
 	}
 	exit_code = ft_atoi(param->cmd->args[1]);
 	if (param->cmd->args[2])
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		*param->last_exit = 1;
-		return ;
+		return (1);
 	}
-	exit_free(exit_code % 256, param->env, param->cmd, param->tokens);
+	return (exit_code % 256);
 }
 
 /**

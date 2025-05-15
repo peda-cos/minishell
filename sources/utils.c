@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/13 19:42:42 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/08 22:02:49 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 	else if (!ft_strcmp(command, "unset"))
 		*last_exit = builtin_unset(command_with_args, env);
 	else if (!ft_strcmp(command, "exit"))
-		builtin_exit(&args);
+	{
+		*last_exit = builtin_exit(&args);
+		if (*last_exit != 1)
+			exit_free(*last_exit, env, cmd, tokens);
+	}
 }
 
 /**
