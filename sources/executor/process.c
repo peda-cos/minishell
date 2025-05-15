@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/14 01:18:05 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/15 19:40:24 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param cmd The command structure to check
  * @return 1 if the command is empty, 0 otherwise
  * @note Reads from standard input and writes
-	* to standard output if the command is empty
+ * to standard output if the command is empty
  */
 static int	handle_empty_command(t_command *cmd)
 {
@@ -45,21 +45,23 @@ static int	handle_empty_command(t_command *cmd)
  * @param param arguments of process for the command
  * @return void
  * @note Closes the pipe file descriptors
-	* and redirects the standard input
-	* to the read end of the pipe if there is a next command
-	* in the pipeline.
-	*
-	* TODO: Removing this cat treatment before pipe without
-	* relying on ft_strcmp' will be more elegant.
+ * and redirects the standard input
+ * to the read end of the pipe if there is a next command
+ * in the pipeline.
+ *
+ * TODO: Removing this cat treatment before pipe without
+ * relying on ft_strcmp' will be more elegant.
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
-	int	is_cat_command;
+	int	is_cat_args;
+	int	is_cat_command_path;
+	int	is_cat_command_absolute;
 
-	is_cat_command = param->cmd->args
-		&& (!ft_strcmp(param->cmd->args[0], "cat")
-			|| !ft_strcmp(param->cmd->args[0], "/bin/cat"));
-	if (is_cat_command)
+	is_cat_args = param->cmd->argc;
+	is_cat_command_path = !ft_strcmp(param->cmd->args[0], "cat");
+	is_cat_command_absolute = !ft_strcmp(param->cmd->args[0], "/bin/cat");
+	if (is_cat_args && is_cat_command_path && is_cat_command_absolute)
 	{
 		close(param->pipefd[1]);
 		close(param->pipefd[0]);
@@ -94,11 +96,11 @@ void	child_process(t_process_command_args *param)
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->head, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param),
-			param->env, param->head, param->tokens);
+		exit_free(execute_builtin(param), param->env, param->head,
+			param->tokens);
 	else
-		exit_free(execute_external(param->cmd, *param->env),
-			param->env, param->head, param->tokens);
+		exit_free(execute_external(param->cmd, *param->env), param->env,
+			param->head, param->tokens);
 }
 
 /**
@@ -142,7 +144,7 @@ void	parent_process(t_process_command_args *param)
  */
 int	process_command(t_command *cmd, t_process_command_args *args)
 {
-	int						pipefd[2];
+	int	pipefd[2];
 
 	if (!cmd || !args->env || !args->last_exit)
 		return (-1);
