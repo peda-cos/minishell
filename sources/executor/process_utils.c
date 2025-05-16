@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:56:05 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/16 00:10:02 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:34:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ int	setup_child_io(t_process_command_args *arg)
 }
 
 /**
-	* @brief Checks if the command has a file input redirection
-	* @param cmd The command structure to check
-	* @return 1 if there is a file input redirection, 0 otherwise
-	* @note Checks the input file list of the command
+	* @brief Checks if the command has output redirection
+	* @param tokens The list of tokens representing the tokens
+	* @return TRUE if there is output redirection, FALSE otherwise
+	* @note Scans through the tokens to find any output redirection types
 	*/
 int	has_redirect_out(t_token	*tokens)
 {
