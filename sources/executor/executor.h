@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/09 20:43:26 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:30:18 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ int		setup_output_redirection(t_process_command_args *param);
 */
 int		is_builtin(char *cmd);
 int		execute_builtin(t_process_command_args *arg);
-int		execute_external(t_command *cmd, char **env);
+int		execute_external(t_command *cmd, char **env, int is_redirect_out);
 
 /*
 ** Process management functions (process.c)
 */
+int		has_redirect_out(t_token	*tokens);
 int		setup_pipe(t_command *cmd, int pipefd[2]);
 int		setup_child_io(t_process_command_args *arg);
 void	child_process(t_process_command_args *param);
