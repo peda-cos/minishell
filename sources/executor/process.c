@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/15 20:14:34 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:20:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,16 @@ static void	set_pipefd_stdin(t_process_command_args *param)
 }
 
 /**
- * @brief Handles the execution in a child process
+ * @brief Handles the child process execution
  * @param param The command arguments and environment variables
  * @return void
- * @note Sets up signal handling, redirects I/O, and executes the command
+ * @note Sets up the signal handlers, redirects input/output,
+ * and executes the command in the child process.
  */
 void	child_process(t_process_command_args *param)
 {
 	struct sigaction	sa;
+	int					exec_status_signal;
 
 	if (!param->cmd || !param->env || !(param->last_exit))
 		exit_free(1, param->env, param->cmd, param->tokens);
@@ -101,11 +103,14 @@ void	child_process(t_process_command_args *param)
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->head, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param), param->env, param->head,
-			param->tokens);
+		exit_free(execute_builtin(param),
+			param->env, param->head, param->tokens);
 	else
-		exit_free(execute_external(param->cmd, *param->env), param->env,
-			param->head, param->tokens);
+	{
+		exec_status_signal = execute_external(
+				param->cmd, *param->env, has_redirect_out(param->tokens));
+		exit_free(exec_status_signal, param->env, param->head, param->tokens);
+	}
 }
 
 /**

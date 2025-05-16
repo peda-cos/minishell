@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 21:56:05 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 18:54:23 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/16 00:10:02 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,24 @@ int	setup_child_io(t_process_command_args *arg)
 	if (setup_input_redirection(arg->cmd, *arg->env, *arg->last_exit) < 0)
 		return (-1);
 	return (0);
+}
+
+/**
+	* @brief Checks if the command has a file input redirection
+	* @param cmd The command structure to check
+	* @return 1 if there is a file input redirection, 0 otherwise
+	* @note Checks the input file list of the command
+	*/
+int	has_redirect_out(t_token	*tokens)
+{
+	t_token	*tmp_token;
+
+	tmp_token = tokens;
+	while (tmp_token)
+	{
+		if (tmp_token->type == REDIRECT_OUT || tmp_token->type == APPEND)
+			return (TRUE);
+		tmp_token = tmp_token->next;
+	}
+	return (FALSE);
 }
