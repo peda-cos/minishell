@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/03 16:02:30 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:25:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	validates_executable(char *path)
 		ft_putstr_fd(err_stat, STDERR_FILENO);
 		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		free(err_stat);
-		return (127);
+		return (1);
 	}
 	if ((path[0] == '/' || path[0] == '.') && access(path, X_OK) == 0)
 	{
