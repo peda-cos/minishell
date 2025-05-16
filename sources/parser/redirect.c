@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/09 21:03:21 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:20:47 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @note Allocates memory for the concatenated
  * delimiter and sets it in the command structure
  */
-static void	set_heredoc_delimiter(t_token_content *content, t_command	*cmd)
+static void	set_heredoc_delimiter(t_token_content *content, t_command *cmd)
 {
 	char			*temp;
 	char			*heredoc_delimiter;
@@ -59,10 +59,7 @@ static int	create_output_file(char *filename, int append)
 		flags |= O_TRUNC;
 	fd = open(filename, flags, 0644);
 	if (fd < 0)
-	{
-		perror(filename);
 		return (0);
-	}
 	manager_file_descriptors(ADD, fd);
 	close(fd);
 	return (1);
@@ -76,8 +73,7 @@ static int	create_output_file(char *filename, int append)
  * @note Allocates memory for the output file name
  * and sets it in the command structure
  */
-void	set_output_redirect_file(char *value,
-	t_command	*cmd, int is_append)
+void	set_output_redirect_file(char *value, t_command *cmd, int is_append)
 {
 	int	index;
 
@@ -100,8 +96,8 @@ void	set_output_redirect_file(char *value,
  * @param content_params The parameters for processing the content
  * @note Processes different redirection types (input, output, append, heredoc)
  */
-void	set_redirection_target(t_command *cmd,
-	t_token *token, t_content_params *content_params)
+void	set_redirection_target(t_command *cmd, t_token *token,
+		t_content_params *content_params)
 {
 	char	*filename;
 
@@ -137,8 +133,8 @@ void	set_redirection_target(t_command *cmd,
  * @note Updates the command structure
  * with the redirection target and type
  */
-int	handle_redirection(t_command *cmd,
-	t_token **token_ptr, char **envs, int *last_exit)
+int	handle_redirection(t_command *cmd, t_token **token_ptr, char **envs,
+		int *last_exit)
 {
 	t_token				*token;
 	int					result;
