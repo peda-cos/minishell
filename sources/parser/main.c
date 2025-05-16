@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/02 23:31:32 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/15 21:20:43 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
  * @return The next token to process, or NULL on error
  * @note Expands variables in the token content
  */
-static t_token	*process_token_word(t_token *token,
-	t_parser_context *parser, char **envs, int *last_exit)
+static t_token	*process_token_word(t_token *token, t_parser_context *parser,
+		char **envs, int *last_exit)
 {
 	t_content_params	content_params;
 	char				*arg_val;
@@ -56,8 +56,8 @@ static t_token	*process_token_word(t_token *token,
  * @return The next token to process, or NULL on error
  * @note Handles pipe, redirection, and word tokens differently
  */
-static t_token	*process_token(t_token *token,
-	t_parser_context *parser, char **envs, int *last_exit)
+static t_token	*process_token(t_token *token, t_parser_context *parser,
+		char **envs, int *last_exit)
 {
 	if (!parser->current)
 	{
@@ -73,10 +73,7 @@ static t_token	*process_token(t_token *token,
 	if (is_redirection(token->type))
 	{
 		if (!handle_redirection(parser->current, &token, envs, last_exit))
-		{
 			cleanup_parser_on_error(parser);
-			return (NULL);
-		}
 		return (token);
 	}
 	if (token->type == WORD)
