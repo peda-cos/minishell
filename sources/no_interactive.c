@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 19:05:27 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/03 16:42:19 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:15:58 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,18 @@ int	process_no_interactive_mode(char ***env)
 	exit_status = 0;
 	input = get_input_from_no_interactive_mode();
 	if (is_empty_string(input))
-		return (free_env(*env), free(input), 0);
+	{
+		free_env(*env);
+		free(input);
+		return (0);
+	}
 	index = 0;
-	inputs = ft_split(input, '\n');
+	inputs = ft_split(input, BREAKLINE_CHR);
 	while (inputs[index])
 	{
 		if (!is_empty_string(inputs[index]))
 			process_input(inputs[index], env, &exit_status);
-		free(inputs[index]);
-		index++;
+		free(inputs[index++]);
 	}
 	free(inputs);
 	free(input);

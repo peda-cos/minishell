@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/16 00:30:18 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:14:10 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*find_executable(char *cmd, char **env);
 /*
 ** Heredoc handling functions (heredoc.c)
 */
+char	*free_and_return(char *str, char *result);
 int		handle_heredoc(char *delim, char **env, int last_exit);
 void	preprocess_heredocs(t_command *cmd_list);
 char	*append_to_buffer(char *buffer, char *line);

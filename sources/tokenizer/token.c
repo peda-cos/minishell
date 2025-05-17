@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/05 22:36:28 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:10:00 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ static char	*append_to_final_value(char *final_value,
 		return (NULL);
 	}
 	if (!current_segment)
-		return (free(final_value), NULL);
+	{
+		free(final_value);
+		return (NULL);
+	}
 	temp_value = final_value;
 	final_value = ft_strjoin(final_value, current_segment);
 	free(temp_value);

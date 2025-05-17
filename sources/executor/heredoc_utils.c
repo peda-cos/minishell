@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 18:48:50 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:13:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,17 @@ char	*get_stripped_delim(int expand_vars, char *delim)
 	if (!stripped_delim)
 		return (NULL);
 	return (stripped_delim);
+}
+
+/**
+	* @brief Frees the input string and returns the result string
+	* @param str The string to free
+	* @param result The result string to return
+	* @return The result string
+	* @note Frees the input string after returning the result
+	*/
+char	*free_and_return(char *str, char *result)
+{
+	free(str);
+	return (result);
 }

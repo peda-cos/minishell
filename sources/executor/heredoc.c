@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:40:54 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 16:31:37 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ static char	*process_heredoc_content(char *stripped_delim,
 		return (NULL);
 	while (TRUE)
 	{
-		line = readline("> ");
+		line = readline("📝 ❯ ");
 		if (!line || !ft_strcmp(line, stripped_delim))
-			return (free(line), buffer);
+			return (free_and_return(line, buffer));
 		processed_line = process_heredoc_line(line,
 				envs, last_exit, expand_vars);
 		free(line);
 		if (!processed_line)
-			return (free(buffer), NULL);
+			return (free_and_return(buffer, NULL));
 		buffer = append_to_buffer(buffer, processed_line);
 		free(processed_line);
 		if (!buffer)
@@ -67,7 +67,7 @@ static char	*read_heredoc_content_to_buffer(char *delim)
 	buffer = ft_strdup("");
 	while (TRUE)
 	{
-		line = readline("> ");
+		line = readline("📝 ❯ ");
 		if (!line || !ft_strcmp(line, delim))
 		{
 			free(line);
