@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/13 21:29:28 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:31:21 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	save_command_to_history(input);
 	g_signal_received = 0;
 	tokens = tokenize_input(input);
-	if (process_tokens(&tokens, last_exit))
+	if (is_invalid_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
 	preprocess_heredocs(cmd);

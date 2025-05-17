@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/14 22:14:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:31:34 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,13 @@ void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 }
 
 /**
- * @brief Processes the tokens and validates them
- * @param tokens Pointer to the token list to be processed
- * @param last_exit Pointer to the last exit status to be updated
- * @return int Returns 1 if there are errors, 0 otherwise
- * @note Validates the tokens for
-	* syntax errors and sets the last exit status
- */
-int	process_tokens(t_token **tokens, int *last_exit)
+	* @brief Checks if the tokens are invalid and sets the last exit status
+	* @param tokens Pointer to the token list to be validated
+	* @param last_exit Pointer to the last exit status to be updated
+	* @return int Returns 1 if invalid, 0 otherwise
+	* @note Frees the tokens if they are invalid
+	*/
+int	is_invalid_tokens(t_token **tokens, int *last_exit)
 {
 	if (!*tokens)
 		return (1);
