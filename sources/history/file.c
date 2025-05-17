@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 15:22:25 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/08 23:30:22 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 18:04:28 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	open_history_file_read(void)
 		free(path);
 		return (-1);
 	}
-	manager_file_descriptors(ADD, fd);
+	close(fd);
 	free(path);
 	return (fd);
 }
@@ -83,7 +83,7 @@ int	open_history_file_write(void)
 		free(path);
 		return (-1);
 	}
-	manager_file_descriptors(ADD, fd);
+	close(fd);
 	free(path);
 	return (fd);
 }
