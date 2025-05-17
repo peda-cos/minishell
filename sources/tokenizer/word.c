@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 22:31:18 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:25:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	add_token_word(char *str, int *index, t_token **tokens)
 	t_token_content	*content;
 
 	content = NULL;
-	if (!set_word_param(&tkz, str, index))
+	if (!init_tkz_word_params(&tkz, str, index))
 		return ;
 	if (!process_word_chars(str, index, &content, &tkz))
 	{

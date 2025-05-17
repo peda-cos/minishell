@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 22:31:37 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/02 22:29:59 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:25:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int				is_metachar(char c);
 t_token			*get_last_token(t_token **tokens);
 void			add_token(t_token **tokens, t_token *new);
 char			*get_word_in_brackets(char *str, int *index);
-int				set_word_param(t_tokenizer *tkz, char *str, int *index);
+int				init_tkz_word_params(t_tokenizer *tkz, char *str, int *index);
 t_token			*new_token(t_token_content *content, t_token_type type);
 void			add_token_word(char *str, int *index, t_token **tokens);
 int				is_quote_delimiter(char *str, int *index, char delimiter);

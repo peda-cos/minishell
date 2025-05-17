@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/09 21:13:45 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 17:25:27 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * @return 1 on success, 0 on failure
  * @note Allocates memory for the word and initializes the tokenizer structure
  */
-int	set_word_param(
+int	init_tkz_word_params(
 	t_tokenizer *tkz, char *str, int *index)
 {
 	tkz->str = str;
