@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/14 22:14:20 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/17 22:56:54 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 	else if (!ft_strcmp(command, "exit"))
 	{
 		*last_exit = builtin_exit(&args);
-		if (*last_exit != 1 && args.has_error_flag_control)
+		if (!args.has_error_flag_control)
 			exit_free(*last_exit, env, cmd, tokens);
 	}
 }
