@@ -1,7 +1,7 @@
 # Checklist para a implementação do Minishell
 
 ```sh
-valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=leaks.supp -q ./minishell
+valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=leaks.supp -q -s ./minishell
 ```
 
 ### 1. **Comportamento básico do shell**
