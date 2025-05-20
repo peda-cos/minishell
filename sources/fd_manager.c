@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 00:37:04 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/18 00:38:07 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/20 20:57:08 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	restore_std_file_descriptors(void)
 {
 	int	std_fds[3];
 	int	i;
+	int	test_status;
 
 	std_fds[0] = STDIN_FILENO;
 	std_fds[1] = STDOUT_FILENO;
@@ -27,7 +28,8 @@ void	restore_std_file_descriptors(void)
 	i = 0;
 	while (i < 3)
 	{
-		if (fcntl(std_fds[i], F_GETFD) != -1)
+		test_status = write(std_fds[i], NULL, 0);
+		if (test_status != -1)
 			dup2(std_fds[i], std_fds[i]);
 		i++;
 	}
