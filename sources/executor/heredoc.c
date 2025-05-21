@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 16:31:37 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:20:10 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int	handle_heredoc(char *delim, char **env, int last_exit)
  * @note Creates pipes for each command with heredoc delimiter
  *       Stores read file descriptor in command structure
  */
-void	preprocess_heredocs(t_command *cmd_list)
+void	preprocess_heredocs(t_command *cmd_list, char **envs, int *last_exit)
 {
 	t_command	*cmd;
 	char		*buffer;
@@ -161,6 +161,7 @@ void	preprocess_heredocs(t_command *cmd_list)
 			if (pipe(pipefd) < 0)
 				return (perror("pipe"));
 			buffer = read_heredoc_content_to_buffer(cmd->heredoc_delim);
+			buffer = process_expanded_heredoc(cmd, buffer, envs, last_exit);
 			if (buffer)
 			{
 				write(pipefd[1], buffer, ft_strlen(buffer));

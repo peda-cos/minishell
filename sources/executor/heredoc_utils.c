@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 16:13:01 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:21:16 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,30 @@ char	*get_stripped_delim(int expand_vars, char *delim)
 }
 
 /**
-	* @brief Frees the input string and returns the result string
-	* @param str The string to free
-	* @param result The result string to return
-	* @return The result string
-	* @note Frees the input string after returning the result
+	* @brief Processes the heredoc content and expands variables if necessary
+	* @param cmd The command structure
+	* @param buffer The buffer containing the heredoc content
+	* @param envs The environment variables
+	* @param last_exit The last exit status
+	* @return The processed buffer with expanded variables
+	* @note Uses the expand_variable function to expand variables in the buffer
 	*/
-char	*free_and_return(char *str, char *result)
+char	*process_expanded_heredoc(t_command *cmd,
+	char *buffer, char **envs, int *last_exit)
 {
-	free(str);
-	return (result);
+	char			*temp;
+	int				has_error;
+	t_expansion_ctx	expansion_cxt;
+
+	has_error = FALSE;
+	expansion_cxt.envs = envs;
+	expansion_cxt.last_exit = last_exit;
+	expansion_cxt.has_error_flag_control = &has_error;
+	if (!cmd->in_quotes)
+	{
+		temp = buffer;
+		buffer = expand_variable(temp, &expansion_cxt);
+		free(temp);
+	}
+	return (buffer);
 }
