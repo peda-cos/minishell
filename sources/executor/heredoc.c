@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/20 22:20:10 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/21 21:31:22 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static char	*process_heredoc_content(char *stripped_delim,
  * @note Appends each line with newline
 	* character to build complete content
  */
-static char	*read_heredoc_content_to_buffer(char *delim)
+static char	*read_heredoc_content_to_buffer(
+	t_command *cmd, char **envs, int *last_exit)
 {
 	char	*tmp;
 	char	*line;
@@ -68,13 +69,14 @@ static char	*read_heredoc_content_to_buffer(char *delim)
 	while (TRUE)
 	{
 		line = readline("📝 ❯ ");
-		if (!line || !ft_strcmp(line, delim))
+		if (!line || !ft_strcmp(line, cmd->heredoc_delim))
 		{
 			free(line);
 			break ;
 		}
 		tmp = buffer;
 		buffer = ft_strjoin(buffer, line);
+		buffer = process_expanded_heredoc(cmd, buffer, envs, last_exit);
 		free(tmp);
 		tmp = buffer;
 		buffer = ft_strjoin(buffer, "\n");
@@ -160,8 +162,7 @@ void	preprocess_heredocs(t_command *cmd_list, char **envs, int *last_exit)
 		{
 			if (pipe(pipefd) < 0)
 				return (perror("pipe"));
-			buffer = read_heredoc_content_to_buffer(cmd->heredoc_delim);
-			buffer = process_expanded_heredoc(cmd, buffer, envs, last_exit);
+			buffer = read_heredoc_content_to_buffer(cmd, envs, last_exit);
 			if (buffer)
 			{
 				write(pipefd[1], buffer, ft_strlen(buffer));
