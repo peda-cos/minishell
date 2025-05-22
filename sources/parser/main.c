@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:40:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/15 21:20:43 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:31:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ t_command	*parse_tokens(t_token *tokens, char **env, int last_exit)
 			return (NULL);
 		tokens = next_token;
 	}
-	parser.head->in_quotes = tokens_head->content->in_quotes;
+	if (!parser.head->in_quotes)
+		parser.head->in_quotes = tokens_head->content->in_quotes;
 	if (parser.head && parser.was_expanded)
 	{
 		parser.head->was_expanded = TRUE;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 19:37:02 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/15 21:20:47 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:15:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	set_redirection_target(t_command *cmd, t_token *token,
 	else if (token->type == HEREDOC)
 	{
 		free(filename);
+		cmd->in_quotes = content_params->content->in_quotes;
 		set_heredoc_delimiter(content_params->content, cmd);
 	}
 	else
