@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/21 21:31:22 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/21 22:25:35 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ static char	*read_heredoc_content_to_buffer(
 			free(line);
 			break ;
 		}
+		line = process_expanded_heredoc(cmd, line, envs, last_exit);
 		tmp = buffer;
 		buffer = ft_strjoin(buffer, line);
-		buffer = process_expanded_heredoc(cmd, buffer, envs, last_exit);
 		free(tmp);
 		tmp = buffer;
 		buffer = ft_strjoin(buffer, "\n");
