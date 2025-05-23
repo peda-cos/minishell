@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:19:21 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/16 00:20:16 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:38:46 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,30 +48,10 @@ static int	handle_empty_command(t_command *cmd)
  * and redirects the standard input
  * to the read end of the pipe if there is a next command
  * in the pipeline.
- *
- * TODO: Removing this cat treatment before pipe without
- * relying on ft_strcmp' will be more elegant.
  */
 static void	set_pipefd_stdin(t_process_command_args *param)
 {
-	char	**is_cat_args;
-	int		is_cat_command_path;
-	int		is_cat_command_absolute;
-
-	is_cat_args = param->cmd->args;
-	is_cat_command_path = FALSE;
-	is_cat_command_absolute = FALSE;
-	if (is_cat_args)
-	{
-		is_cat_command_path = !ft_strcmp(param->cmd->args[0], "cat");
-		is_cat_command_absolute = !ft_strcmp(param->cmd->args[0], "/bin/cat");
-	}
-	if (is_cat_args && (is_cat_command_path || is_cat_command_absolute))
-	{
-		close(param->pipefd[1]);
-		close(param->pipefd[0]);
-	}
-	else if (param->cmd->next && param->pipefd[0] > 0)
+	if (param->cmd->next && param->pipefd[0] > 0)
 	{
 		close(param->pipefd[1]);
 		dup2(param->pipefd[0], STDIN_FILENO);
@@ -103,12 +83,12 @@ void	child_process(t_process_command_args *param)
 	if (handle_empty_command(param->cmd))
 		exit_free(0, param->env, param->head, param->tokens);
 	if (is_builtin(param->cmd->args[0]))
-		exit_free(execute_builtin(param),
-			param->env, param->head, param->tokens);
+		exit_free(execute_builtin(param), param->env, param->head,
+			param->tokens);
 	else
 	{
-		exec_status_signal = execute_external(
-				param->cmd, *param->env, has_redirect_out(param->tokens));
+		exec_status_signal = execute_external(param->cmd, *param->env,
+				has_redirect_out(param->tokens));
 		exit_free(exec_status_signal, param->env, param->head, param->tokens);
 	}
 }

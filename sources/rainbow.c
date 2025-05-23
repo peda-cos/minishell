@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gay.c                                              :+:      :+:    :+:   */
+/*   rainbow.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 09:57:59 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/14 00:26:04 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:41:34 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static void	reset_prompt(char *prompt, int color_index, char **pastel_colors)
  * @return void
  * @note Appends the username, a wizard emoji, and a fire emoji to the prompt
  */
-static void	append_username_to_prompt(char *prompt,
-	int color_index, char **pastel_colors)
+static void	append_username_to_prompt(char *prompt, int color_index,
+		char **pastel_colors)
 {
 	char	*username;
 
@@ -61,8 +61,8 @@ static void	append_username_to_prompt(char *prompt,
  * @return void
  * @note Replaces the home directory with a tilde (~) if applicable
  */
-static void	append_directory_to_prompt(char *prompt,
-	char *current_dir, int color_index, char **pastel_colors)
+static void	append_directory_to_prompt(char *prompt, char *current_dir,
+		int color_index, char **pastel_colors)
 {
 	char	*home_dir;
 
@@ -85,18 +85,18 @@ static void	append_directory_to_prompt(char *prompt,
  * @return void
  * @note Appends the username and current directory to the prompt buffer
  */
-static void	config_prompt_text(char *prompt,
-	int color_index, char **pastel_colors)
+static void	config_prompt_text(char *prompt, int color_index,
+		char **pastel_colors)
 {
-	char		*current_dir;
+	char	*current_dir;
 
 	current_dir = getcwd(NULL, 0);
 	append_username_to_prompt(prompt, color_index, pastel_colors);
 	ft_strlcat(prompt, "🔥 ", MAX_PROMPT_LENGTH);
 	if (current_dir)
 	{
-		append_directory_to_prompt(prompt,
-			current_dir, color_index, pastel_colors);
+		append_directory_to_prompt(prompt, current_dir, color_index,
+			pastel_colors);
 		free(current_dir);
 	}
 	else
@@ -114,13 +114,8 @@ static void	config_prompt_text(char *prompt,
 char	*get_colored_prompt(void)
 {
 	static int	color_index = 0;
-	static char	*pastel_colors[5] = {
-		COLOR_PASTEL_PURPLE,
-		COLOR_PASTEL_PINK,
-		COLOR_PASTEL_GREEN,
-		COLOR_PASTEL_YELLOW,
-		COLOR_PASTEL_BLUE
-	};
+	static char	*pastel_colors[5] = {COLOR_PASTEL_PURPLE, COLOR_PASTEL_PINK,
+			COLOR_PASTEL_GREEN, COLOR_PASTEL_YELLOW, COLOR_PASTEL_BLUE};
 	static char	prompt[MAX_PROMPT_LENGTH];
 
 	reset_prompt(prompt, color_index, pastel_colors);
