@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 09:57:59 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/20 19:41:34 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:30:49 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,13 @@ static void	config_prompt_text(char *prompt, int color_index,
 char	*get_colored_prompt(void)
 {
 	static int	color_index = 0;
-	static char	*pastel_colors[5] = {COLOR_PASTEL_PURPLE, COLOR_PASTEL_PINK,
-			COLOR_PASTEL_GREEN, COLOR_PASTEL_YELLOW, COLOR_PASTEL_BLUE};
+	static char	*pastel_colors[5] = {
+		COLOR_PASTEL_PURPLE,
+		COLOR_PASTEL_PINK,
+		COLOR_PASTEL_GREEN,
+		COLOR_PASTEL_YELLOW,
+		COLOR_PASTEL_BLUE
+	};
 	static char	prompt[MAX_PROMPT_LENGTH];
 
 	reset_prompt(prompt, color_index, pastel_colors);
