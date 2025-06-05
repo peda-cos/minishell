@@ -31,7 +31,8 @@ EXECUTOR_SRCS = sources/executor/main.c \
 	sources/executor/process_utils.c sources/executor/path_utils.c \
 	sources/executor/redirection.c sources/executor/redirection_utils.c \
 	sources/executor/command_utils.c sources/executor/process.c \
-	sources/executor/heredoc.c sources/executor/heredoc_utils.c
+	sources/executor/heredoc.c sources/executor/heredoc_utils.c \
+	sources/executor/pipe_handler.c
 TOKENIZER_SRCS = sources/tokenizer/main.c \
 	sources/tokenizer/utils.c sources/tokenizer/redirect.c sources/tokenizer/token.c \
 	sources/tokenizer/word.c	sources/tokenizer/word_utils.c	sources/tokenizer/word_content.c
