@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 16:14:10 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:21:51 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ char	*find_executable(char *cmd, char **env);
 /*
 ** Heredoc handling functions (heredoc.c)
 */
-char	*free_and_return(char *str, char *result);
 int		handle_heredoc(char *delim, char **env, int last_exit);
-void	preprocess_heredocs(t_command *cmd_list);
+void	preprocess_heredocs(t_command *cmd_list, char **envs, int *last_exit);
 char	*append_to_buffer(char *buffer, char *line);
 int		is_quoted_delimiter(char *delim);
-char	*process_heredoc_line(char *line, char **env, int last_exit,
-			int expand_vars);
 char	*get_stripped_delim(int expand_vars, char *delim);
-
+char	*process_heredoc_line(char *line,
+			char **env, int last_exit, int expand_vars);
+char	*process_expanded_heredoc(t_command *cmd,
+			char *buffer, char **envs, int *last_exit);
 /*
 ** Redirection handling functions (redirection.c)
 */
