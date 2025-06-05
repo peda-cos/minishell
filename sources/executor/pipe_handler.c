@@ -6,136 +6,76 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:05:09 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/05 16:05:14 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:22:15 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
 /**
- * @brief Handles fork process execution for pipe
- * @param fildes Array of pipe file descriptors
- * @param cmd_left Left command in the pipe
- * @param cmd_right Right command in the pipe
- * @param left_right Flag to indicate which side (0=left, 1=right)
+ * @brief Creates pipe and handles first fork for left command
+ * @param fildes Array to store pipe file descriptors
+ * @param pipe_info Structure containing pipe and command information
  * @param args Process command arguments
- * @return void
- * @note Sets up proper file descriptor redirection and executes command
+ * @return Fork PID for left process, or -1 on error
+ * @note Creates pipe and forks first child process
  */
-static void	fork_process_pipe(int *fildes, t_command *cmd_left,
-		t_command *cmd_right, int left_right, t_process_command_args *args)
-{
-	struct sigaction	sa;
-	int					exec_status_signal;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	if (!left_right)
-	{
-		dup2(fildes[1], STDOUT_FILENO);
-		args->cmd = cmd_left;
-	}
-	else if (left_right == 1)
-	{
-		dup2(fildes[0], STDIN_FILENO);
-		args->cmd = cmd_right;
-	}
-	close(fildes[0]);
-	close(fildes[1]);
-	if (setup_output_redirection(args) < 0)
-		exit_free(1, args->env, args->head, args->tokens);
-	if (setup_input_redirection(args->cmd, *args->env, *args->last_exit) < 0)
-		exit_free(1, args->env, args->head, args->tokens);
-	if (args->cmd->argc <= 0)
-		exit_free(0, args->env, args->head, args->tokens);
-	if (is_builtin(args->cmd->args[0]))
-		exit_free(execute_builtin(args), args->env, args->head, args->tokens);
-	else
-	{
-		exec_status_signal = execute_external(args->cmd, *args->env,
-				has_redirect_out(args->tokens));
-		exit_free(exec_status_signal, args->env, args->head, args->tokens);
-	}
-}
-
-/**
- * @brief Handles fork process execution for pipe chains
- * @param fildes Array of pipe file descriptors from previous pipe
- * @param cmd_start Starting command in the chain
- * @param args Process command arguments
- * @return void
- * @note Redirects stdin from previous pipe and handles remaining chain
- */
-static void	fork_process_pipe_chain(int *fildes, t_command *cmd_start,
+static pid_t	create_left_fork(int *fildes, t_pipe_info *pipe_info,
 		t_process_command_args *args)
 {
-	struct sigaction	sa;
+	pid_t	fork_pid;
 
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
-	dup2(fildes[0], STDIN_FILENO);
-	close(fildes[0]);
-	close(fildes[1]);
-	if (cmd_start->next)
+	if (pipe(fildes) < 0)
 	{
-		args->cmd = cmd_start;
-		handle_pipe(cmd_start, cmd_start->next, args);
+		perror("pipe");
+		return (-1);
 	}
-	else
+	fork_pid = fork();
+	if (fork_pid < 0)
 	{
-		args->cmd = cmd_start;
-		if (setup_output_redirection(args) < 0)
-			exit_free(1, args->env, args->head, args->tokens);
-		if (setup_input_redirection(args->cmd, *args->env,
-				*args->last_exit) < 0)
-			exit_free(1, args->env, args->head, args->tokens);
-		if (args->cmd->argc <= 0)
-			exit_free(0, args->env, args->head, args->tokens);
-		if (is_builtin(args->cmd->args[0]))
-			exit_free(execute_builtin(args), args->env, args->head,
-				args->tokens);
-		else
-			exit_free(execute_external(args->cmd, *args->env,
-					has_redirect_out(args->tokens)), args->env, args->head,
-				args->tokens);
+		perror("fork");
+		return (-1);
 	}
-	exit_free(0, args->env, args->head, args->tokens);
+	if (fork_pid == 0)
+	{
+		pipe_info->fildes = fildes;
+		pipe_info->left_right = 0;
+		fork_process_pipe(pipe_info, args);
+	}
+	return (fork_pid);
 }
 
 /**
- * @brief Waits for child processes and restores file descriptors
+ * @brief Creates second fork for right command
  * @param fildes Array of pipe file descriptors
- * @param forks Array of fork PIDs
- * @param last_exit Pointer to store exit status
- * @return void
- * @note Closes pipe file descriptors and waits for both children
+ * @param pipe_info Structure containing pipe and command information
+ * @param args Process command arguments
+ * @return Fork PID for right process, or -1 on error
+ * @note Forks second child process for right side of pipe
  */
-static void	wait_restore_fds_pipe(int *fildes, int *forks, int *last_exit)
+static pid_t	create_right_fork(int *fildes, t_pipe_info *pipe_info,
+		t_process_command_args *args)
 {
-	int	status;
-	int	exit_status;
+	pid_t	fork_pid;
 
-	close(fildes[0]);
-	close(fildes[1]);
-	waitpid(forks[0], &status, 0);
-	waitpid(forks[1], &status, 0);
-	if (WIFSIGNALED(status))
+	fork_pid = fork();
+	if (fork_pid < 0)
 	{
-		exit_status = WTERMSIG(status) + 128;
-		if (WTERMSIG(status) == SIGINT)
-			ft_putchar_fd('\n', STDOUT_FILENO);
-		else if (WTERMSIG(status) == SIGQUIT)
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
+		perror("fork");
+		return (-1);
 	}
-	else
-		exit_status = WEXITSTATUS(status);
-	*last_exit = exit_status;
+	if (fork_pid == 0)
+	{
+		if (pipe_info->cmd_right->next)
+			fork_process_pipe_chain(fildes, pipe_info->cmd_right, args);
+		else
+		{
+			pipe_info->fildes = fildes;
+			pipe_info->left_right = 1;
+			fork_process_pipe(pipe_info, args);
+		}
+	}
+	return (fork_pid);
 }
 
 /**
@@ -149,39 +89,24 @@ static void	wait_restore_fds_pipe(int *fildes, int *forks, int *last_exit)
 int	handle_pipe(t_command *cmd_left, t_command *cmd_right,
 		t_process_command_args *args)
 {
-	int		fildes[2];
-	pid_t	forks[2];
+	int			fildes[2];
+	pid_t		forks[2];
+	t_pipe_info	pipe_info;
 
-	if (!pipe(fildes))
+	pipe_info.cmd_left = cmd_left;
+	pipe_info.cmd_right = cmd_right;
+	forks[0] = create_left_fork(fildes, &pipe_info, args);
+	if (forks[0] < 0)
 	{
-		forks[0] = fork();
-		if (forks[0] < 0)
-		{
-			perror("fork");
-			return (1);
-		}
-		if (forks[0] == 0)
-			fork_process_pipe(fildes, cmd_left, cmd_right, 0, args);
-		forks[1] = fork();
-		if (forks[1] < 0)
-		{
-			perror("fork");
-			return (1);
-		}
-		if (forks[1] == 0)
-		{
-			if (cmd_right->next)
-				fork_process_pipe_chain(fildes, cmd_right, args);
-			else
-				fork_process_pipe(fildes, cmd_left, cmd_right, 1, args);
-		}
-		wait_restore_fds_pipe(fildes, forks, args->last_exit);
-	}
-	else
-	{
-		perror("pipe");
 		*args->last_exit = 1;
 		return (1);
 	}
+	forks[1] = create_right_fork(fildes, &pipe_info, args);
+	if (forks[1] < 0)
+	{
+		*args->last_exit = 1;
+		return (1);
+	}
+	wait_restore_fds_pipe(fildes, forks, args->last_exit);
 	return (0);
 }
