@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:01:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/18 00:38:42 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:05:15 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,20 @@ static int	process_command_chain(t_command *cmd_head, char ***env,
 	args.last_exit = last_exit;
 	while (cmd)
 	{
-		result = process_command(cmd, &args);
-		if (result < 0)
-			return (-1);
-		cmd = cmd->next;
+		if (cmd->next)
+		{
+			result = handle_pipe(cmd, cmd->next, &args);
+			if (result != 0)
+				return (-1);
+			break ;
+		}
+		else
+		{
+			result = process_command(cmd, &args);
+			if (result < 0)
+				return (-1);
+			cmd = cmd->next;
+		}
 	}
 	return (0);
 }
