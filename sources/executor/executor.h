@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 16:14:10 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/05 16:05:17 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,18 @@ int		execute_external(t_command *cmd, char **env, int is_redirect_out);
 /*
 ** Process management functions (process.c)
 */
-int		has_redirect_out(t_token	*tokens);
+int		has_redirect_out(t_token *tokens);
 int		setup_pipe(t_command *cmd, int pipefd[2]);
 int		setup_child_io(t_process_command_args *arg);
 void	child_process(t_process_command_args *param);
 void	parent_process(t_process_command_args *param);
 int		process_command(t_command *cmd, t_process_command_args *args);
+
+/*
+** Pipe handling functions (pipe_handler.c)
+*/
+int		handle_pipe(t_command *cmd_left, t_command *cmd_right,
+			t_process_command_args *args);
 
 int		setup_file_input(char *input_file);
 t_token	*get_fd_redirect_token(char *target_file, t_token *tokens);
