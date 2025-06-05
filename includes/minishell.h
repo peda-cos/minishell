@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:15:26 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/18 00:37:42 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:19:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int			setup_output_redirection(t_process_command_args *param);
 /* Memory cleanup */
 void		free_tokens(t_token *tokens);
 void		free_commands(t_command *cmd);
+char		*free_and_return(char *str, char *result);
 void		manager_file_descriptors(t_manager_fd fd_type, int fd);
 void		restore_std_file_descriptors(void);
 

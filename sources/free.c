@@ -6,11 +6,24 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:54:34 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/18 00:38:44 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/05/20 22:19:01 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/**
+	* @brief Frees the input string and returns the result string
+	* @param str The string to free
+	* @param result The result string to return
+	* @return The result string
+	* @note Frees the input string after returning the result
+	*/
+char	*free_and_return(char *str, char *result)
+{
+	free(str);
+	return (result);
+}
 
 /**
  * @brief Frees the memory allocated for the environment variables

@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 17:31:21 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/20 21:09:57 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	process_input(char *input, char ***env, int *last_exit)
 	if (is_invalid_tokens(&tokens, last_exit))
 		return ;
 	cmd = parse_tokens(tokens, *env, *last_exit);
-	preprocess_heredocs(cmd);
+	preprocess_heredocs(cmd, *env, last_exit);
 	if (cmd == NULL || cmd->args == NULL || *cmd->args[0] == NULL_CHR)
 	{
 		if (process_empty_command(cmd, tokens, last_exit))
