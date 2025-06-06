@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/17 17:31:34 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:38:35 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
  * @param envs Triple pointer to the environment variables
  * @return void
  * @note Sets the value of the underscore
-	* argument to the last command's exit status
+ * argument to the last command's exit status
  */
-void	set_last_arg_without_pipe_executed(
-	t_token *tokens, t_command *cmd, char ***envs)
+void	set_last_arg_without_pipe_executed(t_token *tokens, t_command *cmd,
+		char ***envs)
 {
 	t_token	*current_token;
 
@@ -69,18 +69,18 @@ void	execute_parent_builtin(t_command *cmd, char ***env, int *last_exit,
 	else if (!ft_strcmp(command, "exit"))
 	{
 		*last_exit = builtin_exit(&args);
-		if (*last_exit != 1 && args.has_error_flag_control)
+		if (!args.has_error_flag_control)
 			exit_free(*last_exit, env, cmd, tokens);
 	}
 }
 
 /**
-	* @brief Checks if the tokens are invalid and sets the last exit status
-	* @param tokens Pointer to the token list to be validated
-	* @param last_exit Pointer to the last exit status to be updated
-	* @return int Returns 1 if invalid, 0 otherwise
-	* @note Frees the tokens if they are invalid
-	*/
+ * @brief Checks if the tokens are invalid and sets the last exit status
+ * @param tokens Pointer to the token list to be validated
+ * @param last_exit Pointer to the last exit status to be updated
+ * @return int Returns 1 if invalid, 0 otherwise
+ * @note Frees the tokens if they are invalid
+ */
 int	is_invalid_tokens(t_token **tokens, int *last_exit)
 {
 	if (!*tokens)
@@ -102,7 +102,7 @@ int	is_invalid_tokens(t_token **tokens, int *last_exit)
  * @param tokens Pointer to the token list for cleanup during exit
  * @return void
  * @note Sets up signal handling and restores
-	* standard file descriptors after execution
+ * standard file descriptors after execution
  */
 void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 		t_token *tokens)
@@ -126,8 +126,7 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
  * @return void
  * @note Handles cases where the command is empty or invalid
  */
-void	process_invalid_command(t_command *cmd,
-	int *last_exit, t_token *tokens)
+void	process_invalid_command(t_command *cmd, int *last_exit, t_token *tokens)
 {
 	if (cmd && cmd->args && *cmd->args[0] == '\0')
 	{

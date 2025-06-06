@@ -18,7 +18,8 @@ OBJS_DIR = ./objects
 INCS_DIR = ./includes
 
 MAIN_SRCS = sources/main.c \
-	sources/no_interactive.c sources/utils.c sources/free.c sources/gay.c
+	sources/no_interactive.c sources/utils.c sources/free.c sources/rainbow.c \
+	sources/fd_manager.c
 PARSER_SRCS = sources/parser/main.c \
 	sources/parser/utils.c sources/parser/redirect.c sources/parser/cmd_utils.c
 HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
@@ -30,7 +31,10 @@ EXECUTOR_SRCS = sources/executor/main.c \
 	sources/executor/process_utils.c sources/executor/path_utils.c \
 	sources/executor/redirection.c sources/executor/redirection_utils.c \
 	sources/executor/command_utils.c sources/executor/process.c \
-	sources/executor/heredoc.c sources/executor/heredoc_utils.c
+	sources/executor/heredoc.c sources/executor/heredoc_utils.c \
+	sources/executor/pipe_handler.c sources/executor/execution_setup.c \
+	sources/executor/command_chain.c sources/executor/pipe_fork.c \
+	sources/executor/pipe_chain.c sources/executor/pipe_wait.c
 TOKENIZER_SRCS = sources/tokenizer/main.c \
 	sources/tokenizer/utils.c sources/tokenizer/redirect.c sources/tokenizer/token.c \
 	sources/tokenizer/word.c	sources/tokenizer/word_utils.c	sources/tokenizer/word_content.c
@@ -48,7 +52,7 @@ SRCS = $(MAIN_SRCS) \
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
-CFLAGS = -Wall -Wextra -Werror -g -I$(INCS_DIR) -I$(LIBFT_DIR)
+CFLAGS = -Wall -Wextra -Werror -g -I$(INCS_DIR) -I$(LIBFT_DIR) -O2
 
 RESET = \033[0m
 BOLD = \033[1m
@@ -100,7 +104,7 @@ $(LIBFT):
 	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(GREEN)$(BOLD)✓ Concluído!$(RESET)\n"
 	@printf "🔄  $(YELLOW)%s$(RESET) \n" "$(shell printf '▓%.0s' $$(seq 1 30))"
 
-$(OBJS_DIR)/%.o: %.c 
+$(OBJS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(eval COMPILED_COUNT=$(shell echo $$(($(COMPILED_COUNT)+1))))
 	@$(eval SHORT_PATH=$(shell echo $< | sed 's|sources/||'))
