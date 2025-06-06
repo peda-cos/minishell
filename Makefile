@@ -67,6 +67,8 @@ TOTAL_FILES := $(words $(SRCS))
 COMPILED_COUNT = 0
 BAR_LENGTH = $(TOTAL_FILES)
 
+NO_PROGRESS_BAR ?= false
+
 all: header $(NAME)
 
 header:
@@ -86,7 +88,11 @@ $(NAME): $(LIBFT) $(OBJS)
 	@rm -f .header_lock
 
 $(LIBFT):
-	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(RESET)\n"
+	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(RESET) ...\n"
+ifeq ($(NO_PROGRESS_BAR), true)
+	@make -C $(LIBFT_DIR) all
+	@printf "$(GREEN)$(BOLD)✅  Concluído!$(RESET)\n\n"
+else
 	@echo -n "🔄  "
 	@make --no-print-directory -C $(LIBFT_DIR) > /dev/null 2>&1 & \
 	pid=$$!; \
@@ -103,8 +109,14 @@ $(LIBFT):
 	@printf "\033[1A\r"
 	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(GREEN)$(BOLD)✓ Concluído!$(RESET)\n"
 	@printf "🔄  $(YELLOW)%s$(RESET) \n" "$(shell printf '▓%.0s' $$(seq 1 30))"
+endif
 
 $(OBJS_DIR)/%.o: %.c
+ifeq ($(NO_PROGRESS_BAR), true)
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "📄 $(CYAN)$(BOLD)Compiling$(RESET) $<"
+else
 	@mkdir -p $(dir $@)
 	@$(eval COMPILED_COUNT=$(shell echo $$(($(COMPILED_COUNT)+1))))
 	@$(eval SHORT_PATH=$(shell echo $< | sed 's|sources/||'))
@@ -131,6 +143,7 @@ $(OBJS_DIR)/%.o: %.c
 		printf "$(CYAN)$(BOLD)📄  Processando $(RESET)($(COMPILED_COUNT)/$(TOTAL_FILES)) $(CYAN)$(SHORT_PATH)$(RESET)%*s\n" $$(( 60 - $${#SHORT_PATH} )) " "; \
 		printf "$(YELLOW)$(BOLD)🔄  $(RESET)$(YELLOW)%s$(RESET) \n" "$(shell printf '▓%.0s' $$(seq 1 $(FILLED)))"; \
 	fi
+endif
 
 clean: header
 	@printf "$(MAGENTA)$(BOLD)🗑️   Limpando arquivos objeto $(RESET)"
