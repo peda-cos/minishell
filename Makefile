@@ -67,7 +67,7 @@ TOTAL_FILES := $(words $(SRCS))
 COMPILED_COUNT = 0
 BAR_LENGTH = $(TOTAL_FILES)
 
-NO_PROGRESS_BAR ?= false
+progress-bar ?= true
 
 all: header $(NAME)
 
@@ -88,11 +88,12 @@ $(NAME): $(LIBFT) $(OBJS)
 	@rm -f .header_lock
 
 $(LIBFT):
-	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(RESET) ...\n"
-ifeq ($(NO_PROGRESS_BAR), true)
+ifeq ($(progress-bar), false)
+	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(RESET)"
 	@make -C $(LIBFT_DIR) all
-	@printf "$(GREEN)$(BOLD)✅  Concluído!$(RESET)\n\n"
+	@printf "$(GREEN)$(BOLD)✓ Concluído!$(RESET)\n\n"
 else
+	@printf "$(BLUE)$(BOLD)🏗️   Compilando libft $(RESET)\n"
 	@echo -n "🔄  "
 	@make --no-print-directory -C $(LIBFT_DIR) > /dev/null 2>&1 & \
 	pid=$$!; \
@@ -112,10 +113,10 @@ else
 endif
 
 $(OBJS_DIR)/%.o: %.c
-ifeq ($(NO_PROGRESS_BAR), true)
+ifeq ($(progress-bar), false)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "📄 $(CYAN)$(BOLD)Compiling$(RESET) $<"
+	@echo "📄  $(CYAN)$(BOLD)Compiling$(RESET) $<"
 else
 	@mkdir -p $(dir $@)
 	@$(eval COMPILED_COUNT=$(shell echo $$(($(COMPILED_COUNT)+1))))
