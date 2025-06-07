@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 18:44:04 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/07 16:10:30 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,14 @@ int	builtin_cd(char **args, char ***env)
 {
 	char	*old_pwd;
 	int		status;
+	int		length;
 
 	if (!args || !env || !*env)
 		return (1);
-	if (args[2] != NULL)
+	length = 0;
+	while (args[length])
+		length++;
+	if (length > 2)
 	{
 		ft_putstr_fd("Minishell: cd: too many arguments\n", STDERR_FILENO);
 		return (1);
