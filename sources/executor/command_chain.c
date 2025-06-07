@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_chain.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:18:06 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/05 16:28:48 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/07 11:32:41 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	init_command_args(t_process_command_args *args, t_command *cmd_head,
 	args->env = env;
 	args->head = cmd_head;
 	args->tokens = exec_context->tokens;
+	args->has_fd_redirect_to_stderr = FALSE;
 	args->last_exit = exec_context->last_exit;
 }
 
