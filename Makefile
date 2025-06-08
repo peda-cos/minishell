@@ -6,7 +6,7 @@
 #    By: jlacerda <jlacerda@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/19 19:01:24 by peda-cos          #+#    #+#              #
-#    Updated: 2025/04/13 15:24:26 by peda-cos         ###   ########.fr        #
+#    Updated: 2025/06/08 06:34:26 by peda-cos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,9 @@ EXECUTOR_SRCS = sources/executor/main.c \
 	sources/executor/redirection.c sources/executor/redirection_utils.c \
 	sources/executor/command_utils.c sources/executor/process.c \
 	sources/executor/heredoc.c sources/executor/heredoc_utils.c \
-	sources/executor/pipe_handler.c sources/executor/execution_setup.c \
-	sources/executor/command_chain.c sources/executor/pipe_fork.c \
+	sources/executor/heredoc_helper.c sources/executor/pipe_handler.c \
+	sources/executor/execution_setup.c sources/executor/command_chain.c \
+	sources/executor/pipe_fork.c \
 	sources/executor/pipe_chain.c sources/executor/pipe_wait.c
 TOKENIZER_SRCS = sources/tokenizer/main.c \
 	sources/tokenizer/utils.c sources/tokenizer/redirect.c sources/tokenizer/token.c \
