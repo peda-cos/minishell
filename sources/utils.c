@@ -6,7 +6,7 @@
 /*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/18 00:38:35 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:15:04 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void	execute_parsed_commands(t_command *cmd, char ***env, int *last_exit,
 		execute_parent_builtin(cmd, env, last_exit, tokens);
 	else
 		execute_command(cmd, env, last_exit, tokens);
+	if (g_signal_received)
+		*last_exit = g_signal_received + 128;
 	setup_interactive_signals();
 	free_commands(cmd);
 }
