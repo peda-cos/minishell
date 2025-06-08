@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:12:39 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/21 22:25:35 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 06:37:31 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,14 @@
 
 /**
  * @brief Processes heredoc input content with variable expansion
- * @param stripped_delim The delimiter string without quotes
- * @param expand_vars Flag indicating whether
-	* to expand variables in the content
- * @param envs Environment variables array for variable expansion
- * @param last_exit Last command exit status for $? expansion
- * @return Dynamically allocated string
-	* containing processed heredoc content
+ * @param ctx The heredoc processing context
+ * @return Dynamically allocated string containing processed heredoc content
  * @note Reads input line by line until delimiter is encountered
  */
-static char	*process_heredoc_content(char *stripped_delim,
-	int expand_vars, char **envs, int last_exit)
+static char	*process_heredoc_content(t_heredoc_ctx *ctx)
 {
 	char	*line;
 	char	*buffer;
-	char	*processed_line;
 
 	buffer = ft_strdup("");
 	if (!buffer)
@@ -36,54 +29,15 @@ static char	*process_heredoc_content(char *stripped_delim,
 	while (TRUE)
 	{
 		line = readline("📝 ❯ ");
-		if (!line || !ft_strcmp(line, stripped_delim))
+		if (!line)
+		{
+			display_heredoc_eof_warning(ctx->stripped_delim);
 			return (free_and_return(line, buffer));
-		processed_line = process_heredoc_line(line,
-				envs, last_exit, expand_vars);
-		free(line);
-		if (!processed_line)
-			return (free_and_return(buffer, NULL));
-		buffer = append_to_buffer(buffer, processed_line);
-		free(processed_line);
+		}
+		buffer = process_single_heredoc_line(ctx, line, buffer);
 		if (!buffer)
 			return (NULL);
 	}
-}
-
-/**
- * @brief Reads heredoc content from the user
-	* until the delimiter is encountered
- * @param delim The delimiter string
- * @return Dynamically allocated string containing heredoc content
- * @note Appends each line with newline
-	* character to build complete content
- */
-static char	*read_heredoc_content_to_buffer(
-	t_command *cmd, char **envs, int *last_exit)
-{
-	char	*tmp;
-	char	*line;
-	char	*buffer;
-
-	buffer = ft_strdup("");
-	while (TRUE)
-	{
-		line = readline("📝 ❯ ");
-		if (!line || !ft_strcmp(line, cmd->heredoc_delim))
-		{
-			free(line);
-			break ;
-		}
-		line = process_expanded_heredoc(cmd, line, envs, last_exit);
-		tmp = buffer;
-		buffer = ft_strjoin(buffer, line);
-		free(tmp);
-		tmp = buffer;
-		buffer = ft_strjoin(buffer, "\n");
-		free(tmp);
-		free(line);
-	}
-	return (buffer);
 }
 
 /**
@@ -92,21 +46,23 @@ static char	*read_heredoc_content_to_buffer(
  * @param env Environment variables array
  * @param last_exit Last command exit status for $? expansion
  * @return Dynamically allocated string containing processed heredoc content
- * @note Handles quoted delimiters and
-	* variable expansion based on delimiter type
+
+	* @note Handles quoted delimiters and variable expansion based on delimiter type
  */
 static char	*read_heredoc_content(char *delim, char **env, int last_exit)
 {
-	char	*content;
-	int		expand_vars;
-	char	*stripped_delim;
+	char			*content;
+	char			*stripped_delim;
+	t_heredoc_ctx	ctx;
 
-	expand_vars = !is_quoted_delimiter(delim);
-	stripped_delim = get_stripped_delim(expand_vars, delim);
+	ctx.expand_vars = !is_quoted_delimiter(delim);
+	stripped_delim = get_stripped_delim(ctx.expand_vars, delim);
 	if (!stripped_delim)
 		return (NULL);
-	content = process_heredoc_content(stripped_delim,
-			expand_vars, env, last_exit);
+	ctx.stripped_delim = stripped_delim;
+	ctx.envs = env;
+	ctx.last_exit = &last_exit;
+	content = process_heredoc_content(&ctx);
 	free(stripped_delim);
 	if (!content)
 		return (NULL);
@@ -145,31 +101,26 @@ int	handle_heredoc(char *delim, char **env, int last_exit)
 /**
  * @brief Preprocesses heredocs in the command list
  * @param cmd_list Pointer to the command list
+ * @param envs Environment variables array
+ * @param last_exit Last command exit status
  * @return void
  * @note Creates pipes for each command with heredoc delimiter
  *       Stores read file descriptor in command structure
  */
 void	preprocess_heredocs(t_command *cmd_list, char **envs, int *last_exit)
 {
-	t_command	*cmd;
-	char		*buffer;
-	int			pipefd[2];
+	t_command		*cmd;
+	t_heredoc_ctx	ctx;
 
 	cmd = cmd_list;
+	ctx.envs = envs;
+	ctx.last_exit = last_exit;
 	while (cmd)
 	{
 		if (cmd->heredoc_delim)
 		{
-			if (pipe(pipefd) < 0)
-				return (perror("pipe"));
-			buffer = read_heredoc_content_to_buffer(cmd, envs, last_exit);
-			if (buffer)
-			{
-				write(pipefd[1], buffer, ft_strlen(buffer));
-				free(buffer);
-			}
-			close(pipefd[1]);
-			cmd->heredoc_fd = pipefd[0];
+			if (process_single_command_heredoc(cmd, &ctx) < 0)
+				return ;
 		}
 		else
 			cmd->heredoc_fd = -1;
