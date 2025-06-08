@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/20 21:09:57 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/07 22:15:03 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@
  *       2. Command with empty first argument but has other arguments
  *       3. Invalid command (delegates to process_invalid_command)
  */
-static int	process_empty_command(
-	t_command *cmd, t_token *tokens, int *last_exit)
+static int	process_empty_command(t_command *cmd, t_token *tokens,
+		int *last_exit)
 {
 	int	index;
 
-	if (cmd && cmd->args && cmd->args[0][0] == NULL_CHR
-		&& cmd->args[1] == NULL && !cmd->in_quotes)
+	if (cmd && cmd->args && cmd->args[0][0] == NULL_CHR && cmd->args[1] == NULL
+		&& !cmd->in_quotes)
 	{
 		free_tokens(tokens);
 		free_commands(cmd);
@@ -88,6 +88,8 @@ void	process_input(char *input, char ***env, int *last_exit)
 	}
 	set_last_arg_without_pipe_executed(tokens, cmd, env);
 	execute_parsed_commands(cmd, env, last_exit, tokens);
+	if (g_signal_received)
+		*last_exit = g_signal_received + 128;
 	free_tokens(tokens);
 	manager_file_descriptors(FREE, -1);
 }
@@ -99,8 +101,8 @@ void	process_input(char *input, char ***env, int *last_exit)
  * @param envp Environment variables from the parent process
  * @return The exit status of the last executed command
  * @note The function initializes the shell environment,
- * sets up signal handling, and enters 
-	* the main loop for reading user input.
+ * sets up signal handling, and enters
+ * the main loop for reading user input.
  */
 int	main(int argc, char **argv, char **envp)
 {
@@ -121,6 +123,11 @@ int	main(int argc, char **argv, char **envp)
 		input = readline(get_colored_prompt());
 		if (handle_eof(input))
 			break ;
+		if (g_signal_received)
+		{
+			last_exit = g_signal_received + 128;
+			g_signal_received = 0;
+		}
 		process_input(input, &env, &last_exit);
 		free(input);
 	}
