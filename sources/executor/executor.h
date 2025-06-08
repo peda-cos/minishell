@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/07 11:10:38 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 06:37:28 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 
 # include "minishell.h"
 # include <sys/stat.h>
+
+/*
+** Structure for heredoc processing context to reduce function arguments
+*/
+typedef struct s_heredoc_ctx
+{
+	char		*stripped_delim;
+	int			expand_vars;
+	char		**envs;
+	int			*last_exit;
+	t_command	*cmd;
+}				t_heredoc_ctx;
 
 /*
 ** Structure for pipe information to reduce function arguments
@@ -50,12 +62,25 @@ int				handle_heredoc(char *delim, char **env, int last_exit);
 char			*append_to_buffer(char *buffer, char *line);
 int				is_quoted_delimiter(char *delim);
 char			*get_stripped_delim(int expand_vars, char *delim);
-void			preprocess_heredocs(t_command *cmd_list,
+void			preprocess_heredocs(t_command *cmd_list, char **envs,
+					int *last_exit);
+char			*process_heredoc_line(char *line, char **env, int last_exit,
+					int expand_vars);
+char			*process_expanded_heredoc(t_command *cmd, char *content,
 					char **envs, int *last_exit);
-char			*process_heredoc_line(char *line,
-					char **env, int last_exit, int expand_vars);
-char			*process_expanded_heredoc(t_command *cmd,
-					char *content, char **envs, int *last_exit);
+
+/*
+** Heredoc helper functions (heredoc_helper.c)
+*/
+void			display_heredoc_eof_warning(char *delimiter);
+char			*process_buffer_line(t_heredoc_ctx *ctx, char *line,
+					char *buffer);
+char			*process_single_heredoc_line(t_heredoc_ctx *ctx, char *line,
+					char *buffer);
+int				process_single_command_heredoc(t_command *cmd,
+					t_heredoc_ctx *ctx);
+char			*read_heredoc_content_to_buffer(t_heredoc_ctx *ctx);
+
 /*
 ** Redirection handling functions (redirection.c)
 */
