@@ -26,7 +26,8 @@ HANDLER_SRCS = sources/handler/main.c sources/handler/utils.c
 BUILTIN_SRCS = sources/builtin/utils.c \
 	sources/builtin/env.c sources/builtin/pwd.c sources/builtin/unset.c \
 	sources/builtin/cd_utils.c sources/builtin/cd.c sources/builtin/echo.c \
-	sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c
+	sources/builtin/exit.c sources/builtin/export.c sources/builtin/export_utils.c \
+	sources/builtin/export_sort.c sources/builtin/export_display.c
 EXECUTOR_SRCS = sources/executor/main.c \
 	sources/executor/process_utils.c sources/executor/path_utils.c \
 	sources/executor/redirection.c sources/executor/redirection_utils.c \
