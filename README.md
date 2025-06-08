@@ -1,50 +1,263 @@
-# Checklist para a implementação do Minishell
+# 🐚 Minishell
 
-```sh
-valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --suppressions=leaks.supp -q -s ./minishell
+[![42 Project](https://img.shields.io/badge/42-Project-blue)](https://42.fr)
+[![C](https://img.shields.io/badge/C-99-orange)](https://en.wikipedia.org/wiki/C99)
+[![Norminette](https://img.shields.io/badge/Norminette-Passing-green)](https://github.com/42School/norminette)
+
+> **A fully functional Unix shell implementation in C that mimics bash behavior.** 🚀
+
+Built as part of the 42 School curriculum, this project recreates the core functionality of a Unix shell from scratch, providing an educational deep-dive into system programming, process management, and command-line interfaces.
+
+---
+
+## 🌟 Features
+
+### Core Shell Functionality
+- 🖥️ **Interactive prompt** with colored display
+- 📜 **Command history** with persistent storage
+- 🔍 **Command execution** from PATH or absolute/relative paths
+- 🔧 **Environment variable** management
+- 📁 **Working directory** navigation
+
+### Built-in Commands
+- `echo` - Display text with `-n` option support
+- `cd` - Change directory (supports `~`, `-`, and absolute/relative paths)
+- `pwd` - Print working directory
+- `export` - Set environment variables with bash-style display
+- `unset` - Remove environment variables
+- `env` - Display environment variables
+- `exit` - Exit shell with optional exit code
+- `history` - Command history management
+
+### Advanced Features
+- 🔗 **Pipes** (`|`) - Chain commands together
+- 📥 **Input redirection** (`<`) - Redirect input from files
+- 📤 **Output redirection** (`>`) - Redirect output to files
+- 📝 **Heredoc** (`<<`) - Multi-line input with delimiter
+- 🔤 **Quote handling** - Single (`'`) and double (`"`) quotes
+- 🌿 **Variable expansion** - Environment variable substitution (`$VAR`)
+- ⚡ **Signal handling** - Ctrl+C, Ctrl+D, Ctrl+\ support
+
+---
+
+## 🛠️ Installation
+
+### Prerequisites
+
+Ensure you have the following installed on your Linux system:
+
+```bash
+# Essential build tools
+sudo apt update && sudo apt install -y \
+  build-essential \
+  gcc \
+  make \
+  libreadline-dev \
+  valgrind
+
+# Or on macOS with Homebrew
+brew install readline valgrind
 ```
 
-### 1. **Comportamento básico do shell**
-- [x] Exibir um prompt ao aguardar um novo comando.
-- [x] Implementar histórico de comandos.
-- [x] Buscar e lançar o executável correto com base na variável PATH ou usando caminho relativo ou absoluto.
-- [x] Evitar o uso de mais de uma variável global para indicar um sinal recebido.
-  - [x] Certificar-se de que a variável global usada só armazene o número do sinal recebido.
-  - [x] Garantir que a variável global não contenha acessos a outras estruturas de dados.
+### Quick Start
 
-### 2. **Interpretação de caracteres especiais**
-- [ ] Não interpretar aspas não fechadas ou caracteres especiais não exigidos pelo enunciado, como `\` (barra invertida) ou `;` (ponto e vírgula).
-- [x] Interpretar corretamente o caractere `'` (aspas simples) para evitar interpretação de metacaracteres dentro da sequência.
-- [x] Interpretar corretamente o caractere `"` (aspas duplas) para evitar interpretação de metacaracteres, exceto o `$` (sinal de cifrão).
+```bash
+# Clone the repository
+git clone https://github.com/peda-cos/minishell.git
+cd minishell
 
-### 3. **Redirecionamentos**
-- [x] Implementar o redirecionamento `<` para redirecionamento de entrada.
-- [x] Implementar o redirecionamento `>` para redirecionamento de saída.
-- [ ] Implementar o redirecionamento `<<` que:
-  - [x] Recebe um delimitador.
-  - [x] Lê a entrada até encontrar uma linha contendo o delimitador.
-  - [ ] Não atualiza o histórico de comandos.
-- [x] Implementar o redirecionamento `>>` para redirecionamento de saída em modo de anexação (append).
+# Build the project
+make
 
-### 4. **Pipes**
-- [x] Implementar o uso de pipes `|` para conectar a saída de um comando ao input do próximo comando.
+# Run the shell
+./minishell
+```
 
-### 5. **Variáveis de ambiente**
-- [x] Implementar a expansão de variáveis de ambiente, quando o caractere `$` for seguido por uma sequência de caracteres.
-- [x] Implementar a expansão do ` $? ` que deve se expandir para o status de saída do pipeline em primeiro plano mais recentemente executado.
+### Build Options
 
-### 6. **Comportamento de sinais**
-- [x] Implementar o comportamento dos sinais `ctrl-C`, `ctrl-D` e `ctrl-\` conforme o comportamento do bash.
-  - [x] `ctrl-C` deve exibir um novo prompt em uma nova linha.
-  - [x] `ctrl-D` deve sair do shell.
-  - [x] `ctrl-\` não deve fazer nada.
+```bash
+# Clean build (removes object files)
+make clean
 
-### 7. **Builtins**
-- [x] Implementar os seguintes comandos internos (builtins):
-  - [x] **echo** com a opção `-n`.
-  - [x] **cd** com caminho relativo ou absoluto.
-  - [x] **pwd** sem opções.
-  - [x] **export** sem opções.
-  - [x] **unset** sem opções.
-  - [x] **env** sem opções ou argumentos.
-  - [x] **exit** sem opções.
+# Full clean (removes objects and executable)
+make fclean
+
+# Rebuild everything
+make re
+
+# Build without progress bar
+make progress-bar=false
+
+# Run with memory leak detection
+make valgrind
+```
+
+---
+
+## 🚦 Usage
+
+### Starting the Shell
+
+```bash
+# Interactive mode (default)
+./minishell
+
+# Non-interactive mode (from file or pipe)
+echo "ls -la" | ./minishell
+./minishell < script.sh
+```
+
+### Basic Commands
+
+```bash
+# Navigation
+minishell$ pwd
+/home/user/minishell
+minishell$ cd ..
+minishell$ cd ~
+minishell$ cd -
+
+# File operations
+minishell$ ls -la
+minishell$ cat file.txt
+minishell$ echo "Hello World"
+
+# Environment variables
+minishell$ export NAME="John Doe"
+minishell$ echo $NAME
+John Doe
+minishell$ env | grep NAME
+NAME=John Doe
+minishell$ unset NAME
+```
+
+### Advanced Usage
+
+#### Pipes and Redirection
+```bash
+# Simple pipe
+minishell$ ls | grep minishell
+
+# Multiple pipes
+minishell$ cat file.txt | grep "pattern" | wc -l
+
+# Input redirection
+minishell$ wc -l < input.txt
+
+# Output redirection
+minishell$ ls > output.txt
+minishell$ echo "append this" >> output.txt
+
+# Heredoc
+minishell$ cat << EOF
+> This is line 1
+> This is line 2
+> EOF
+This is line 1
+This is line 2
+```
+
+#### Quote Handling and Variable Expansion
+```bash
+# Single quotes (literal)
+minishell$ echo 'Hello $USER'
+Hello $USER
+
+# Double quotes (with expansion)
+minishell$ echo "Hello $USER"
+Hello john
+
+# Variable expansion
+minishell$ NAME="World"
+minishell$ echo "Hello $NAME!"
+Hello World!
+
+# Exit status
+minishell$ echo $?
+0
+```
+
+---
+
+## 📁 Project Structure
+
+```
+minishell/
+├── 📄 Makefile                 # Build configuration
+├── 📄 README.md               # This file
+├── 📄 leaks.supp              # Valgrind suppressions
+├── 📁 includes/               # Header files
+│   ├── minishell.h           # Main header
+│   ├── structs.h             # Data structures
+│   └── macros.h              # Macro definitions
+├── 📁 libft/                  # Custom C library
+├── 📁 sources/                # Source code
+│   ├── main.c                # Entry point
+│   ├── utils.c               # Utility functions
+│   ├── 📁 builtin/           # Built-in commands
+│   ├── 📁 executor/          # Command execution
+│   ├── 📁 expansion/         # Variable expansion
+│   ├── 📁 handler/           # Signal handling
+│   ├── 📁 history/           # Command history
+│   ├── 📁 parser/            # Command parsing
+│   ├── 📁 tokenizer/         # Input tokenization
+│   └── 📁 validator/         # Input validation
+```
+
+---
+
+## 📚 Learning Resources
+
+### Understanding the Code
+- **Tokenizer**: Breaks input into tokens (words, operators, etc.)
+- **Parser**: Converts tokens into command structures
+- **Executor**: Runs commands with proper process management
+- **Expansion**: Handles variable substitution and quote removal
+- **Signals**: Manages Ctrl+C, Ctrl+D, and other interrupts
+
+### Key Concepts
+- 🔄 **Process creation** with `fork()` and `execve()`
+- 🔗 **Pipe communication** between processes
+- 📂 **File descriptor** management
+- 🌐 **Environment variable** handling
+- ⚡ **Signal handling** for interactive use
+
+### Related Reading
+- [GNU Bash Manual](https://www.gnu.org/software/bash/manual/)
+
+---
+
+## 📄 License
+
+This project is part of the 42 School curriculum. Feel free to use it for educational purposes.
+
+---
+
+## 🎯 Project Goals Achieved
+
+- ✅ **Shell prompt** with readline integration
+- ✅ **Command history** with persistent storage
+- ✅ **Built-in commands** (echo, cd, pwd, export, unset, env, exit)
+- ✅ **PATH resolution** and executable search
+- ✅ **Pipes** and **redirections** (`|`, `<`, `>`, `<<`)
+- ✅ **Quote handling** (single and double quotes)
+- ✅ **Variable expansion** (`$VAR`, `$?`)
+- ✅ **Signal handling** (Ctrl+C, Ctrl+D, Ctrl+\)
+- ✅ **Memory management** (no leaks)
+- ✅ **Error handling** with proper exit codes
+
+---
+
+### Authors
+- **Pedro Monteiro** (peda-cos) - *Developer*
+- **Jonnathan Lacerda** (jlacerda) - *Developer*
+
+---
+
+<div align="center">
+
+**Built with ❤️ for 42 School São Paulo**
+
+*Happy coding! 🚀*
+
+</div>
