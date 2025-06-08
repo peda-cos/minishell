@@ -3,33 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 14:20:51 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/05/04 19:29:25 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 06:56:21 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
 /**
- * @brief Displays the environment variables in alphabetical order
+ * @brief Displays the environment variables in bash format
  * @param env The environment variable array
- * @return 0 on success
- * @note Iterates through each string in
-	* the array and prints it to standard output
+ * @return 0 on success, 1 on failure
+ * @note Displays variables with declare -x prefix in alphabetical order
  */
 static int	display_environment(char **env)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		ft_putendl_fd(env[i], STDOUT_FILENO);
-		i++;
-	}
-	return (0);
+	return (display_bash_export(env));
 }
 
 /**
@@ -126,7 +117,7 @@ int	builtin_export(char **args, char ***env)
 	int	i;
 	int	status;
 
-	if (! env || !*env || !args || !*args)
+	if (!env || !*env || !args || !*args)
 		return (1);
 	if (!args[1])
 		return (display_environment(*env));
