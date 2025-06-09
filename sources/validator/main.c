@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:03:12 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 19:11:35 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 21:15:36 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	validate_tokens(t_token **tokens)
 			return (print_syntax_error(token->content->value));
 		if (is_redirection(token->type) && !is_valid_redirection(token))
 			return (print_syntax_error(token->content->value));
+		if (token->has_unclosed_quotes)
+			return (TRUE);
 		token = token->next;
 	}
 	return (FALSE);

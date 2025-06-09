@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 22:48:48 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/14 22:10:44 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 21:15:36 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_token
 	struct s_token			*next;
 	t_token_content			*content;
 	int						length;
+	int						has_unclosed_quotes;
 }							t_token;
 
 /**
