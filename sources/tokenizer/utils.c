@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/04 19:08:56 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/08 21:15:36 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ t_token	*new_token(t_token_content *content, t_token_type type)
 	token->next = NULL;
 	token->type = type;
 	token->content = content;
+	token->has_unclosed_quotes = FALSE;
 	tmp_content = content;
 	while (tmp_content)
 	{

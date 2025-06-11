@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 13:18:28 by jlacerda          #+#    #+#             */
-/*   Updated: 2025/05/17 17:25:27 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:51:04 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,6 @@ void	add_token_word(char *str, int *index, t_token **tokens)
 	free(tkz.word);
 	if (content)
 		add_token(tokens, new_token(content, WORD));
+	else if (tokens && *tokens)
+		(*tokens)->has_unclosed_quotes = TRUE;
 }
