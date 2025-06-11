@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_wait.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:17:38 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/05 16:22:13 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/10 23:34:08 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,12 @@ void	wait_restore_fds_pipe(int *fildes, int *forks, int *last_exit)
 
 	close(fildes[0]);
 	close(fildes[1]);
+	signal(SIGINT, SIG_IGN);
 	waitpid(forks[0], &status, 0);
 	waitpid(forks[1], &status, 0);
+	signal(SIGINT, SIG_DFL);
+	manager_file_descriptors(FREE, fildes[0]);
+	manager_file_descriptors(FREE, fildes[1]);
 	if (WIFSIGNALED(status))
 		handle_signal_termination(status, &exit_status);
 	else
