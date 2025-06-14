@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_chain.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:17:46 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/05 16:22:13 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:51:20 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	execute_chain_command(t_command *cmd_start,
 void	fork_process_pipe_chain(int *fildes, t_command *cmd_start,
 		t_process_command_args *args)
 {
+	int	is_last_pipe;
+
 	setup_chain_signals();
 	dup2(fildes[0], STDIN_FILENO);
 	close(fildes[0]);
@@ -71,7 +73,8 @@ void	fork_process_pipe_chain(int *fildes, t_command *cmd_start,
 	if (cmd_start->next)
 	{
 		args->cmd = cmd_start;
-		handle_pipe(cmd_start, cmd_start->next, args);
+		is_last_pipe = !cmd_start->next->next;
+		handle_pipe(cmd_start, cmd_start->next, args, is_last_pipe);
 	}
 	else
 		execute_chain_command(cmd_start, args);
