@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
+/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 06:32:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/14 16:06:58 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/14 16:35:09 by peda-cos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,26 +114,25 @@ char	*read_heredoc_content_to_buffer(t_heredoc_ctx *ctx)
  */
 int	process_single_command_heredoc(t_command *cmd, t_heredoc_ctx *ctx)
 {
-	char *buffer = NULL;
-	int pipefd[2];
-	pid_t pid;
-	int status;
+	char	*buffer;
+	int		pipefd[2];
+	pid_t	pid;
+	int		status;
+	void	(*original_sigint_handler)(int);
 
+	buffer = NULL;
 	if (pipe(pipefd) < 0)
 	{
 		perror("pipe");
 		return (-1);
 	}
 	ctx->cmd = cmd;
-	// Criar um processo filho para lidar com o heredoc
+	original_sigint_handler = signal(SIGINT, SIG_IGN);
 	pid = fork();
-
-	if (pid == 0) // Processo filho
+	if (pid == 0)
 	{
-		// No processo filho, podemos usar SIG_DFL com segurança
 		signal(SIGINT, SIG_DFL);
 		close(pipefd[0]);
-		
 		buffer = read_heredoc_content_to_buffer(ctx);
 		if (buffer)
 		{
@@ -141,20 +140,18 @@ int	process_single_command_heredoc(t_command *cmd, t_heredoc_ctx *ctx)
 			free(buffer);
 		}
 		close(pipefd[1]);
-		exit(0); // Sair do processo filho
+		exit(0);
 	}
-	else // Processo pai
+	else
 	{
 		close(pipefd[1]);
 		waitpid(pid, &status, 0);
-		
-		// Se o filho foi terminado por SIGINT
+		signal(SIGINT, original_sigint_handler);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
-			*ctx->last_exit = 130; // Código de saída para SIGINT
+			*ctx->last_exit = 130;
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
-		
 		cmd->heredoc_fd = pipefd[0];
 		return (0);
 	}
