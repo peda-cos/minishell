@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 08:11:28 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/08 06:37:28 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:53:45 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int				process_command(t_command *cmd, t_process_command_args *args);
 ** Pipe handling functions (pipe_handler.c)
 */
 int				handle_pipe(t_command *cmd_left, t_command *cmd_right,
-					t_process_command_args *args);
+					t_process_command_args *args, int is_last_pipe);
 
 /*
 ** Execution setup functions (execution_setup.c)
@@ -142,7 +142,8 @@ void			fork_process_pipe_chain(int *fildes, t_command *cmd_start,
 /*
 ** Pipe wait functions (pipe_wait.c)
 */
-void			wait_restore_fds_pipe(int *fildes, int *forks, int *last_exit);
+void			wait_restore_fds_pipe(int *fildes, int *forks,
+					int *last_exit, int is_last_pipe);
 
 int				setup_file_input(char *input_file);
 t_token			*get_fd_redirect_token(char *target_file, t_token *tokens);

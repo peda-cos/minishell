@@ -6,7 +6,7 @@
 /*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:18:06 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/07 11:32:41 by jlacerda         ###   ########.fr       */
+/*   Updated: 2025/06/14 14:37:42 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	process_single_command(t_command *cmd, t_process_command_args *args)
 
 	if (cmd->next)
 	{
-		result = handle_pipe(cmd, cmd->next, args);
+		result = handle_pipe(cmd, cmd->next, args, FALSE);
 		if (result != 0)
 			return (-1);
 		return (1);
