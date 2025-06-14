@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: peda-cos <peda-cos@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: jlacerda <jlacerda@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 19:05:27 by peda-cos          #+#    #+#             */
-/*   Updated: 2025/06/07 22:15:03 by peda-cos         ###   ########.fr       */
+/*   Updated: 2025/06/14 11:57:15 by jlacerda         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,32 @@ void	process_input(char *input, char ***env, int *last_exit)
 }
 
 /**
+ * @brief Processes input in interactive mode
+ * @param env Triple pointer to the environment variables
+ * @param last_exit Pointer to the last command exit status
+ * @note Continuously reads user input, processes it, and handles EOF or signals
+ * The loop continues until EOF is received or a signal interrupts it.
+ */
+static void	process_interactive_mode(char ***env, int *last_exit)
+{
+	char	*input;
+
+	while (TRUE)
+	{
+		input = readline(get_colored_prompt());
+		if (handle_eof(input))
+			break ;
+		if (g_signal_received)
+		{
+			*last_exit = g_signal_received + 128;
+			g_signal_received = 0;
+		}
+		process_input(input, env, last_exit);
+		free(input);
+	}
+}
+
+/**
  * @brief Main entry point for the minishell program
  * @param argc Argument count (unused but required by standard)
  * @param argv Argument vector (unused but required by standard)
@@ -106,7 +132,6 @@ void	process_input(char *input, char ***env, int *last_exit)
  */
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
 	char	**env;
 	int		last_exit;
 
@@ -118,19 +143,7 @@ int	main(int argc, char **argv, char **envp)
 	load_history();
 	if (!isatty(STDIN_FILENO))
 		return (process_no_interactive_mode(&env));
-	while (TRUE)
-	{
-		input = readline(get_colored_prompt());
-		if (handle_eof(input))
-			break ;
-		if (g_signal_received)
-		{
-			last_exit = g_signal_received + 128;
-			g_signal_received = 0;
-		}
-		process_input(input, &env, &last_exit);
-		free(input);
-	}
+	process_interactive_mode(&env, &last_exit);
 	free_env(env);
 	return (last_exit);
 }
