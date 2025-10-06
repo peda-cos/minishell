@@ -41,7 +41,7 @@ The shell operates in both **interactive** and **non-interactive** modes, provid
 - **Libraries**:
   - GNU Readline (for interactive input)
   - Custom `libft` (personal C utility library)
-- **Compiler**: GCC with flags: `-Wall -Wextra -Werror -O2`
+- **Compiler**: Clang with flags: `-Wall -Wextra -Werror -O2`
 
 ### System Calls & Functions
 The project is restricted to using specific POSIX functions including:
